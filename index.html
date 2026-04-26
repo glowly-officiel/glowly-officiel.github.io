@@ -28,140 +28,51 @@
 
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{
-  font-family:'DM Sans',sans-serif;
-  background:var(--black);
-  color:var(--text);
-  cursor:none;
-  overflow-x:hidden;
-}
+body{font-family:'DM Sans',sans-serif;background:var(--black);color:var(--text);cursor:none;overflow-x:hidden;}
 img{display:block;width:100%}
 button{font-family:inherit;cursor:none}
 a{text-decoration:none}
 
-#cursor{
-  position:fixed;width:10px;height:10px;
-  background:var(--gold);border-radius:50%;
-  pointer-events:none;z-index:9999;
-  transform:translate(-50%,-50%);
-  transition:transform .1s,width .25s var(--ease-out),height .25s var(--ease-out),background .25s;
-  mix-blend-mode:difference;
-}
-#cursor-ring{
-  position:fixed;width:36px;height:36px;
-  border:1px solid var(--gold);border-radius:50%;
-  pointer-events:none;z-index:9998;
-  transform:translate(-50%,-50%);
-  transition:transform .18s var(--ease-out),width .3s var(--ease-out),height .3s var(--ease-out),opacity .3s,border-color .3s;
-  opacity:.6;
-}
+#cursor{position:fixed;width:10px;height:10px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform .1s,width .25s var(--ease-out),height .25s var(--ease-out),background .25s;mix-blend-mode:difference;}
+#cursor-ring{position:fixed;width:36px;height:36px;border:1px solid var(--gold);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:transform .18s var(--ease-out),width .3s var(--ease-out),height .3s var(--ease-out),opacity .3s,border-color .3s;opacity:.6;}
 body:has(button:hover) #cursor,body:has(a:hover) #cursor{ width:20px;height:20px; }
 body:has(button:hover) #cursor-ring,body:has(a:hover) #cursor-ring{ width:54px;height:54px;opacity:.3; }
-
-body::before{
-  content:'';position:fixed;inset:0;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
-  background-size:200px;opacity:.025;pointer-events:none;z-index:9997;
-}
-
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");background-size:200px;opacity:.025;pointer-events:none;z-index:9997;}
 ::-webkit-scrollbar{width:3px}
 ::-webkit-scrollbar-track{background:var(--black)}
 ::-webkit-scrollbar-thumb{background:var(--gold);border-radius:4px}
 
-header{
-  position:fixed;top:0;left:0;right:0;z-index:500;
-  padding:0 48px;height:72px;
-  display:flex;align-items:center;justify-content:space-between;
-  border-bottom:1px solid var(--border);
-  background:rgba(8,8,8,.82);
-  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  transition:background .4s;
-}
+header{position:fixed;top:0;left:0;right:0;z-index:500;padding:0 48px;height:72px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);background:rgba(8,8,8,.82);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);transition:background .4s;}
 .logo{display:flex;flex-direction:column;gap:1px;}
-.logo-name{
-  font-family:'Playfair Display',serif;
-  font-size:22px;letter-spacing:.25em;
-  color:var(--gold);text-transform:uppercase;font-weight:500;
-}
-.logo-tag{
-  font-family:'DM Mono',monospace;
-  font-size:9px;letter-spacing:.35em;color:var(--muted);text-transform:uppercase;
-}
+.logo-name{font-family:'Playfair Display',serif;font-size:22px;letter-spacing:.25em;color:var(--gold);text-transform:uppercase;font-weight:500;}
+.logo-tag{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.35em;color:var(--muted);text-transform:uppercase;}
 .header-right{display:flex;align-items:center;gap:12px}
-.contact-trigger{
-  display:flex;align-items:center;gap:6px;
-  background:transparent;border:1px solid var(--gold);
-  color:var(--gold);padding:9px 18px;border-radius:100px;
-  font-size:11px;letter-spacing:.08em;text-transform:uppercase;
-  cursor:pointer;transition:all .3s var(--ease-out);
-  font-weight:500;white-space:nowrap;
-}
+.contact-trigger{display:flex;align-items:center;gap:6px;background:transparent;border:1px solid var(--gold);color:var(--gold);padding:9px 18px;border-radius:100px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:all .3s var(--ease-out);font-weight:500;white-space:nowrap;}
 .contact-trigger:hover{background:var(--gold);color:var(--black);box-shadow:0 0 20px var(--gold-glow);}
 .contact-trigger svg{width:14px;height:14px;flex-shrink:0;}
-.cart-trigger{
-  display:flex;align-items:center;gap:10px;
-  background:transparent;border:1px solid var(--border);
-  color:var(--cream);padding:10px 20px;border-radius:100px;
-  font-size:13px;letter-spacing:.08em;text-transform:uppercase;
-  transition:all .3s var(--ease-out);position:relative;overflow:hidden;
-}
-.cart-trigger::before{
-  content:'';position:absolute;inset:0;background:var(--gold-dim);
-  transform:scaleX(0);transform-origin:left;transition:transform .35s var(--ease-out);
-}
+.cart-trigger{display:flex;align-items:center;gap:10px;background:transparent;border:1px solid var(--border);color:var(--cream);padding:10px 20px;border-radius:100px;font-size:13px;letter-spacing:.08em;text-transform:uppercase;transition:all .3s var(--ease-out);position:relative;overflow:hidden;}
+.cart-trigger::before{content:'';position:absolute;inset:0;background:var(--gold-dim);transform:scaleX(0);transform-origin:left;transition:transform .35s var(--ease-out);}
 .cart-trigger:hover{border-color:var(--gold);color:var(--gold)}
 .cart-trigger:hover::before{transform:scaleX(1)}
 .cart-trigger span{position:relative;z-index:1}
-.cart-count{
-  background:var(--gold);color:var(--black);
-  border-radius:50%;width:20px;height:20px;
-  font-size:11px;font-weight:700;
-  display:flex;align-items:center;justify-content:center;
-  position:relative;z-index:1;transition:transform .3s var(--ease-out);
-}
+.cart-count{background:var(--gold);color:var(--black);border-radius:50%;width:20px;height:20px;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;position:relative;z-index:1;transition:transform .3s var(--ease-out);}
 .cart-count.bump{animation:bump .4s var(--ease-out)}
 @keyframes bump{0%{transform:scale(1)}50%{transform:scale(1.4)}100%{transform:scale(1)}}
 
-.hero{
-  min-height:100vh;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;position:relative;overflow:hidden;
-  padding:120px 48px 80px;text-align:center;
-}
-.hero-bg{
-  position:absolute;inset:0;
-  background:radial-gradient(ellipse 80% 60% at 50% 40%, rgba(201,169,110,.07) 0%, transparent 70%),
-             radial-gradient(ellipse 40% 40% at 20% 80%, rgba(196,146,122,.05) 0%, transparent 60%),
-             radial-gradient(ellipse 40% 40% at 80% 20%, rgba(143,175,159,.04) 0%, transparent 60%);
-}
-.hero-line{
-  width:1px;height:80px;background:linear-gradient(to bottom, transparent, var(--gold), transparent);
-  margin:0 auto 48px;animation:lineGrow 1.4s var(--ease-out) forwards;transform-origin:top;
-}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:120px 48px 80px;text-align:center;}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 40%, rgba(201,169,110,.07) 0%, transparent 70%),radial-gradient(ellipse 40% 40% at 20% 80%, rgba(196,146,122,.05) 0%, transparent 60%),radial-gradient(ellipse 40% 40% at 80% 20%, rgba(143,175,159,.04) 0%, transparent 60%);}
+.hero-line{width:1px;height:80px;background:linear-gradient(to bottom, transparent, var(--gold), transparent);margin:0 auto 48px;animation:lineGrow 1.4s var(--ease-out) forwards;transform-origin:top;}
 @keyframes lineGrow{from{height:0;opacity:0}to{height:80px;opacity:1}}
-.hero-eyebrow{
-  font-family:'DM Mono',monospace;font-size:10px;
-  letter-spacing:.4em;color:var(--gold);text-transform:uppercase;
-  margin-bottom:24px;opacity:0;animation:fadeUp .8s var(--ease-out) .4s forwards;
-}
-.hero-title{
-  font-family:'Playfair Display',serif;
-  font-size:clamp(52px,8vw,110px);font-weight:400;line-height:.92;
-  letter-spacing:-.01em;color:var(--cream);
-  margin-bottom:32px;opacity:0;animation:fadeUp .9s var(--ease-out) .6s forwards;
-}
+.hero-eyebrow{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.4em;color:var(--gold);text-transform:uppercase;margin-bottom:24px;opacity:0;animation:fadeUp .8s var(--ease-out) .4s forwards;}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(52px,8vw,110px);font-weight:400;line-height:.92;letter-spacing:-.01em;color:var(--cream);margin-bottom:32px;opacity:0;animation:fadeUp .9s var(--ease-out) .6s forwards;}
 .hero-title em{font-style:italic;color:var(--gold)}
-.hero-sub{
-  font-size:15px;color:var(--muted);letter-spacing:.12em;
-  text-transform:uppercase;max-width:480px;line-height:1.8;
-  opacity:0;animation:fadeUp .9s var(--ease-out) .8s forwards;
-}
+.hero-sub{font-size:15px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;max-width:480px;line-height:1.8;opacity:0;animation:fadeUp .9s var(--ease-out) .8s forwards;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
 
 .section{padding:80px 48px;max-width:1320px;margin:0 auto}
 .section-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.4em;color:var(--gold);text-transform:uppercase;margin-bottom:12px;}
 .section-title{font-family:'Playfair Display',serif;font-size:42px;font-weight:400;color:var(--cream);margin-bottom:48px;display:flex;align-items:center;gap:20px;}
 .section-title::after{content:'';flex:1;height:1px;background:linear-gradient(to right,var(--border),transparent);}
-
 .cat-bar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:56px;}
 .cat-btn{padding:9px 22px;border-radius:100px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:12px;letter-spacing:.1em;text-transform:uppercase;transition:all .3s var(--ease-out);position:relative;overflow:hidden;}
 .cat-btn::before{content:'';position:absolute;inset:0;background:var(--gold-dim);transform:scaleX(0);transform-origin:left;transition:transform .3s var(--ease-out);}
@@ -169,7 +80,6 @@ header{
 .cat-btn:hover::before{transform:scaleX(1)}
 .cat-btn.active{border-color:var(--gold);color:var(--gold);background:var(--gold-dim);}
 .cat-btn span{position:relative;z-index:1}
-
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:2px;}
 .card{background:var(--card);position:relative;overflow:hidden;transition:transform .5s var(--ease-out);opacity:0;transform:translateY(40px);}
 .card.revealed{animation:cardReveal .8s var(--ease-out) forwards}
@@ -203,7 +113,7 @@ header{
 .card-stock-badge.out-of-stock{background:rgba(198,40,40,.85);color:#FFEBEE;border:1px solid rgba(198,40,40,.5);animation:pulseBadge 2s infinite;}
 @keyframes pulseBadge{0%,100%{opacity:1}50%{opacity:.7}}
 
-/* LIGHTBOX */
+/* LIGHTBOX - tout ton CSS existant */
 #lightbox-overlay{position:fixed;inset:0;background:rgba(2,2,2,.97);z-index:2000;opacity:0;pointer-events:none;transition:opacity .5s;display:flex;align-items:center;justify-content:center;}
 #lightbox-overlay.open{opacity:1;pointer-events:all}
 .lightbox-layout{display:flex;width:92vw;max-width:1100px;max-height:90vh;gap:56px;align-items:stretch;animation:lbEnter .6s var(--spring);}
@@ -241,15 +151,13 @@ header{
 .lightbox-close{position:absolute;top:28px;right:32px;background:rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.1);color:var(--muted);width:44px;height:44px;border-radius:50%;font-size:18px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s var(--spring);z-index:20;backdrop-filter:blur(8px);}
 .lightbox-close:hover{border-color:var(--gold);color:var(--gold);transform:rotate(90deg);}
 
-/* CONTACT MODAL */
 #contact-overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:1000;opacity:0;pointer-events:none;transition:opacity .4s;backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;padding:24px;}
 #contact-overlay.open{opacity:1;pointer-events:all}
 #contact-overlay .modal{max-width:440px;}
-#contact-overlay .confirm-btn{margin-top:16px;}
 
 @media(max-width:900px){.lightbox-layout{flex-direction:column;gap:28px;}.lightbox-image-stage{height:38vh;}.lightbox-info{gap:16px;text-align:center;padding:0 8px;}.lightbox-title{font-size:24px;}.lightbox-price{font-size:32px;}.lightbox-thumb{width:48px;height:48px;}.lightbox-nav{width:40px;height:40px;font-size:18px;}}
 
-/* PANIER & MODAL */
+/* PANIER & MODAL - tout ton CSS existant */
 #cart-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:800;opacity:0;pointer-events:none;transition:opacity .4s;backdrop-filter:blur(6px);}
 #cart-overlay.open{opacity:1;pointer-events:all}
 #cart-panel{position:absolute;right:0;top:0;bottom:0;width:min(440px,100vw);background:var(--surface);border-left:1px solid var(--border);display:flex;flex-direction:column;transform:translateX(100%);transition:transform .5s var(--ease-out);}
@@ -349,105 +257,41 @@ footer{border-top:1px solid var(--border);padding:40px 48px;display:flex;align-i
 <div class="section">
   <p class="section-label">Notre Selection</p>
   <h2 class="section-title">Catalogue</h2>
-  <div class="cat-bar" id="cat-bar">
-    <button class="cat-btn active" data-cat="all" onclick="filterCat(this,'all')"><span>Tous les soins</span></button>
-  </div>
+  <div class="cat-bar" id="cat-bar"><button class="cat-btn active" data-cat="all" onclick="filterCat(this,'all')"><span>Tous les soins</span></button></div>
   <div class="grid" id="product-grid"></div>
 </div>
 
-<!-- LIGHTBOX -->
-<div id="lightbox-overlay" onclick="closeLightbox(event)">
-  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
-  <div class="lightbox-layout" onclick="event.stopPropagation()">
-    <div class="lightbox-gallery">
-      <div class="lightbox-image-stage">
-        <div class="lightbox-counter" id="lightbox-counter">1 / 1</div>
-        <button class="lightbox-nav lightbox-prev" onclick="lightboxPrev()">‹</button>
-        <img class="lightbox-main-img" id="lightbox-main" src="" alt=""/>
-        <button class="lightbox-nav lightbox-next" onclick="lightboxNext()">›</button>
-      </div>
-      <div class="lightbox-thumbs-strip" id="lightbox-thumbs"></div>
-    </div>
-    <div class="lightbox-info">
-      <div class="lightbox-cat" id="lightbox-cat"></div>
-      <div class="lightbox-title" id="lightbox-title"></div>
-      <div class="lightbox-price-block">
-        <div class="lightbox-price" id="lightbox-price"></div>
-        <div class="lightbox-currency">FCFA</div>
-      </div>
-      <div class="lightbox-desc" id="lightbox-desc"></div>
-      <button class="lightbox-add-btn" id="lightbox-add-btn" onclick="addToCartFromLightbox()">
-        <span>+ Ajouter au panier</span>
-      </button>
-    </div>
-  </div>
-</div>
+<!-- LIGHTBOX - tout ton HTML existant -->
+<div id="lightbox-overlay" onclick="closeLightbox(event)"><button class="lightbox-close" onclick="closeLightbox()">✕</button><div class="lightbox-layout" onclick="event.stopPropagation()"><div class="lightbox-gallery"><div class="lightbox-image-stage"><div class="lightbox-counter" id="lightbox-counter">1 / 1</div><button class="lightbox-nav lightbox-prev" onclick="lightboxPrev()">‹</button><img class="lightbox-main-img" id="lightbox-main" src="" alt=""/><button class="lightbox-nav lightbox-next" onclick="lightboxNext()">›</button></div><div class="lightbox-thumbs-strip" id="lightbox-thumbs"></div></div><div class="lightbox-info"><div class="lightbox-cat" id="lightbox-cat"></div><div class="lightbox-title" id="lightbox-title"></div><div class="lightbox-price-block"><div class="lightbox-price" id="lightbox-price"></div><div class="lightbox-currency">FCFA</div></div><div class="lightbox-desc" id="lightbox-desc"></div><button class="lightbox-add-btn" id="lightbox-add-btn" onclick="addToCartFromLightbox()"><span>+ Ajouter au panier</span></button></div></div></div>
 
-<div id="cart-overlay" onclick="closeCart(event)">
-  <div id="cart-panel">
-    <div class="cart-head"><div class="cart-head-title">Votre Selection</div><button class="close-btn" onclick="closeCart(null,true)">✕</button></div>
-    <div class="cart-items" id="cart-items-list"></div>
-    <div class="cart-foot" id="cart-foot" style="display:none">
-      <div class="cart-total-row"><span class="cart-total-label">Total</span><span class="cart-total-val" id="cart-total">0 FCFA</span></div>
-      <button class="checkout-btn" onclick="openCheckout()"><span>Passer commande →</span></button>
-    </div>
-  </div>
-</div>
+<div id="cart-overlay" onclick="closeCart(event)"><div id="cart-panel"><div class="cart-head"><div class="cart-head-title">Votre Selection</div><button class="close-btn" onclick="closeCart(null,true)">✕</button></div><div class="cart-items" id="cart-items-list"></div><div class="cart-foot" id="cart-foot" style="display:none"><div class="cart-total-row"><span class="cart-total-label">Total</span><span class="cart-total-val" id="cart-total">0 FCFA</span></div><button class="checkout-btn" onclick="openCheckout()"><span>Passer commande →</span></button></div></div></div>
 
-<!-- MODAL COMMANDE -->
-<div id="modal-overlay" onclick="closeModalOutside(event)">
-  <div class="modal">
-    <div id="form-state">
-      <div class="modal-head"><div><div class="modal-title">Votre Commande</div><div class="modal-subtitle">Remplissez vos coordonnees</div></div><button class="close-btn" onclick="closeModal()">✕</button></div>
-      <div class="modal-body">
-        <div class="order-recap" id="order-recap"></div>
-        <div class="field"><label>Nom complet *</label><input type="text" id="inp-nom" placeholder="Ex : Fatou Diallo"/></div>
-        <div class="field"><label>Numero de telephone *</label><input type="tel" id="inp-tel" placeholder="Ex : 77 123 45 67"/></div>
-        <div class="field"><label>Region *</label><select id="inp-region"><option value="">Selectionnez votre region</option><option>Dakar</option><option>Thies</option><option>Diourbel</option><option>Saint-Louis</option><option>Louga</option><option>Fatick</option><option>Kaolack</option><option>Ziguinchor</option><option>Tambacounda</option><option>Kolda</option><option>Matam</option><option>Kaffrine</option><option>Kedougou</option><option>Sedhiou</option><option>Autre</option></select></div>
-        <div class="field"><label>Quartier / Commune *</label><input type="text" id="inp-quartier" placeholder="Ex : Medina, Ouakam..."/></div>
-        <div class="field"><label>Adresse complementaire</label><input type="text" id="inp-adresse" placeholder="Ex : Rue 10, Porte 5..."/></div>
-        <div class="field"><label>Mode de paiement</label><select id="inp-paiement"><option>🐧 Wave</option><option>🟠 Orange Money</option><option>💵 Cash</option><option>💵 Especes a la livraison</option></select></div>
-        <button class="confirm-btn" onclick="confirmerCommande()" id="confirm-btn"><span id="confirm-label">Confirmer ma commande</span></button>
-      </div>
-    </div>
-    <div class="success-state" id="success-state">
-      <div class="success-icon">✓</div><div class="success-title">Commande confirmee !</div>
-      <p class="success-text">Merci pour votre commande. Nous vous contacterons tres prochainement pour la livraison.</p>
-      <button class="success-btn" onclick="resetModal()">Continuer mes achats</button>
-    </div>
-  </div>
-</div>
+<div id="modal-overlay" onclick="closeModalOutside(event)"><div class="modal"><div id="form-state"><div class="modal-head"><div><div class="modal-title">Votre Commande</div><div class="modal-subtitle">Remplissez vos coordonnees</div></div><button class="close-btn" onclick="closeModal()">✕</button></div><div class="modal-body"><div class="order-recap" id="order-recap"></div><div class="field"><label>Nom complet *</label><input type="text" id="inp-nom" placeholder="Ex : Fatou Diallo"/></div><div class="field"><label>Numero de telephone *</label><input type="tel" id="inp-tel" placeholder="Ex : 77 123 45 67"/></div><div class="field"><label>Region *</label><select id="inp-region"><option value="">Selectionnez votre region</option><option>Dakar</option><option>Thies</option><option>Diourbel</option><option>Saint-Louis</option><option>Louga</option><option>Fatick</option><option>Kaolack</option><option>Ziguinchor</option><option>Tambacounda</option><option>Kolda</option><option>Matam</option><option>Kaffrine</option><option>Kedougou</option><option>Sedhiou</option><option>Autre</option></select></div><div class="field"><label>Quartier / Commune *</label><input type="text" id="inp-quartier" placeholder="Ex : Medina, Ouakam..."/></div><div class="field"><label>Adresse complementaire</label><input type="text" id="inp-adresse" placeholder="Ex : Rue 10, Porte 5..."/></div><div class="field"><label>Mode de paiement</label><select id="inp-paiement"><option>🐧 Wave</option><option>🟠 Orange Money</option><option>💵 Cash</option><option>💵 Especes a la livraison</option></select></div><button class="confirm-btn" onclick="confirmerCommande()" id="confirm-btn"><span id="confirm-label">Confirmer ma commande</span></button></div></div><div class="success-state" id="success-state"><div class="success-icon">✓</div><div class="success-title">Commande confirmee !</div><p class="success-text">Merci pour votre commande. Nous vous contacterons tres prochainement pour la livraison.</p><button class="success-btn" onclick="resetModal()">Continuer mes achats</button></div></div></div>
 
-<!-- MODAL CONTACT -->
-<div id="contact-overlay" onclick="closeContactOutside(event)">
-  <div class="modal" onclick="event.stopPropagation()">
-    <div class="modal-head">
-      <div><div class="modal-title">Nous Contacter</div><div class="modal-subtitle">Laissez-nous votre message WhatsApp</div></div>
-      <button class="close-btn" onclick="closeContact()">✕</button>
-    </div>
-    <div class="modal-body">
-      <div class="field"><label>Votre nom *</label><input type="text" id="contact-nom" placeholder="Votre nom"/></div>
-      <div class="field"><label>Votre numero WhatsApp *</label><input type="tel" id="contact-tel" placeholder="Ex : 77 123 45 67"/></div>
-      <div class="field"><label>Votre message *</label><textarea id="contact-msg" placeholder="Votre message..." style="background:var(--card);border:1px solid var(--border);color:var(--cream);padding:13px 16px;font-family:'DM Sans',sans-serif;font-size:14px;outline:none;resize:vertical;min-height:100px;border-radius:0;"></textarea></div>
-      <button class="confirm-btn" onclick="envoyerContact()"><span>Envoyer sur WhatsApp</span></button>
-    </div>
-    <div class="success-state" id="contact-success-state">
-      <div class="success-icon">✓</div><div class="success-title">Message envoye !</div>
-      <p class="success-text">Nous vous repondrons rapidement sur WhatsApp.</p>
-      <button class="success-btn" onclick="closeContact()">Fermer</button>
-    </div>
-  </div>
-</div>
+<div id="contact-overlay" onclick="closeContactOutside(event)"><div class="modal" onclick="event.stopPropagation()"><div class="modal-head"><div><div class="modal-title">Nous Contacter</div><div class="modal-subtitle">Laissez-nous votre message WhatsApp</div></div><button class="close-btn" onclick="closeContact()">✕</button></div><div class="modal-body"><div class="field"><label>Votre nom *</label><input type="text" id="contact-nom" placeholder="Votre nom"/></div><div class="field"><label>Votre numero WhatsApp *</label><input type="tel" id="contact-tel" placeholder="Ex : 77 123 45 67"/></div><div class="field"><label>Votre message *</label><textarea id="contact-msg" placeholder="Votre message..." style="background:var(--card);border:1px solid var(--border);color:var(--cream);padding:13px 16px;font-family:'DM Sans',sans-serif;font-size:14px;outline:none;resize:vertical;min-height:100px;border-radius:0;"></textarea></div><button class="confirm-btn" onclick="envoyerContact()"><span>Envoyer sur WhatsApp</span></button></div><div class="success-state" id="contact-success-state"><div class="success-icon">✓</div><div class="success-title">Message envoye !</div><p class="success-text">Nous vous repondrons rapidement sur WhatsApp.</p><button class="success-btn" onclick="closeContact()">Fermer</button></div></div></div>
+
 <div id="toast"></div>
 <footer><div class="footer-logo">Glowly</div><div class="footer-copy">© 2026 Glowly — Beaute Naturelle - Dakar, Senegal</div></footer>
 
 <script>
+// ⚠️ REMPLACE cette URL par TON URL de déploiement Apps Script
+const API_URL = "https://script.google.com/macros/s/AKfycbzS8LSwbtv5AH8IIwic-G6_V21JL-nIrnt36112Qys6q69xBHOYiMmk0rCQ1Rz3f-_z/exec";
+
 const catColors={"Soins Mains & Pieds":{color:"#C4927A"},"Nettoyants Visage":{color:"#8FAF9F"},"Traitements Visage":{color:"#A799C0"},"Soins Corps":{color:"#C9A96E"}};
 let produits=[],activeCat='all',cart=[],lightboxProduct=null,lightboxImages=[],lightboxIndex=0,isAnimating=false;
 const TELEGRAM_TOKEN="8726033368:AAGgwT0jqY6hlX4MQWv8nsMi5Smt95Xumhs";
 const TELEGRAM_CHAT_ID="6277942447";
 
-function chargerProduits(){google.script.run.withSuccessHandler(r=>{if(r&&r.ok){produits=r.produits;construireFiltres();renderProducts();}}).obtenirProduits();}
+// ⭐ CHARGEMENT PRODUITS VIA FETCH
+function chargerProduits(){
+  fetch(API_URL + "?action=produits")
+    .then(function(r){return r.json();})
+    .then(function(r){
+      if(r&&r.ok){produits=r.produits;construireFiltres();renderProducts();}
+      else{showToast("Erreur chargement produits");}
+    })
+    .catch(function(){showToast("Erreur connexion");});
+}
 window.addEventListener('load',chargerProduits);
 
 function construireFiltres(){var c=[...new Set(produits.map(p=>p.cat).filter(Boolean))],b=document.getElementById('cat-bar');b.innerHTML='<button class="cat-btn active" data-cat="all" onclick="filterCat(this,\'all\')"><span>Tous les soins</span></button>';c.forEach(cat=>{var x=document.createElement('button');x.className='cat-btn';x.dataset.cat=cat;x.onclick=function(){filterCat(this,cat);};x.innerHTML='<span>'+cat+'</span>';b.appendChild(x);});}
@@ -492,7 +336,7 @@ function changeQty(id,d){
 
 function filterCat(b,c){document.querySelectorAll('.cat-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');activeCat=c;renderProducts();}
 
-// LIGHTBOX
+// LIGHTBOX - tout ton JS existant
 function openLightbox(id){var p=produits.find(x=>x.id===id);if(!p)return;lightboxProduct=p;var fb='https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=600&q=85';lightboxImages=[p.img||fb];if(p.img2&&p.img2.startsWith('http'))lightboxImages.push(p.img2);if(p.img3&&p.img3.startsWith('http'))lightboxImages.push(p.img3);lightboxIndex=0;updateLightboxUI();document.getElementById('lightbox-overlay').classList.add('open');var ab=document.getElementById('lightbox-add-btn');ab.classList.remove('added');ab.querySelector('span').textContent='+ Ajouter au panier';}
 function closeLightbox(event){if(event&&event.target!==document.getElementById('lightbox-overlay'))return;document.getElementById('lightbox-overlay').classList.remove('open');}
 function lightboxPrev(){if(isAnimating)return;lightboxIndex=(lightboxIndex-1+lightboxImages.length)%lightboxImages.length;animateImage('right');}
@@ -523,6 +367,8 @@ function openCheckout(){
 }
 function closeModal(){document.getElementById('modal-overlay').classList.remove('open');}
 function closeModalOutside(e){if(e.target===document.getElementById('modal-overlay'))closeModal();}
+
+// ⭐ COMMANDE VIA FETCH
 function confirmerCommande(){
   var n=document.getElementById('inp-nom').value.trim(),
       t=document.getElementById('inp-tel').value.trim(),
@@ -538,44 +384,38 @@ function confirmerCommande(){
   var adresseComplete = q + ", " + r + (a ? " - " + a : "");
   var b=document.getElementById('confirm-btn');b.disabled=true;document.getElementById('confirm-label').textContent="Envoi...";
   var id="WEB-"+Date.now().toString(36).toUpperCase();
-  google.script.run.withSuccessHandler(r=>{
+  var lignes = cart.map(i=>({idVente:id,nomProduit:i.nom,quantite:i.qty,telephone:t,nomClient:n,adresse:adresseComplete,paiement:p}));
+  
+  fetch(API_URL + "?action=commander",{
+    method:"POST",
+    body:JSON.stringify(lignes)
+  })
+  .then(function(r){return r.json();})
+  .then(function(r){
     if(r&&r.ok){
       document.getElementById('form-state').style.display='none';
       document.getElementById('success-state').classList.add('show');
       cart=[];updateCartUI();
       setTimeout(function(){location.reload();},2000);
     }else{showToast("Erreur");resetBtn();}
-  }).withFailureHandler(()=>{showToast("Erreur connexion");resetBtn();}).enregistrerCommandeWeb(cart.map(i=>({idVente:id,nomProduit:i.nom,quantite:i.qty,telephone:t,nomClient:n,adresse:adresseComplete,paiement:p})));
+  })
+  .catch(function(){showToast("Erreur connexion");resetBtn();});
 }
+
 function resetBtn(){document.getElementById('confirm-btn').disabled=false;document.getElementById('confirm-label').textContent='Confirmer ma commande';}
 function resetModal(){closeModal();document.getElementById('form-state').style.display='block';document.getElementById('success-state').classList.remove('show');document.getElementById('inp-nom').value='';document.getElementById('inp-tel').value='';document.getElementById('inp-adresse').value='';document.getElementById('inp-region').value='';document.getElementById('inp-quartier').value='';document.getElementById('inp-paiement').value='🐧 Wave';resetBtn();}
 
 // CONTACT
-function openContact(){
-  document.getElementById('contact-overlay').classList.add('open');
-  document.getElementById('contact-nom').value='';
-  document.getElementById('contact-tel').value='';
-  document.getElementById('contact-msg').value='';
-  document.getElementById('contact-success-state').classList.remove('show');
-}
+function openContact(){document.getElementById('contact-overlay').classList.add('open');document.getElementById('contact-nom').value='';document.getElementById('contact-tel').value='';document.getElementById('contact-msg').value='';document.getElementById('contact-success-state').classList.remove('show');}
 function closeContact(){document.getElementById('contact-overlay').classList.remove('open');}
 function closeContactOutside(e){if(e.target===document.getElementById('contact-overlay'))closeContact();}
 function envoyerContact(){
-  var nom=document.getElementById('contact-nom').value.trim(),
-      tel=document.getElementById('contact-tel').value.trim(),
-      msg=document.getElementById('contact-msg').value.trim();
-  if(!nom){showToast("❌ Votre nom est requis");return;}
-  if(!tel){showToast("❌ Votre numero WhatsApp est requis");return;}
-  if(!msg){showToast("❌ Votre message est requis");return;}
-  
+  var nom=document.getElementById('contact-nom').value.trim(),tel=document.getElementById('contact-tel').value.trim(),msg=document.getElementById('contact-msg').value.trim();
+  if(!nom){showToast("❌ Nom requis");return;}
+  if(!tel){showToast("❌ Numero WhatsApp requis");return;}
+  if(!msg){showToast("❌ Message requis");return;}
   var texte="📩 *NOUVEAU MESSAGE*\n\n👤 *Nom :* "+nom+"\n📞 *WhatsApp :* +221"+tel.replace(/\s/g,'')+"\n\n📝 *Message :*\n"+msg;
-  
-  fetch("https://api.telegram.org/bot"+TELEGRAM_TOKEN+"/sendMessage",{
-    method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({chat_id:TELEGRAM_CHAT_ID,text:texte,parse_mode:"Markdown"})
-  });
-  
+  fetch("https://api.telegram.org/bot"+TELEGRAM_TOKEN+"/sendMessage",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({chat_id:TELEGRAM_CHAT_ID,text:texte,parse_mode:"Markdown"})});
   document.getElementById('contact-success-state').classList.add('show');
   setTimeout(function(){closeContact();},2000);
 }
