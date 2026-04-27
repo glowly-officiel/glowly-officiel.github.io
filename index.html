@@ -661,29 +661,32 @@
     }
     
     function appliquerCodePromo() {
-      var code = document.getElementById('inp-promo').value.trim();
-      if (!code) { showToast("Entrez un code promo"); return; }
-      var idsProduits = cart.map(function(i) { return i.id; }).join(",");
-      fetch(API_URL + "?action=verifierPromo&code=" + encodeURIComponent(code) + "&produits=" + encodeURIComponent(idsProduits))
-        .then(function(r) { return r.json(); })
-        .then(function(r) {
-          if (r && r.ok && r.reduction > 0) {
-            reductionPromo = r.reduction;
-            document.getElementById('promo-msg').textContent = "✅ Code appliqué : -" + r.reduction + "%";
-            document.getElementById('promo-msg').style.display = "block";
-            document.getElementById('promo-msg').style.color = "#2E7D32";
-            updateCartUI();
-            updateRecap();
-            showToast("Code promo appliqué !");
-          } else {
-            reductionPromo = 0;
-            document.getElementById('promo-msg').textContent = "❌ Code invalide ou expiré";
-            document.getElementById('promo-msg').style.display = "block";
-            document.getElementById('promo-msg').style.color = "#C62828";
-          }
-        })
-        .catch(function() { showToast("Erreur vérification"); });
-    }
+  var code = document.getElementById('inp-promo').value.trim();
+  if (!code) { showToast("Entrez un code promo"); return; }
+  
+  // ⭐ Envoyer les NOMS des produits (pas les IDs)
+  var nomsProduits = cart.map(function(i) { return i.nom; }).join(",");
+  
+  fetch(API_URL + "?action=verifierPromo&code=" + encodeURIComponent(code) + "&produits=" + encodeURIComponent(nomsProduits))
+    .then(function(r) { return r.json(); })
+    .then(function(r) {
+      if (r && r.ok && r.reduction > 0) {
+        reductionPromo = r.reduction;
+        document.getElementById('promo-msg').textContent = "✅ Code appliqué : -" + r.reduction + "%";
+        document.getElementById('promo-msg').style.display = "block";
+        document.getElementById('promo-msg').style.color = "#2E7D32";
+        updateCartUI();
+        updateRecap();
+        showToast("Code promo appliqué !");
+      } else {
+        reductionPromo = 0;
+        document.getElementById('promo-msg').textContent = "❌ Code invalide ou expiré";
+        document.getElementById('promo-msg').style.display = "block";
+        document.getElementById('promo-msg').style.color = "#C62828";
+      }
+    })
+    .catch(function() { showToast("Erreur vérification"); });
+}
     
     function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); }
     function closeModalOutside(e) { if (e.target === document.getElementById('modal-overlay')) closeModal(); }
