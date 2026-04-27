@@ -690,47 +690,57 @@
     
     function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); }
     function closeModalOutside(e) { if (e.target === document.getElementById('modal-overlay')) closeModal(); }
-
     function confirmerCommande() {
-  const n = document.getElementById('inp-nom').value.trim(), t = document.getElementById('inp-tel').value.trim();
-  const a = document.getElementById('inp-adresse').value.trim(), r = document.getElementById('inp-region').value;
-  const q = document.getElementById('inp-quartier').value.trim(), p = document.getElementById('inp-paiement').value;
-  if (!n) { showToast("❌ Nom requis"); return; }
-  if (!t) { showToast("❌ Téléphone requis"); return; }
-  if (!r) { showToast("❌ Région requise"); return; }
-  if (!q) { showToast("❌ Quartier requis"); return; }
-  if (!cart.length) { showToast("❌ Panier vide"); return; }
+      const n = document.getElementById('inp-nom').value.trim(), t = document.getElementById('inp-tel').value.trim();
+      const a = document.getElementById('inp-adresse').value.trim(), r = document.getElementById('inp-region').value;
+      const q = document.getElementById('inp-quartier').value.trim(), p = document.getElementById('inp-paiement').value;
+      if (!n) { showToast("❌ Nom requis"); return; }
+      if (!t) { showToast("❌ Téléphone requis"); return; }
+      if (!r) { showToast("❌ Région requise"); return; }
+      if (!q) { showToast("❌ Quartier requis"); return; }
+      if (!cart.length) { showToast("❌ Panier vide"); return; }
   
-  const adresseComplete = `${q}, ${r}${a ? " - " + a : ""}`;
-  const btn = document.getElementById('confirm-btn'); btn.disabled = true; document.getElementById('confirm-label').textContent = "Envoi...";
-  const id = "WEB-" + Date.now().toString(36).toUpperCase();
+      const adresseComplete = `${q}, ${r}${a ? " - " + a : ""}`;
+      const btn = document.getElementById('confirm-btn'); btn.disabled = true; document.getElementById('confirm-label').textContent = "Envoi...";
+      const id = "WEB-" + Date.now().toString(36).toUpperCase();
   
-  // ⭐ AJOUT DU PRIX PAYÉ (avec réduction si promo)
-  const lignes = cart.map(i => ({ 
-    idVente: id, 
-    nomProduit: i.nom, 
-    quantite: i.qty,
-    prixTotalPaye: Math.round((Number(i.prix) * i.qty) * (1 - reductionPromo / 100)),
-    telephone: t, 
-    nomClient: n, 
-    adresse: adresseComplete, 
-    paiement: p 
-  }));
+      // ⭐ CALCUL CORRECT DU PRIX PAYÉ POUR CHAQUE LIGNE
+      const totalSansReduction = cart.reduce((s, i) => s + Number(i.prix) * i.qty, 0);
+      const totalAvecReduction = totalSansReduction * (1 - reductionPromo / 100);
   
-  var formData = new FormData();
-  formData.append("data", JSON.stringify(lignes));
-  fetch(API_URL + "?action=commander", { method: "POST", body: formData })
-    .then(function(r){ return r.json(); })
-    .then(function(r){
-      if (r && r.ok) { 
-        document.getElementById('form-state').style.display = 'none'; 
-        document.getElementById('success-state').classList.add('show'); 
-        cart = []; reductionPromo = 0; updateCartUI(); 
-        setTimeout(function(){ location.reload(); }, 2000); 
-      } else { showToast("Erreur: " + (r.error || "inconnue")); resetBtn(); }
-    })
-    .catch(function(err){ console.error(err); showToast("Erreur connexion"); resetBtn(); });
-}
+      const lignes = cart.map(i => {
+        var prixLigneSansReduction = Number(i.prix) * i.qty;
+        var proportion = prixLigneSansReduction / totalSansReduction;
+        var prixLignePaye = Math.round(totalAvecReduction * proportion);
+    
+        return {
+          idVente: id, 
+          nomProduit: i.nom, 
+          quantite: i.qty,
+          prixTotalPaye: prixLignePaye,
+          telephone: t, 
+          nomClient: n, 
+          adresse: adresseComplete, 
+          paiement: p 
+       };
+     });
+  
+     var formData = new FormData();
+     formData.append("data", JSON.stringify(lignes));
+     fetch(API_URL + "?action=commander", { method: "POST", body: formData })
+       .then(function(r){ return r.json(); })
+       .then(function(r){
+         if (r && r.ok) { 
+           document.getElementById('form-state').style.display = 'none'; 
+           document.getElementById('success-state').classList.add('show'); 
+           cart = []; reductionPromo = 0; updateCartUI(); 
+           setTimeout(function(){ location.reload(); }, 2000); 
+         } else { showToast("Erreur: " + (r.error || "inconnue")); resetBtn(); }
+      })
+      .catch(function(err){ console.error(err); showToast("Erreur connexion"); resetBtn();
+ });
+ }
+    
     function resetBtn() { document.getElementById('confirm-btn').disabled = false; document.getElementById('confirm-label').textContent = 'Confirmer ma commande'; }
     function resetModal() { closeModal(); document.getElementById('form-state').style.display = 'block'; document.getElementById('success-state').classList.remove('show'); document.getElementById('inp-nom').value = ''; document.getElementById('inp-tel').value = ''; document.getElementById('inp-adresse').value = ''; document.getElementById('inp-region').value = ''; document.getElementById('inp-quartier').value = ''; document.getElementById('inp-paiement').value = '🐧 Wave'; document.getElementById('inp-promo').value = ''; document.getElementById('promo-msg').style.display = 'none'; reductionPromo = 0; resetBtn(); }
 
