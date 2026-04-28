@@ -398,6 +398,34 @@
     let toastTimer;function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2000);}
 
     if(window.matchMedia("(hover: hover)").matches){const cur=document.getElementById('cursor'),ring=document.getElementById('cursor-ring');let mx=0,my=0,rx=0,ry=0;document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});(function anim(){cur.style.left=mx+'px';cur.style.top=my+'px';rx+=(mx-rx)*.14;ry+=(my-ry)*.14;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(anim);})();}
+
+    // ⭐ FILTRER PAIEMENT SELON RÉGION
+    document.getElementById('inp-region').addEventListener('change', function() {
+      var region = this.value.toLowerCase();
+      var selectPaiement = document.getElementById('inp-paiement');
+      var options = selectPaiement.querySelectorAll('option');
+      
+      // Réinitialiser toutes les options
+      options.forEach(function(opt) {
+        opt.style.display = '';
+        opt.disabled = false;
+      });
+      
+      // Si région n'est pas Thiès, cacher "Espèces à la livraison"
+      if (region && region !== 'thiès') {
+        options.forEach(function(opt) {
+          if (opt.textContent.indexOf('Espèces') > -1) {
+            opt.style.display = 'none';
+            opt.disabled = true;
+            // Si "Espèces" était sélectionné, basculer sur Wave
+            if (selectPaiement.value.indexOf('Espèces') > -1) {
+              selectPaiement.value = '🐧 Wave';
+            }
+          }
+        });
+      }
+    });
+
     updateCartUI();
   </script>
 </body>
