@@ -111,10 +111,9 @@
     .cat-btn:hover::before { transform: scaleX(1); }
     .cat-btn.active { border-color: var(--gold); color: var(--gold); background: var(--gold-dim); }
     .cat-btn span { position: relative; z-index: 1; }
-    .grid { display: grid; grid-template-columns: 1fr; gap: 2px; }
-    @media (min-width: 480px) { .grid { grid-template-columns: repeat(2, 1fr); } }
-    @media (min-width: 769px) { .grid { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); } }
-    .card { background: var(--card); position: relative; overflow: hidden; transition: transform 0.5s var(--ease-out); opacity: 0; transform: translateY(40px); }
+    .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 4px; }
+    @media (min-width: 769px) { .grid { grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 2px; } }
+    .card { background: var(--card); position: relative; overflow: hidden; transition: transform 0.5s var(--ease-out); opacity: 0; transform: translateY(40px); cursor: pointer; }
     .card.revealed { animation: cardReveal 0.8s var(--ease-out) forwards; }
     @keyframes cardReveal { to { opacity: 1; transform: translateY(0); } }
     .card:active { transform: scale(0.98); }
@@ -135,8 +134,7 @@
     @media (min-width: 769px) { .card-cat-tag { font-size: 9px; letter-spacing: 0.25em; margin-bottom: 10px; } }
     .card-name { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 500; color: var(--cream); margin-bottom: 6px; line-height: 1.2; }
     @media (min-width: 769px) { .card-name { font-size: 19px; margin-bottom: 8px; } }
-    .card-desc { font-size: 12px; color: var(--muted); line-height: 1.5; margin-bottom: 16px; display: none; }
-    @media (min-width: 480px) { .card-desc { display: block; } }
+    .card-desc { font-size: 11px; color: var(--muted); line-height: 1.4; margin-bottom: 12px; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .card-footer { display: flex; align-items: center; justify-content: space-between; }
     .card-price { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--gold); }
     @media (min-width: 769px) { .card-price { font-size: 22px; } }
@@ -354,8 +352,8 @@
         if(stockActuel===0)stockBadge='<div class="card-stock-badge out-of-stock">🔴 Rupture</div>';
         else if(stockActuel<=3)stockBadge='<div class="card-stock-badge low-stock">🟠 Stock Faible ('+stockActuel+')</div>';
         else stockBadge='<div class="card-stock-badge in-stock">🟢 En Stock</div>';
-        const card=document.createElement('div');card.className='card';card.style.animationDelay=(i*80)+'ms';
-        card.innerHTML='<div class="card-img-wrap">'+stockBadge+'<img src="'+(p.img||fb)+'" alt="'+p.nom+'" loading="lazy" onerror="this.src=\''+fb+'\'"><div class="card-overlay"></div><button class="card-view-btn" onclick="event.stopPropagation();openLightbox(\''+p.id+'\')">VOIR</button></div><div class="card-body"><div class="card-cat-tag" style="color:'+cc.color+'">'+(p.cat||'')+'</div><h3 class="card-name">'+p.nom+'</h3><p class="card-desc">'+(p.desc||'').substring(0,60)+'...</p><div class="card-footer"><div><div class="card-price">'+Number(p.prix).toLocaleString('fr-FR')+'</div><div class="card-price-sub">FCFA</div></div><button class="add-btn" onclick="event.stopPropagation();addToCart(\''+p.id+'\')" title="Ajouter au panier"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>+</button></div></div>';
+        const card=document.createElement('div');card.className='card';card.style.animationDelay=(i*80)+'ms';card.style.cursor='pointer';card.onclick=function(){openLightbox(p.id);};
+        card.innerHTML='<div class="card-img-wrap">'+stockBadge+'<img src="'+(p.img||fb)+'" alt="'+p.nom+'" loading="lazy" onerror="this.src=\''+fb+'\'"><div class="card-overlay"></div><button class="card-view-btn" onclick="event.stopPropagation();openLightbox(\''+p.id+'\')">VOIR</button></div><div class="card-body"><div class="card-cat-tag" style="color:'+cc.color+'">'+(p.cat||'')+'</div><h3 class="card-name">'+p.nom+'</h3><p class="card-desc">'+(p.desc||'').substring(0,80)+'</p><div class="card-footer"><div><div class="card-price">'+Number(p.prix).toLocaleString('fr-FR')+'</div><div class="card-price-sub">FCFA</div></div><button class="add-btn" onclick="event.stopPropagation();addToCart(\''+p.id+'\')" title="Ajouter au panier"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>+</button></div></div>';
         grid.appendChild(card);observer.observe(card);
       });
     }
