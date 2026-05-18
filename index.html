@@ -43,7 +43,7 @@
     .btn-gold { display: inline-block; background: linear-gradient(105deg, #D8A7AB, #C9A87C); color: #2E211B; padding: 14px 42px; font-weight: 700; font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; border-radius: 50px; text-decoration: none; box-shadow: 0 8px 18px rgba(165,106,97,0.25); transition: 0.3s; }
     .btn-gold:hover { transform: translateY(-2px); }
 
-    /* ========== CARROUSEL STYLE SHANANCE : uniquement les noms, collés ========== */
+    /* ========== CARROUSEL STYLE SHANANCE (noms seuls, collés, sans flèches) ========== */
     .carousel-section {
       background: var(--bg-beige);
       padding: 30px 0;
@@ -87,8 +87,8 @@
       display: inline-block;
       flex: 0 0 auto;
       padding: 8px 0;
-      margin-right: 1.5rem;   /* espace léger, tu peux le réduire à 0 pour coller parfaitement */
-      font-size: 1.1rem;
+      margin-right: 1rem;      /* espace léger, tu peux mettre 0.5rem ou 0 pour coller davantage */
+      font-size: 1rem;
       font-weight: 500;
       color: var(--text-brun);
       cursor: pointer;
@@ -102,7 +102,7 @@
       display: none;
     }
 
-    /* ========== GRILLE PRODUITS AVEC IMAGES ========== */
+    /* Section des routines et autres (inchangé) */
     .section { max-width: 1280px; margin: 0 auto; padding: 80px 24px; }
     .section-title { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; text-align: center; color: var(--marron-bois); margin-bottom: 12px; }
     .section-subtitle { text-align: center; color: #9C7A6B; font-style: italic; margin-bottom: 48px; }
@@ -189,7 +189,7 @@
   <a href="#catalogue" class="btn-gold">DÉCOUVRIR LA COLLECTION</a>
 </section>
 
-<!-- ========== CARROUSEL : UNIQUEMENT LES NOMS DES PRODUITS (COMME SHANANCE) ========== -->
+<!-- ========== CARROUSEL : UNIQUEMENT LES NOMS (COMME SHANANCE) ========== -->
 <section class="carousel-section" id="carouselSection">
   <div class="carousel-title">✨ Les incontournables ✨</div>
   <div class="carousel-container">
@@ -259,7 +259,7 @@
 
 <script>
   // ======================== CONFIGURATION ========================
-  // 🔴 REMPLACEZ CETTE URL PAR CELLE DE VOTRE SCRIPT GAS DÉPLOYÉ (si différente)
+  // 🔴 URL de votre script Apps Script déployé (déjà renseignée)
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx6NmekfvNMCFqasTCO_QpA4l8mV2HkNgR6_cdH291ci5sa8zaKYJqj05_ZXtjL3KFa/exec';
 
   let allProducts = [];
@@ -337,7 +337,7 @@
     }
   }
 
-  // ========== CARROUSEL (UNIQUEMENT NOMS, SANS PRIX) ==========
+  // ========== CARROUSEL (UNIQUEMENT NOMS, COLLÉ, DÉFILEMENT AUTO) ==========
   let carouselTrack = null;
 
   function initCarousel() {
@@ -348,7 +348,7 @@
       return;
     }
     carouselTrack.innerHTML = '';
-    // Duplication pour effet infini
+    // Duplication pour effet infini (4 fois pour un flux continu)
     const duplicates = 4;
     for (let d = 0; d < duplicates; d++) {
       allProducts.forEach(prod => {
@@ -368,7 +368,7 @@
     autoScrollInterval = setInterval(() => {
       if (!isAutoScrolling) return;
       if (carouselTrack) {
-        const scrollAmount = 130; // ajuste selon la largeur moyenne d'un nom
+        const scrollAmount = 130; // ajustable selon la largeur de vos noms
         carouselTrack.scrollBy({ left: scrollAmount, behavior: 'smooth' });
         setTimeout(() => {
           if (carouselTrack.scrollLeft + carouselTrack.clientWidth >= carouselTrack.scrollWidth - 400) {
