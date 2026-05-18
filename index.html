@@ -43,7 +43,7 @@
     .btn-gold { display: inline-block; background: linear-gradient(105deg, #D8A7AB, #C9A87C); color: #2E211B; padding: 14px 42px; font-weight: 700; font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; border-radius: 50px; text-decoration: none; box-shadow: 0 8px 18px rgba(165,106,97,0.25); transition: 0.3s; }
     .btn-gold:hover { transform: translateY(-2px); }
 
-    /* ========== CARROUSEL STYLE SHANANCE : bande épurée, sans images, sans bordures ========== */
+    /* ========== CARROUSEL STYLE SHANANCE : bande épurée, noms seuls, collés ========== */
     .carousel-section {
       background: var(--bg-beige);
       padding: 30px 0;
@@ -65,7 +65,7 @@
     }
     .carousel-track {
       display: flex;
-      gap: 0;               /* Collé sans espace */
+      gap: 0;                /* Pas d'espace entre les éléments */
       overflow-x: auto;
       scroll-behavior: smooth;
       scrollbar-width: thin;
@@ -83,12 +83,12 @@
       background: var(--rose-gold);
       border-radius: 10px;
     }
-    /* Élément produit : simple texte en ligne, pas de carte */
+    /* Élément produit : uniquement le nom, en ligne */
     .carousel-item {
       display: inline-block;
       flex: 0 0 auto;
       padding: 8px 0;
-      margin-right: 2rem;    /* Espacement léger entre les produits, ajustable */
+      margin-right: 2rem;    /* Espacement entre les noms (peut être réduit à 1rem ou 0) */
       font-size: 1.1rem;
       font-weight: 500;
       color: var(--text-brun);
@@ -99,18 +99,12 @@
     .carousel-item:hover {
       color: var(--rose-gold-fonce);
     }
-    .carousel-item .product-price {
-      font-weight: 600;
-      color: var(--rose-gold-fonce);
-      margin-left: 0.5rem;
-      font-size: 0.9rem;
-    }
-    /* Supprimer les flèches */
+    /* Pas de flèches */
     .carousel-nav {
       display: none;
     }
 
-    /* Section des routines et autres (inchangé) */
+    /* Autres sections inchangées */
     .section { max-width: 1280px; margin: 0 auto; padding: 80px 24px; }
     .section-title { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; text-align: center; color: var(--marron-bois); margin-bottom: 12px; }
     .section-subtitle { text-align: center; color: #9C7A6B; font-style: italic; margin-bottom: 48px; }
@@ -197,7 +191,7 @@
   <a href="#catalogue" class="btn-gold">DÉCOUVRIR LA COLLECTION</a>
 </section>
 
-<!-- ========== CARROUSEL STYLE SHANANCE (TEXTE SEUL, COLLÉ, SANS FLÈCHES) ========== -->
+<!-- ========== CARROUSEL : UNIQUEMENT LES NOMS DES PRODUITS (SANS PRIX) ========== -->
 <section class="carousel-section" id="carouselSection">
   <div class="carousel-title">✨ Les incontournables ✨</div>
   <div class="carousel-container">
@@ -254,7 +248,7 @@
   <p style="text-align:center; margin-top:30px; font-size:11px;">© 2026 Glowly — Tous droits réservés.</p>
 </footer>
 
-<!-- MODALS (identique) -->
+<!-- MODALS (inchangées) -->
 <div id="lightboxOverlay" class="overlay" onclick="closeLightbox(event)"><div class="lightbox-container" onclick="event.stopPropagation()"><div style="flex:1; padding:30px;"><img id="lbImage" style="max-height:55vh; width:100%; object-fit:contain;"></div><div style="flex:1; padding:30px;"><div id="lbCat" style="font-size:12px; letter-spacing:2px; color:var(--rose-gold-fonce);"></div><h2 id="lbTitle" style="margin:12px 0;"></h2><p id="lbPrice" style="font-size:24px; font-weight:bold;"></p><p id="lbDesc" style="color:#6B5A48;"></p><button class="btn-brown" onclick="addCurrentLightboxToCart()" style="margin-top:20px;">Ajouter au panier</button></div></div></div>
 
 <div id="cartOverlay" class="overlay" onclick="closeCart(event)"><div id="cartPanel" class="cart-panel" onclick="event.stopPropagation()"><div style="padding:24px; border-bottom:1px solid var(--border-beige); display:flex; justify-content:space-between;"><h3>Panier</h3><button onclick="closeCart(null,true)" style="background:none; border:none; font-size:20px;">✕</button></div><div id="cartItems" style="flex:1; overflow:auto; padding:20px;"></div><div id="cartFooter" style="padding:20px; border-top:1px solid var(--border-beige); display:none;"><div style="display:flex; justify-content:space-between;"><span>Total</span><strong id="cartTotal">0 FCFA</strong></div><button class="btn-brown" onclick="openCheckout()" style="width:100%; margin-top:16px;">Commander</button></div></div></div>
@@ -267,8 +261,8 @@
 
 <script>
   // ======================== CONFIGURATION ========================
-  // 🔴 REMPLACEZ CETTE URL PAR CELLE DE VOTRE SCRIPT GAS DÉPLOYÉ
-  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx6NmekfvNMCFqasTCO_QpA4l8mV2HkNgR6_cdH291ci5sa8zaKYJqj05_ZXtjL3KFa/exec';  // <--- À MODIFIER
+  // 🔴 REMPLACEZ CETTE URL PAR CELLE DE VOTRE SCRIPT GAS DÉPLOYÉ (si nécessaire)
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx6NmekfvNMCFqasTCO_QpA4l8mV2HkNgR6_cdH291ci5sa8zaKYJqj05_ZXtjL3KFa/exec';
 
   let allProducts = [];
   let cart = [];
@@ -345,7 +339,7 @@
     }
   }
 
-  // ========== CARROUSEL STYLE TEXTE (SHANANCE) ==========
+  // ========== CARROUSEL (uniquement le nom, pas de prix) ==========
   let carouselTrack = null;
 
   function initCarousel() {
@@ -356,19 +350,20 @@
       return;
     }
     carouselTrack.innerHTML = '';
-    // Dupliquer plusieurs fois pour un défilement infini fluide
+    // Duplication pour effet infini fluide
     const duplicates = 4;
     for (let d = 0; d < duplicates; d++) {
       allProducts.forEach(prod => {
         const item = document.createElement('div');
         item.className = 'carousel-item';
         item.onclick = () => openLightbox(prod);
-        // Affichage : Nom + prix
-        item.innerHTML = `<span>${escapeHtml(prod.nom)}</span> <span class="product-price">${Number(prod.prix).toLocaleString()} FCFA</span>`;
+        // Affichage : uniquement le nom, sans le prix
+        item.innerHTML = `<span>${escapeHtml(prod.nom)}</span>`;
         carouselTrack.appendChild(item);
       });
     }
     startAutoScroll();
+    attachCarouselHover();
   }
 
   function startAutoScroll() {
@@ -376,9 +371,9 @@
     autoScrollInterval = setInterval(() => {
       if (!isAutoScrolling) return;
       if (carouselTrack) {
-        const scrollAmount = 180; // en pixels, ajustable (largeur moyenne d'un élément)
+        // Largeur moyenne d'un élément + marge (environ 150px)
+        const scrollAmount = 150;
         carouselTrack.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-        // Réinitialisation pour effet infini (rembobiner en douceur)
         setTimeout(() => {
           if (carouselTrack.scrollLeft + carouselTrack.clientWidth >= carouselTrack.scrollWidth - 400) {
             carouselTrack.scrollTo({ left: 20, behavior: 'auto' });
@@ -388,14 +383,13 @@
     }, 3000);
   }
 
-  // Arrêt du défilement auto au survol (meilleure expérience)
   function attachCarouselHover() {
     if (!carouselTrack) return;
     carouselTrack.addEventListener('mouseenter', () => { isAutoScrolling = false; });
     carouselTrack.addEventListener('mouseleave', () => { isAutoScrolling = true; });
   }
 
-  // ========== FONCTIONS UI STANDARD ==========
+  // ========== FONCTIONS UI STANDARD (inchangées) ==========
   function renderCategories() {
     const cats = [...new Set(allProducts.map(p => p.cat).filter(c => c && c.trim() !== ""))];
     const bar = document.getElementById('catBar');
@@ -509,9 +503,9 @@
     loadCart();
     chargerProduits();
     document.getElementById('searchInput')?.addEventListener('input', () => filterProducts());
-    // Attacher l'événement de survol après que le carrousel soit construit (dans initCarousel)
   });
 
+  // Exposer les fonctions globales
   window.setCategory = setCategory; window.filterProducts = filterProducts; window.changeQty = changeQty; window.removeItem = removeItem; window.addRoutine = addRoutine; window.openLightbox = openLightbox; window.closeLightbox = closeLightbox; window.addCurrentLightboxToCart = addCurrentLightboxToCart; window.openCart = openCart; window.closeCart = closeCart; window.openCheckout = openCheckout; window.closeCheckout = closeCheckout; window.applyPromoCode = applyPromoCode; window.confirmOrder = confirmOrder; window.openContactModal = openContactModal; window.closeContactModal = closeContactModal; window.sendContact = sendContact; window.sendFooterMessage = sendFooterMessage;
 </script>
 </body>
