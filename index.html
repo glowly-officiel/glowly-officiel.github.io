@@ -5,8 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
   <title>GLOWLY — Beauté Naturelle Premium</title>
   <meta name="description" content="Glowly - Maison de beauté naturelle. Soins visage, corps et cheveux inspirés de la nature.">
-  <meta name="keywords" content="glowly, beauté, soins naturels, masque visage, sérum, Dakar, Sénégal">
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='%23FDFBF7' stroke='%23C5A880' stroke-width='2'/%3E%3Ctext x='50' y='72' font-size='65' text-anchor='middle' fill='%233D2A1C'%3E✨%3C/text%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
@@ -117,7 +115,7 @@
     .bs-body { padding: 24px; text-align: center; }
     .bs-body h3 { font-family: 'Cormorant Garamond', serif; font-size: 24px; margin-bottom: 8px; }
     .bs-body p { color: var(--text-muted); font-size: 14px; margin-bottom: 20px; }
-    .btn-brown { display: inline-block; background: var(--brown); color: white; padding: 12px 28px; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; border: none; transition: background 0.3s; }
+    .btn-brown { display: inline-block; background: var(--brown); color: white; padding: 12px 28px; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; border: none; transition: background 0.3s; border-radius: 40px; cursor: pointer; }
     .btn-brown:hover { background: var(--brown-dark); }
 
     .science { background: var(--accent-light); padding: 60px 24px; }
@@ -152,10 +150,10 @@
     .footer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; max-width: 1000px; margin: 0 auto 30px; }
     @media (min-width: 600px) { .footer-grid { grid-template-columns: repeat(4, 1fr); } }
     .footer-col h4 { color: white; font-size: 14px; margin-bottom: 16px; }
-    .footer-col a { font-size: 13px; color: #C5B8AD; display: block; margin-bottom: 8px; }
+    .footer-col a { font-size: 13px; color: #C5B8AD; display: block; margin-bottom: 8px; text-decoration: none; }
     .contact-form { max-width: 400px; margin: 30px auto 0; }
-    .contact-form input, .contact-form textarea { width: 100%; padding: 12px; margin-bottom: 12px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: white; font-size: 13px; }
-    .contact-form button { background: var(--accent); color: white; border: none; padding: 12px 24px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; width: 100%; }
+    .contact-form input, .contact-form textarea { width: 100%; padding: 12px; margin-bottom: 12px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: white; font-size: 13px; border-radius: 8px; }
+    .contact-form button { background: var(--accent); color: white; border: none; padding: 12px 24px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; width: 100%; border-radius: 40px; }
 
     #lightbox-overlay, #cart-overlay, #modal-overlay, #contact-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(6px); z-index: 2000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
     #lightbox-overlay.open, #cart-overlay.open, #modal-overlay.open, #contact-overlay.open { opacity: 1; pointer-events: all; }
@@ -164,16 +162,17 @@
     .lightbox-gallery { flex: 1; background: #F9F6F0; display: flex; align-items: center; justify-content: center; padding: 30px; position: relative; }
     .lightbox-gallery img { max-height: 60vh; object-fit: contain; }
     .lightbox-info { flex: 0.9; padding: 40px; display: flex; flex-direction: column; justify-content: center; gap: 16px; }
-    .lightbox-add-btn { background: var(--accent); color: white; border: none; padding: 14px 24px; font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
+    .lightbox-add-btn { background: var(--accent); color: white; border: none; padding: 14px 24px; font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; border-radius: 40px; }
     #cart-panel { position: absolute; right: 0; top: 0; bottom: 0; width: 400px; max-width: 100vw; background: white; border-left: 1px solid var(--border); display: flex; flex-direction: column; transform: translateX(100%); transition: transform 0.4s; }
     #cart-overlay.open #cart-panel { transform: translateX(0); }
     .modal { background: white; border-radius: 8px; padding: 36px; max-width: 480px; width: 100%; max-height: 90vh; overflow-y: auto; }
     .field { margin-bottom: 16px; }
     .field label { font-size: 11px; letter-spacing: 0.05em; color: var(--text-muted); display: block; margin-bottom: 6px; text-transform: uppercase; }
     .field input, .field select, .field textarea { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 4px; font-size: 13px; background: var(--bg); }
-    #toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: var(--brown); color: white; padding: 12px 28px; border-radius: 100px; font-size: 13px; z-index: 9999; opacity: 0; transition: opacity 0.3s; }
+    #toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: var(--brown); color: white; padding: 12px 28px; border-radius: 100px; font-size: 13px; z-index: 9999; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
     #toast.show { opacity: 1; }
     .no-result { text-align: center; padding: 50px; color: var(--text-muted); }
+    .loader { text-align: center; padding: 40px; color: var(--accent-dark); }
   </style>
 </head>
 <body>
@@ -188,7 +187,7 @@
         <a href="#histoire">Notre histoire</a>
       </div>
       <div class="header-actions">
-        <button class="btn-outline" onclick="openContact()">Contact</button>
+        <button class="btn-outline" onclick="openContactModal()">Contact</button>
         <button class="cart-btn" onclick="openCart()">Panier <span class="cart-count" id="cart-count">0</span></button>
       </div>
     </div>
@@ -203,7 +202,7 @@
     </div>
   </div>
 
-  <img class="hero-image" src="https://raw.githubusercontent.com/glowly-officiel/glowly-officiel.github.io/main/21433a69-25ae-46fa-8880-3f693289a165.png" alt="Glowly">
+  <img class="hero-image" id="hero-img" src="" alt="Glowly" style="background:#F5F0E8; min-height:200px;">
 
   <section class="hero-text-section">
     <h1>L'art du soin authentique</h1>
@@ -222,7 +221,7 @@
         <div class="bs-body">
           <h3>Routine Éclat Suprême</h3>
           <p>Savon curcuma, Toner glycolique, Sérum Vitamine C, Lait Biosphere</p>
-          <button class="btn-brown" onclick="ajouterRoutine('Routine Éclat Suprême', 28500)">DÉCOUVRIR LA ROUTINE</button>
+          <button class="btn-brown" onclick="ajouterRoutinePanier('Routine Éclat Suprême', 28500)">AJOUTER AU PANIER — 28 500 FCFA</button>
         </div>
       </div>
       <div class="bs-card">
@@ -230,7 +229,7 @@
         <div class="bs-body">
           <h3>Rituel Hammam & Glow</h3>
           <p>Gant Kessa, Huile de soin, Masque main/pied au miel de Manuka</p>
-          <button class="btn-brown" onclick="ajouterRoutine('Rituel Hammam & Glow', 32900)">DÉCOUVRIR LA ROUTINE</button>
+          <button class="btn-brown" onclick="ajouterRoutinePanier('Rituel Hammam & Glow', 32900)">AJOUTER AU PANIER — 32 900 FCFA</button>
         </div>
       </div>
     </div>
@@ -250,11 +249,11 @@
     <div style="max-width: 400px; margin: 0 auto 30px;">
       <div style="position: relative;">
         <svg style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; color: var(--text-muted);" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-        <input type="text" id="search-bar" placeholder="Rechercher..." oninput="filtrerProduits()" style="width:100%; padding:12px 16px 12px 42px; border:1px solid var(--border); border-radius:100px; background:white; font-size:13px;">
+        <input type="text" id="search-bar" placeholder="Rechercher..." oninput="filterProducts()" style="width:100%; padding:12px 16px 12px 42px; border:1px solid var(--border); border-radius:100px; background:white; font-size:13px;">
       </div>
     </div>
     <div id="cat-bar" style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-bottom: 30px;"></div>
-    <div class="grid" id="product-grid"></div>
+    <div class="grid" id="product-grid"><div class="loader">Chargement des produits...</div></div>
   </div>
 
   <section class="section testimonials" id="testimonials">
@@ -287,7 +286,7 @@
 
   <!-- MODALS -->
   <div id="lightbox-overlay" onclick="closeLightbox(event)">
-    <button class="lightbox-close" onclick="closeLightbox()" style="position: absolute; top: 20px; right: 30px; background: white; border: none; width: 36px; height: 36px; border-radius: 50%; font-size: 18px; z-index: 10;">✕</button>
+    <button class="lightbox-close" onclick="closeLightbox()" style="position: absolute; top: 20px; right: 30px; background: white; border: none; width: 36px; height: 36px; border-radius: 50%; font-size: 18px; z-index: 10; cursor:pointer;">✕</button>
     <div class="lightbox-layout" onclick="event.stopPropagation()">
       <div class="lightbox-gallery"><img id="lightbox-main" src="" alt=""/></div>
       <div class="lightbox-info">
@@ -301,9 +300,9 @@
   </div>
 
   <div id="cart-overlay" onclick="closeCart(event)"><div id="cart-panel">
-    <div style="padding:24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;"><h3 style="font-family:'Cormorant Garamond',serif;">Panier</h3><button onclick="closeCart(null,true)" style="background:none;border:none;font-size:18px;color:var(--text-muted);">✕</button></div>
+    <div style="padding:24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;"><h3 style="font-family:'Cormorant Garamond',serif;">Panier</h3><button onclick="closeCart(null,true)" style="background:none;border:none;font-size:18px;color:var(--text-muted);cursor:pointer;">✕</button></div>
     <div id="cart-items-list" style="flex:1;overflow-y:auto;padding:20px;"></div>
-    <div id="cart-foot" style="padding:24px;border-top:1px solid var(--border);display:none;"><div style="display:flex;justify-content:space-between;margin-bottom:16px;"><span>Total</span><strong id="cart-total">0 FCFA</strong></div><button onclick="openCheckout()" class="btn-brown" style="width:100%;">Commander</button></div>
+    <div id="cart-foot" style="padding:24px;border-top:1px solid var(--border);display:none;"><div style="display:flex;justify-content:space-between;margin-bottom:16px;"><span>Total</span><strong id="cart-total">0 FCFA</strong></div><button onclick="openCheckoutModal()" class="btn-brown" style="width:100%;">Commander</button></div>
   </div></div>
 
   <div id="modal-overlay" onclick="closeModalOutside(event)"><div class="modal">
@@ -314,8 +313,8 @@
       <div class="field"><label>Quartier *</label><input type="text" id="inp-quartier" placeholder="Médina, Ouakam..."></div>
       <div class="field"><label>Adresse</label><input type="text" id="inp-adresse" placeholder="Rue, porte..."></div>
       <div class="field"><label>Paiement</label><select id="inp-paiement"><option>🐧 Wave</option><option>🟠 Orange Money</option><option>💵 Espèces à la livraison</option></select></div>
-      <div class="field"><label>Code promo</label><div style="display:flex;gap:8px;"><input type="text" id="inp-promo" placeholder="GLOWLY20" style="flex:1;"><button onclick="appliquerCodePromo()" style="background:var(--accent);color:white;border:none;padding:10px 18px;font-size:12px;font-weight:600;">Appliquer</button></div><span id="promo-msg" style="font-size:10px;"></span></div>
-      <button class="btn-brown" style="width:100%;margin-top:12px;" onclick="confirmerCommande()" id="confirm-btn">Confirmer la commande</button>
+      <div class="field"><label>Code promo</label><div style="display:flex;gap:8px;"><input type="text" id="inp-promo" placeholder="GLOWLY20" style="flex:1;"><button onclick="applyPromoCode()" style="background:var(--accent);color:white;border:none;padding:10px 18px;font-size:12px;font-weight:600;border-radius:40px;">Appliquer</button></div><span id="promo-msg" style="font-size:10px;"></span></div>
+      <button class="btn-brown" style="width:100%;margin-top:12px;" onclick="confirmOrder()" id="confirm-btn">Confirmer la commande</button>
     </div>
     <div id="success-state" style="display:none;text-align:center;padding:20px;"><div style="font-size:40px;">✓</div><h3>Commande confirmée !</h3><p style="color:var(--text-muted);">Nous vous contacterons sous peu.</p><button class="btn-brown" onclick="resetModal()">Continuer</button></div>
   </div></div>
@@ -324,28 +323,20 @@
     <div class="field"><label>Nom</label><input type="text" id="contact-nom"></div>
     <div class="field"><label>WhatsApp</label><input type="tel" id="contact-tel"></div>
     <div class="field"><label>Message</label><textarea id="contact-msg" rows="3"></textarea></div>
-    <button class="btn-brown" onclick="envoyerContact()" style="width:100%;">Envoyer</button>
+    <button class="btn-brown" onclick="sendContact()" style="width:100%;">Envoyer</button>
     <div id="contact-success-state" style="display:none;text-align:center;margin-top:16px;">Envoyé !</div>
   </div></div>
 
   <div id="toast"></div>
 
   <script>
-    // ---------- DONNÉES PRODUITS ----------
-    const produits = [
-      { id: 1, nom: "Savon Curcuma & Aloe", prix: 8500, categorie: "Nettoyants", desc: "Purifie et éclaire le teint en douceur.", image: "https://images.unsplash.com/photo-1600857062241-98e5dba7f214?w=400&q=80" },
-      { id: 2, nom: "Toner Glycolique PHA", prix: 12500, categorie: "Toners", desc: "Exfoliation douce, texture lissée.", image: "https://images.unsplash.com/photo-1620916566390-22f5e7abca7e?w=400&q=80" },
-      { id: 3, nom: "Sérum Vitamine C 15%", prix: 22500, categorie: "Sérums", desc: "Antioxydant, éclat immédiat.", image: "https://images.unsplash.com/photo-1631730359585-38a4935dbef4?w=400&q=80" },
-      { id: 4, nom: "Lait Hydra-Biosphere", prix: 16500, categorie: "Hydratants", desc: "Niacinamide, apaise et repulpe.", image: "https://images.unsplash.com/photo-1620916566390-22f5e7abca7e?w=400&q=80" },
-      { id: 5, nom: "Masque Miel de Manuka", prix: 14800, categorie: "Masques", desc: "Réparation intense, mains & visage.", image: "https://images.unsplash.com/photo-1599305445671-ac291c95f0b2?w=400&q=80" },
-      { id: 6, nom: "Huile Régénérante Séquoia", prix: 19500, categorie: "Huiles", desc: "Riche en oméga, éclat absolu.", image: "https://images.unsplash.com/photo-1617897903246-71924a6b44ca?w=400&q=80" },
-      { id: 7, nom: "Crème Solaire SPF50", prix: 15900, categorie: "Protection", desc: "Non grasse, protection totale.", image: "https://images.unsplash.com/photo-1611085583191-a3b181aaf026?w=400&q=80" },
-      { id: 8, nom: "Gommage Doux Enzymatique", prix: 11200, categorie: "Exfoliants", desc: "Papaye, éclat en douceur.", image: "https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=400&q=80" }
-    ];
-
-    let panier = [];
-    let reductionPromo = 0;
-    let currentLightboxProduit = null;
+    // ======================== GLOWLY FRONTEND (intégré au backend GAS) ========================
+    let allProducts = [];
+    let cart = [];
+    let currentPromoReduction = 0;
+    let currentLightboxProduct = null;
+    let currentFilter = "";
+    let currentCategory = "";
 
     // Helper toast
     function showToast(msg) {
@@ -355,83 +346,150 @@
       setTimeout(() => toast.classList.remove('show'), 2500);
     }
 
-    // Panier : sauvegarde localstorage
-    function sauvegarderPanier() {
-      localStorage.setItem('glowly_panier', JSON.stringify(panier));
-      mettreAJourUI();
+    // Récupérer les produits depuis le serveur
+    function loadProducts() {
+      google.script.run.withSuccessHandler(function(response) {
+        if (response.ok && response.produits) {
+          allProducts = response.produits;
+          // Appliquer l'image hero si disponible dans le premier produit ? Non, on laisse l'image par défaut.
+          // Mais on peut afficher une image par défaut si besoin
+          const heroImg = document.getElementById('hero-img');
+          if (heroImg && allProducts.length > 0 && allProducts[0].img) {
+            heroImg.src = allProducts[0].img; // fallback, mais mieux vaut une image statique
+          } else {
+            heroImg.src = "https://raw.githubusercontent.com/glowly-officiel/glowly-officiel.github.io/main/21433a69-25ae-46fa-8880-3f693289a165.png";
+          }
+          renderCategories();
+          renderProducts();
+        } else {
+          document.getElementById('product-grid').innerHTML = '<div class="no-result">Erreur chargement produits</div>';
+          showToast("Erreur chargement produits");
+        }
+      }).obtenirProduits();
     }
 
-    function chargerPanier() {
-      const saved = localStorage.getItem('glowly_panier');
-      if (saved) panier = JSON.parse(saved);
-      mettreAJourUI();
+    // Générer les boutons de catégories
+    function renderCategories() {
+      const cats = [...new Set(allProducts.map(p => p.cat).filter(c => c && c.trim() !== ""))];
+      const bar = document.getElementById('cat-bar');
+      if (!bar) return;
+      let html = `<button class="btn-outline" onclick="setCategory('')" style="background:${currentCategory===''?'var(--accent)':'transparent'};color:${currentCategory===''?'white':'var(--accent-dark)'}">Tous</button>`;
+      cats.forEach(cat => {
+        html += `<button class="btn-outline" onclick="setCategory('${cat.replace(/'/g, "\\'")}')" style="background:${currentCategory===cat?'var(--accent)':'transparent'};color:${currentCategory===cat?'white':'var(--accent-dark)'}">${cat}</button>`;
+      });
+      bar.innerHTML = html;
     }
 
-    function mettreAJourUI() {
+    function setCategory(cat) {
+      currentCategory = cat;
+      renderCategories();
+      renderProducts();
+    }
+
+    function filterProducts() {
+      currentFilter = document.getElementById('search-bar').value.toLowerCase();
+      renderProducts();
+    }
+
+    function renderProducts() {
+      const grid = document.getElementById('product-grid');
+      if (!grid) return;
+      let filtered = allProducts;
+      if (currentCategory) filtered = filtered.filter(p => p.cat === currentCategory);
+      if (currentFilter) filtered = filtered.filter(p => p.nom.toLowerCase().includes(currentFilter) || (p.cat && p.cat.toLowerCase().includes(currentFilter)));
+      if (filtered.length === 0) {
+        grid.innerHTML = '<div class="no-result">Aucun produit trouvé</div>';
+        return;
+      }
+      grid.innerHTML = filtered.map(p => `
+        <div class="card" onclick="openLightbox(${p.id})">
+          <div class="card-img"><img src="${p.img || 'https://placehold.co/400x400/F5F1EA/C5A880?text=Glowly'}" alt="${p.nom}" loading="lazy"></div>
+          <div class="card-body"><h3>${escapeHtml(p.nom)}</h3><div class="price">${Number(p.prix).toLocaleString()} FCFA</div></div>
+        </div>
+      `).join('');
+    }
+
+    function escapeHtml(str) { return String(str).replace(/[&<>]/g, function(m){if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
+
+    // Panier
+    function saveCart() {
+      localStorage.setItem('glowly_cart', JSON.stringify(cart));
+      updateCartUI();
+    }
+
+    function loadCart() {
+      const saved = localStorage.getItem('glowly_cart');
+      if (saved) cart = JSON.parse(saved);
+      updateCartUI();
+    }
+
+    function updateCartUI() {
       const countSpan = document.getElementById('cart-count');
-      const totalItems = panier.reduce((acc, p) => acc + p.qty, 0);
-      countSpan.innerText = totalItems;
-
+      const totalItems = cart.reduce((s,i)=> s + i.qty, 0);
+      if (countSpan) countSpan.innerText = totalItems;
       const cartList = document.getElementById('cart-items-list');
       const cartFoot = document.getElementById('cart-foot');
-      if (panier.length === 0) {
+      if (!cartList) return;
+      if (cart.length === 0) {
         cartList.innerHTML = '<div style="text-align:center;padding:30px;">Votre panier est vide</div>';
-        cartFoot.style.display = 'none';
+        if (cartFoot) cartFoot.style.display = 'none';
       } else {
-        cartList.innerHTML = panier.map(p => `
+        cartList.innerHTML = cart.map(item => `
           <div style="display:flex; justify-content:space-between; margin-bottom:16px; border-bottom:1px solid #eee; padding-bottom:8px;">
-            <div><strong>${p.nom}</strong><br>${p.prix.toLocaleString()} FCFA x ${p.qty}</div>
+            <div><strong>${escapeHtml(item.nom)}</strong><br>${Number(item.prix).toLocaleString()} FCFA x ${item.qty}</div>
             <div>
-              <button onclick="modifierQuantite(${p.id}, -1)" style="background:#eee; border:none; width:28px;">-</button>
-              <span style="margin:0 6px;">${p.qty}</span>
-              <button onclick="modifierQuantite(${p.id}, 1)" style="background:#eee; border:none; width:28px;">+</button>
-              <button onclick="supprimerProduit(${p.id})" style="background:none; border:none; color:#b00; margin-left:8px;">🗑️</button>
+              <button onclick="changeQty(${item.id}, -1)" style="background:#eee; border:none; width:28px; border-radius:20px;">-</button>
+              <span style="margin:0 6px;">${item.qty}</span>
+              <button onclick="changeQty(${item.id}, 1)" style="background:#eee; border:none; width:28px; border-radius:20px;">+</button>
+              <button onclick="removeItem(${item.id})" style="background:none; border:none; color:#b00; margin-left:8px;">🗑️</button>
             </div>
           </div>
         `).join('');
-        cartFoot.style.display = 'block';
-        const subTotal = panier.reduce((s, p) => s + (p.prix * p.qty), 0);
-        const total = subTotal - reductionPromo;
+        if (cartFoot) cartFoot.style.display = 'block';
+        const subtotal = cart.reduce((s,i)=> s + (i.prix * i.qty), 0);
+        const total = subtotal - currentPromoReduction;
         document.getElementById('cart-total').innerText = (total > 0 ? total : 0).toLocaleString() + ' FCFA';
       }
     }
 
-    function modifierQuantite(id, delta) {
-      const idx = panier.findIndex(p => p.id === id);
+    function changeQty(id, delta) {
+      const idx = cart.findIndex(i => i.id === id);
       if (idx !== -1) {
-        panier[idx].qty += delta;
-        if (panier[idx].qty <= 0) panier.splice(idx, 1);
-        sauvegarderPanier();
+        cart[idx].qty += delta;
+        if (cart[idx].qty <= 0) cart.splice(idx, 1);
+        saveCart();
       }
     }
-    function supprimerProduit(id) {
-      panier = panier.filter(p => p.id !== id);
-      sauvegarderPanier();
+    function removeItem(id) {
+      cart = cart.filter(i => i.id !== id);
+      saveCart();
     }
 
-    function ajouterAuPanier(produit) {
-      const existant = panier.find(p => p.id === produit.id);
-      if (existant) existant.qty++;
-      else panier.push({ ...produit, qty: 1 });
-      sauvegarderPanier();
-      showToast(`${produit.nom} ajouté au panier`);
+    function addToCart(product) {
+      const existing = cart.find(i => i.id === product.id);
+      if (existing) existing.qty++;
+      else cart.push({ id: product.id, nom: product.nom, prix: product.prix, qty: 1, img: product.img });
+      saveCart();
+      showToast(`${product.nom} ajouté au panier`);
     }
 
-    function ajouterRoutine(nom, prix) {
-      const routine = { id: Date.now(), nom, prix, qty: 1, categorie: "Routine", desc: "", image: "" };
-      panier.push(routine);
-      sauvegarderPanier();
-      showToast(`Routine ${nom} ajoutée !`);
+    function ajouterRoutinePanier(nom, prix) {
+      const routineId = Date.now();
+      cart.push({ id: routineId, nom: nom, prix: prix, qty: 1, img: '' });
+      saveCart();
+      showToast(`Routine ${nom} ajoutée`);
     }
 
     // Lightbox
-    function openLightbox(produit) {
-      currentLightboxProduit = produit;
-      document.getElementById('lightbox-main').src = produit.image;
-      document.getElementById('lightbox-title').innerText = produit.nom;
-      document.getElementById('lightbox-price').innerText = produit.prix.toLocaleString() + ' FCFA';
-      document.getElementById('lightbox-desc').innerText = produit.desc;
-      document.getElementById('lightbox-cat').innerText = produit.categorie;
+    function openLightbox(productId) {
+      const product = allProducts.find(p => p.id == productId);
+      if (!product) return;
+      currentLightboxProduct = product;
+      document.getElementById('lightbox-main').src = product.img || '';
+      document.getElementById('lightbox-title').innerText = product.nom;
+      document.getElementById('lightbox-price').innerText = Number(product.prix).toLocaleString() + ' FCFA';
+      document.getElementById('lightbox-desc').innerText = product.desc || '';
+      document.getElementById('lightbox-cat').innerText = product.cat || '';
       document.getElementById('lightbox-overlay').classList.add('open');
     }
     function closeLightbox(e) {
@@ -439,64 +497,44 @@
       document.getElementById('lightbox-overlay').classList.remove('open');
     }
     function addToCartFromLightbox() {
-      if (currentLightboxProduit) ajouterAuPanier(currentLightboxProduit);
+      if (currentLightboxProduct) addToCart(currentLightboxProduct);
       closeLightbox();
     }
 
-    // Affichage catalogue avec catégories
-    let currentFilter = '';
-    function filtrerProduits() {
-      const search = document.getElementById('search-bar').value.toLowerCase();
-      currentFilter = search;
-      afficherProduits();
-    }
-    function afficherProduits() {
-      const grid = document.getElementById('product-grid');
-      let filtres = produits.filter(p => p.nom.toLowerCase().includes(currentFilter) || p.categorie.toLowerCase().includes(currentFilter));
-      if (filtres.length === 0) {
-        grid.innerHTML = '<div class="no-result">Aucun produit trouvé</div>';
-        return;
-      }
-      grid.innerHTML = filtres.map(p => `
-        <div class="card" onclick="openLightbox(${JSON.stringify(p).replace(/"/g, '&quot;')})">
-          <div class="card-img"><img src="${p.image}" alt="${p.nom}" loading="lazy"></div>
-          <div class="card-body"><h3>${p.nom}</h3><div class="price">${p.prix.toLocaleString()} FCFA</div></div>
-        </div>
-      `).join('');
-    }
-
-    // Catégories dynamiques
-    function genererCategories() {
-      const cats = [...new Set(produits.map(p => p.categorie))];
-      const bar = document.getElementById('cat-bar');
-      bar.innerHTML = `<button onclick="filtrerCategorie('')" class="btn-outline" style="background:${!currentCat?'var(--accent)':'transparent'};color:${!currentCat?'white':'var(--accent-dark)'}">Tous</button>` +
-        cats.map(cat => `<button onclick="filtrerCategorie('${cat}')" class="btn-outline" style="background:${currentCat===cat?'var(--accent)':'transparent'};color:${currentCat===cat?'white':'var(--accent-dark)'}">${cat}</button>`).join('');
-    }
-    let currentCat = '';
-    function filtrerCategorie(cat) {
-      currentCat = cat;
-      const search = document.getElementById('search-bar').value.toLowerCase();
-      let filtres = produits;
-      if (cat) filtres = filtres.filter(p => p.categorie === cat);
-      if (search) filtres = filtres.filter(p => p.nom.toLowerCase().includes(search));
-      const grid = document.getElementById('product-grid');
-      if (filtres.length === 0) grid.innerHTML = '<div class="no-result">Aucun produit</div>';
-      else {
-        grid.innerHTML = filtres.map(p => `<div class="card" onclick="openLightbox(${JSON.stringify(p).replace(/"/g, '&quot;')})"><div class="card-img"><img src="${p.image}" alt="${p.nom}"></div><div class="card-body"><h3>${p.nom}</h3><div class="price">${p.prix.toLocaleString()} FCFA</div></div></div>`).join('');
-      }
-      genererCategories();
-    }
-
-    // Panier overlay
+    // Panier overlays
     function openCart() { document.getElementById('cart-overlay').classList.add('open'); }
     function closeCart(e, force) { if (force || (e && e.target === document.getElementById('cart-overlay'))) document.getElementById('cart-overlay').classList.remove('open'); }
 
-    // Checkout modal
-    function openCheckout() {
-      const recap = document.getElementById('order-recap');
-      const sub = panier.reduce((s, p) => s + (p.prix * p.qty), 0);
-      const total = sub - reductionPromo;
-      recap.innerHTML = panier.map(p => `${p.nom} x${p.qty} : ${(p.prix*p.qty).toLocaleString()} FCFA`).join('<br>') + `<br><strong>Sous-total : ${sub.toLocaleString()} FCFA</strong><br>Réduction : -${reductionPromo.toLocaleString()} FCFA<br><strong>Total : ${(total>0?total:0).toLocaleString()} FCFA</strong>`;
+    // Vérification code promo
+    async function applyPromoCode() {
+      const code = document.getElementById('inp-promo').value.trim();
+      if (!code) { showToast("Entrez un code"); return; }
+      const productNames = cart.map(item => item.nom);
+      google.script.run.withSuccessHandler(function(result) {
+        if (result.ok && result.reduction > 0) {
+          currentPromoReduction = result.reduction;
+          document.getElementById('promo-msg').innerText = `✅ Réduction ${result.reduction} FCFA appliquée !`;
+          // Recalcul du récap
+          updateOrderRecap();
+        } else {
+          currentPromoReduction = 0;
+          document.getElementById('promo-msg').innerText = "❌ Code invalide ou non applicable";
+          updateOrderRecap();
+        }
+      }).verifierPromo({ action: "verifierPromo", code: code, produits: productNames });
+    }
+
+    function updateOrderRecap() {
+      const recapDiv = document.getElementById('order-recap');
+      if (!recapDiv) return;
+      const subtotal = cart.reduce((s,i)=> s + (i.prix * i.qty), 0);
+      const total = subtotal - currentPromoReduction;
+      recapDiv.innerHTML = cart.map(i => `${escapeHtml(i.nom)} x${i.qty} : ${(i.prix*i.qty).toLocaleString()} FCFA`).join('<br>') + `<br><strong>Sous-total : ${subtotal.toLocaleString()} FCFA</strong><br>Réduction : -${currentPromoReduction.toLocaleString()} FCFA<br><strong>Total : ${(total>0?total:0).toLocaleString()} FCFA</strong>`;
+    }
+
+    function openCheckoutModal() {
+      if (cart.length === 0) { showToast("Votre panier est vide"); return; }
+      updateOrderRecap();
       document.getElementById('modal-overlay').classList.add('open');
     }
     function closeModalOutside(e) { if (e.target === document.getElementById('modal-overlay')) document.getElementById('modal-overlay').classList.remove('open'); }
@@ -504,52 +542,69 @@
       document.getElementById('form-state').style.display = 'block';
       document.getElementById('success-state').style.display = 'none';
       document.getElementById('modal-overlay').classList.remove('open');
-      reductionPromo = 0;
+      currentPromoReduction = 0;
       document.getElementById('promo-msg').innerText = '';
       document.getElementById('inp-promo').value = '';
     }
-    function appliquerCodePromo() {
-      const code = document.getElementById('inp-promo').value.trim();
-      if (code === 'GLOWLY20') {
-        const sub = panier.reduce((s, p) => s + (p.prix * p.qty), 0);
-        reductionPromo = Math.floor(sub * 0.2);
-        document.getElementById('promo-msg').innerText = '✅ Code 20% appliqué !';
-      } else {
-        reductionPromo = 0;
-        document.getElementById('promo-msg').innerText = '❌ Code invalide';
-      }
-      const recapDiv = document.getElementById('order-recap');
-      const subT = panier.reduce((s, p) => s + (p.prix * p.qty), 0);
-      const newTotal = subT - reductionPromo;
-      recapDiv.innerHTML = panier.map(p => `${p.nom} x${p.qty} : ${(p.prix*p.qty).toLocaleString()} FCFA`).join('<br>') + `<br><strong>Sous-total : ${subT.toLocaleString()} FCFA</strong><br>Réduction : -${reductionPromo.toLocaleString()} FCFA<br><strong>Total : ${(newTotal>0?newTotal:0).toLocaleString()} FCFA</strong>`;
+
+    function generateIdVente() {
+      return "GLW-" + Date.now() + "-" + Math.floor(Math.random() * 10000);
     }
-    function confirmerCommande() {
+
+    function confirmOrder() {
       const nom = document.getElementById('inp-nom').value.trim();
       const tel = document.getElementById('inp-tel').value.trim();
-      if (!nom || !tel) { showToast('Veuillez renseigner nom et téléphone'); return; }
       const region = document.getElementById('inp-region').value;
-      if (!region) { showToast('Choisissez une région'); return; }
       const quartier = document.getElementById('inp-quartier').value.trim();
-      if (!quartier) { showToast('Indiquez votre quartier'); return; }
-      // Simulation succès
-      document.getElementById('form-state').style.display = 'none';
-      document.getElementById('success-state').style.display = 'block';
-      panier = [];
-      reductionPromo = 0;
-      sauvegarderPanier();
-      setTimeout(() => {
-        resetModal();
-        document.getElementById('cart-overlay').classList.remove('open');
-      }, 2000);
+      if (!nom || !tel || !region || !quartier) {
+        showToast("Veuillez remplir tous les champs obligatoires (*)");
+        return;
+      }
+      const adresseComplete = `${quartier}, ${document.getElementById('inp-adresse').value.trim()}, ${region}`;
+      const paiement = document.getElementById('inp-paiement').value;
+      const subtotal = cart.reduce((s,i)=> s + (i.prix * i.qty), 0);
+      const totalAPayer = subtotal - currentPromoReduction;
+      const mentionPromo = currentPromoReduction > 0 ? `Promo -${currentPromoReduction} FCFA` : "";
+
+      const lignes = cart.map(item => ({
+        idVente: generateIdVente(),
+        nomProduit: item.nom,
+        quantite: item.qty,
+        prixTotalPaye: Math.round(item.prix * item.qty),
+        telephone: tel,
+        nomClient: nom,
+        adresse: adresseComplete,
+        paiement: paiement,
+        mentionPromo: mentionPromo
+      }));
+
+      // Envoyer au backend
+      google.script.run.withSuccessHandler(function(response) {
+        if (response.ok) {
+          document.getElementById('form-state').style.display = 'none';
+          document.getElementById('success-state').style.display = 'block';
+          cart = [];
+          currentPromoReduction = 0;
+          saveCart();
+          setTimeout(() => {
+            resetModal();
+            document.getElementById('cart-overlay').classList.remove('open');
+          }, 2000);
+        } else {
+          showToast("Erreur lors de l'enregistrement: " + (response.error || ""));
+        }
+      }).withFailureHandler(function(err) {
+        showToast("Erreur réseau: " + err.message);
+      }).enregistrerCommandeWeb(lignes);
     }
 
     // Contact modals
-    function openContact() { document.getElementById('contact-overlay').classList.add('open'); }
+    function openContactModal() { document.getElementById('contact-overlay').classList.add('open'); }
     function closeContactOutside(e) { if (e.target === document.getElementById('contact-overlay')) document.getElementById('contact-overlay').classList.remove('open'); }
-    function envoyerContact() {
+    function sendContact() {
       const nom = document.getElementById('contact-nom').value.trim();
       const tel = document.getElementById('contact-tel').value.trim();
-      if (!nom || !tel) { showToast('Merci de remplir nom et téléphone'); return; }
+      if (!nom || !tel) { showToast("Merci de remplir nom et téléphone"); return; }
       document.getElementById('contact-success-state').style.display = 'block';
       setTimeout(() => {
         document.getElementById('contact-success-state').style.display = 'none';
@@ -557,52 +612,45 @@
         document.getElementById('contact-nom').value = '';
         document.getElementById('contact-tel').value = '';
         document.getElementById('contact-msg').value = '';
-        showToast('Message envoyé !');
+        showToast("Message envoyé !");
       }, 1200);
     }
     function envoyerContactFooter() {
       const nom = document.getElementById('footer-nom').value.trim();
       const tel = document.getElementById('footer-tel').value.trim();
-      if (!nom || !tel) { showToast('Merci nom et WhatsApp'); return; }
+      if (!nom || !tel) { showToast("Merci nom et WhatsApp"); return; }
       showToast(`Merci ${nom}, nous vous répondons rapidement.`);
       document.getElementById('footer-nom').value = '';
       document.getElementById('footer-tel').value = '';
       document.getElementById('footer-msg').value = '';
     }
 
-    // Initialisation
-    window.addEventListener('load', () => {
-      chargerPanier();
-      genererCategories();
-      afficherProduits();
-      // Écouter recherche
-      document.getElementById('search-bar').addEventListener('input', () => {
-        currentCat = '';
-        currentFilter = document.getElementById('search-bar').value.toLowerCase();
-        filtrerProduits();
-        genererCategories();
-      });
-    });
-    // Expose global functions
-    window.modifierQuantite = modifierQuantite;
-    window.supprimerProduit = supprimerProduit;
-    window.ajouterRoutine = ajouterRoutine;
+    // Exposer les fonctions globales pour les onclick
     window.openLightbox = openLightbox;
     window.closeLightbox = closeLightbox;
     window.addToCartFromLightbox = addToCartFromLightbox;
     window.openCart = openCart;
     window.closeCart = closeCart;
-    window.openCheckout = openCheckout;
-    window.closeModalOutside = closeModalOutside;
-    window.appliquerCodePromo = appliquerCodePromo;
-    window.confirmerCommande = confirmerCommande;
+    window.changeQty = changeQty;
+    window.removeItem = removeItem;
+    window.ajouterRoutinePanier = ajouterRoutinePanier;
+    window.applyPromoCode = applyPromoCode;
+    window.openCheckoutModal = openCheckoutModal;
+    window.confirmOrder = confirmOrder;
     window.resetModal = resetModal;
-    window.openContact = openContact;
+    window.closeModalOutside = closeModalOutside;
+    window.openContactModal = openContactModal;
     window.closeContactOutside = closeContactOutside;
-    window.envoyerContact = envoyerContact;
+    window.sendContact = sendContact;
     window.envoyerContactFooter = envoyerContactFooter;
-    window.filtrerProduits = filtrerProduits;
-    window.filtrerCategorie = filtrerCategorie;
+    window.filterProducts = filterProducts;
+    window.setCategory = setCategory;
+
+    // Initialisation
+    window.addEventListener('load', () => {
+      loadCart();
+      loadProducts();
+    });
   </script>
 </body>
 </html>
