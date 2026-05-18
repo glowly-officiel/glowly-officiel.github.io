@@ -55,11 +55,21 @@
     .sub-nav a { display: inline-block; padding: 16px 0; font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text); font-weight: 500; white-space: nowrap; border-bottom: 2px solid transparent; transition: border-color 0.2s, color 0.2s; }
     .sub-nav a:hover, .sub-nav a.active { color: var(--accent-dark); border-bottom-color: var(--accent); }
 
-    /* HERO – IMAGE EN HAUT, TEXTE EN DESSOUS */
-    .hero { display: flex; flex-direction: column; }
-    .hero-img { width: 100%; height: auto; max-height: 80vh; object-fit: cover; }
-    .hero-content { background: var(--brown); padding: 40px 24px; text-align: center; }
-    .hero-content h1 {
+    /* IMAGE SEULE */
+    .hero-image {
+      width: 100%;
+      height: auto;
+      max-height: 80vh;
+      object-fit: cover;
+    }
+
+    /* SECTION TEXTE SÉPARÉE */
+    .hero-text-section {
+      background: #F5F1EA; /* légèrement plus soutenu que le fond du site */
+      padding: 50px 24px;
+      text-align: center;
+    }
+    .hero-text-section h1 {
       font-family: 'Cormorant Garamond', serif;
       font-size: clamp(32px, 8vw, 64px);
       font-weight: 500;
@@ -68,14 +78,14 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.4));
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.2));
     }
-    .hero-content p {
+    .hero-text-section p {
       font-size: 16px;
-      color: #F5E0A2;
+      color: #6B5A4E;
       max-width: 600px;
       margin: 0 auto 24px;
-      text-shadow: 0 2px 6px rgba(0,0,0,0.5);
+      line-height: 1.6;
     }
     .btn-gold {
       display: inline-block;
@@ -195,14 +205,14 @@
     </div>
   </div>
 
-  <!-- NOUVEAU HERO -->
-  <section class="hero">
-    <img class="hero-img" src="https://raw.githubusercontent.com/glowly-officiel/glowly-officiel.github.io/main/21433a69-25ae-46fa-8880-3f693289a165.png" alt="Glowly">
-    <div class="hero-content">
-      <h1>L'art du soin authentique</h1>
-      <p>Des formules certifiées à l'international, sans hydroquinone, pour révéler l'éclat de votre peau en toute sécurité.</p>
-      <a href="#catalogue" class="btn-gold">DÉCOUVRIR LA COLLECTION</a>
-    </div>
+  <!-- IMAGE SEULE -->
+  <img class="hero-image" src="https://raw.githubusercontent.com/glowly-officiel/glowly-officiel.github.io/main/21433a69-25ae-46fa-8880-3f693289a165.png" alt="Glowly">
+
+  <!-- SECTION TEXTE EN DESSOUS -->
+  <section class="hero-text-section">
+    <h1>L'art du soin authentique</h1>
+    <p>Des formules certifiées à l'international, sans hydroquinone, pour révéler l'éclat de votre peau en toute sécurité.</p>
+    <a href="#catalogue" class="btn-gold">DÉCOUVRIR LA COLLECTION</a>
   </section>
 
   <!-- COACHING (ancre) -->
@@ -374,60 +384,9 @@
   <div id="toast"></div>
 
   <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbxHAg3sQJP-bP87N6zBopCyrqvRoZBT6xXzUXO-bY8yj1AQzoTmukh3EzsfkcMhU4cF/exec";
-    const catColors = {"Soins Mains & Pieds":{color:"#C4927A"},"Nettoyants Visage":{color:"#8FAF9F"},"Traitements Visage":{color:"#A799C0"},"Soins Corps":{color:"#C9A96E"}};
-    let produits=[],activeCat='all',cart=[],lightboxProduct=null,lightboxImages=[],lightboxIndex=0,isAnimating=false;
-    const TELEGRAM_TOKEN="8726033368:AAGgwT0jqY6hlX4MQWv8nsMi5Smt95Xumhs";
-    const TELEGRAM_CHAT_ID="6277942447";
-    let reductionPromo=0,searchTerm='';
-
-    function chargerProduits(){fetch(API_URL+"?action=produits").then(r=>r.json()).then(r=>{if(r&&r.ok){produits=r.produits;construireFiltres();renderProducts();}else showToast("Erreur chargement");}).catch(()=>showToast("Erreur connexion"));}
-    window.addEventListener('load',chargerProduits);
-    function construireFiltres(){const cats=[...new Set(produits.map(p=>p.cat).filter(Boolean))];const bar=document.getElementById('cat-bar');bar.innerHTML='<button class="cat-btn active" data-cat="all" onclick="filterCat(this,\'all\')" style="padding:8px 18px;border-radius:100px;border:1px solid var(--border);background:white;margin:4px;">Tous</button>';cats.forEach(cat=>{const btn=document.createElement('button');btn.className='cat-btn';btn.dataset.cat=cat;btn.onclick=function(){filterCat(this,cat);};btn.textContent=cat;btn.style.cssText='padding:8px 18px;border-radius:100px;border:1px solid var(--border);background:white;margin:4px;';bar.appendChild(btn);});}
-    const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('revealed');observer.unobserve(e.target);}});},{threshold:.08});
-    function filtrerProduits(){searchTerm=document.getElementById('search-bar').value.trim().toLowerCase();renderProducts();}
-
-    function renderProducts(){
-      const grid=document.getElementById('product-grid');const filtered=activeCat==='all'?produits:produits.filter(p=>p.cat===activeCat);const searched=searchTerm===''?filtered:filtered.filter(p=>p.nom.toLowerCase().includes(searchTerm)||(p.desc&&p.desc.toLowerCase().includes(searchTerm))||(p.cat&&p.cat.toLowerCase().includes(searchTerm)));grid.innerHTML='';
-      if(searched.length===0){grid.innerHTML='<div class="no-result">Aucun produit trouvé</div>';return;}
-      searched.forEach((p,i)=>{const cc=catColors[p.cat]||{color:'var(--accent-dark)'},fb='https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=600&q=85';let badge='';const sa=Number(p.stock)||0;if(sa===0)badge='<div class="card-badge">Rupture</div>';else if(sa<=3)badge='<div class="card-badge">Peu de stock</div>';
-        const card=document.createElement('div');card.className='card';card.onclick=function(){openLightbox(p.id);};
-        card.innerHTML='<div class="card-img">'+badge+'<img src="'+(p.img||fb)+'" alt="'+p.nom+'" loading="lazy"></div><div class="card-body"><h3>'+p.nom+'</h3><div class="price">'+Number(p.prix).toLocaleString('fr-FR')+' FCFA</div></div>';
-        grid.appendChild(card);observer.observe(card);});
-    }
-    function addToCart(id){const p=produits.find(x=>x.id===id);if(!p)return;const sd=Number(p.stock)||0;const ex=cart.find(x=>x.id===id);const q=ex?ex.qty:0;if(sd===0){showToast("Rupture de stock");return;}if((q+1)>sd){showToast('Stock insuffisant ('+sd+')');return;}if(ex){ex.qty++;}else{cart.push({...p,qty:1});}updateCartUI();showToast(p.nom);const badge=document.getElementById('cart-count');badge.classList.remove('bump');void badge.offsetWidth;badge.classList.add('bump');}
-    function changeQty(id,d){const item=cart.find(x=>x.id===id);if(!item)return;const p=produits.find(x=>x.id===id);const sd=p?Number(p.stock)||0:999;const nq=item.qty+d;if(nq<=0){cart=cart.filter(x=>x.id!==id);updateCartUI();return;}if(nq>sd){showToast('Stock insuffisant ('+sd+')');return;}item.qty=nq;updateCartUI();}
-    function filterCat(btn,cat){document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');activeCat=cat;renderProducts();}
-    function openLightbox(id){const p=produits.find(x=>x.id===id);if(!p)return;lightboxProduct=p;const fb='https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=600&q=85';lightboxImages=[p.img||fb];if(p.img2&&p.img2.startsWith('http'))lightboxImages.push(p.img2);if(p.img3&&p.img3.startsWith('http'))lightboxImages.push(p.img3);lightboxIndex=0;updateLightboxUI();document.getElementById('lightbox-overlay').classList.add('open');const ab=document.getElementById('lightbox-add-btn');ab.classList.remove('added');ab.textContent='+ Ajouter au panier';}
-    function closeLightbox(event){if(event&&event.target!==document.getElementById('lightbox-overlay'))return;document.getElementById('lightbox-overlay').classList.remove('open');}
-    function lightboxPrev(){if(isAnimating)return;lightboxIndex=(lightboxIndex-1+lightboxImages.length)%lightboxImages.length;animateImage('right');}
-    function lightboxNext(){if(isAnimating)return;lightboxIndex=(lightboxIndex+1)%lightboxImages.length;animateImage('left');}
-    function animateImage(dir){isAnimating=true;const img=document.getElementById('lightbox-main');img.style.opacity=0;setTimeout(()=>{img.src=lightboxImages[lightboxIndex];img.style.opacity=1;updateLightboxMeta();isAnimating=false;},200);}
-    function updateLightboxUI(){if(!lightboxProduct)return;document.getElementById('lightbox-cat').textContent=lightboxProduct.cat||'';document.getElementById('lightbox-title').textContent=lightboxProduct.nom;document.getElementById('lightbox-price').textContent=Number(lightboxProduct.prix).toLocaleString('fr-FR')+' FCFA';document.getElementById('lightbox-desc').textContent=lightboxProduct.desc||'';document.getElementById('lightbox-main').src=lightboxImages[lightboxIndex];updateLightboxMeta();buildThumbnails();}
-    function updateLightboxMeta(){document.getElementById('lightbox-counter').textContent=(lightboxIndex+1)+' / '+lightboxImages.length;document.querySelectorAll('.lightbox-thumb').forEach((t,i)=>t.classList.toggle('active',i===lightboxIndex));}
-    function buildThumbnails(){const c=document.getElementById('lightbox-thumbs');if(lightboxImages.length<=1){c.innerHTML='';return;}c.innerHTML=lightboxImages.map((img,i)=>'<img class="lightbox-thumb '+(i===lightboxIndex?'active':'')+'" src="'+img+'" onclick="lightboxIndex='+i+';updateLightboxUI();" onerror="this.style.display=\'none\'"/>').join('');}
-    function addToCartFromLightbox(){if(!lightboxProduct)return;addToCart(lightboxProduct.id);const ab=document.getElementById('lightbox-add-btn');ab.classList.add('added');ab.textContent='Ajouté ✓';setTimeout(()=>{if(document.getElementById('lightbox-overlay').classList.contains('open')){ab.classList.remove('added');ab.textContent='+ Ajouter au panier';}},2000);}
-    function getTotal(){var t=cart.reduce((s,i)=>s+Number(i.prix)*i.qty,0);if(reductionPromo>0)t=t-(t*reductionPromo/100);return Math.round(t);}
-    function getTotalQty(){return cart.reduce((s,i)=>s+i.qty,0);}
-    function updateCartUI(){document.getElementById('cart-count').textContent=getTotalQty();const list=document.getElementById('cart-items-list'),foot=document.getElementById('cart-foot');if(!cart.length){foot.style.display='none';list.innerHTML='<div style="text-align:center;color:var(--text-muted);padding:40px;">Panier vide</div>';return;}foot.style.display='block';document.getElementById('cart-total').textContent=getTotal().toLocaleString('fr-FR')+' FCFA';const fb='https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=200&q=80';list.innerHTML=cart.map(i=>'<div style="display:flex;gap:12px;align-items:center;padding:12px;border-bottom:1px solid var(--border-light);"><div style="width:50px;height:50px;background:#F9F6F0;"><img src="'+(i.img||fb)+'" style="width:100%;height:100%;object-fit:contain;"></div><div style="flex:1;"><div style="font-weight:500;">'+i.nom+'</div><div style="font-size:12px;color:var(--text-muted);">'+(Number(i.prix)*i.qty).toLocaleString('fr-FR')+' FCFA</div></div><div style="display:flex;gap:6px;align-items:center;"><button onclick="changeQty(\''+i.id+'\',-1)" style="border:1px solid var(--border);background:white;width:24px;height:24px;border-radius:50%;">−</button><span>'+i.qty+'</span><button onclick="changeQty(\''+i.id+'\',1)" style="border:1px solid var(--border);background:white;width:24px;height:24px;border-radius:50%;">+</button></div></div>').join('');}
-    function openCart(){document.getElementById('cart-overlay').classList.add('open');}
-    function closeCart(e,force){if(force||(e&&e.target===document.getElementById('cart-overlay')))document.getElementById('cart-overlay').classList.remove('open');}
-    function updateRecap(){var recap=document.getElementById('order-recap');var html=cart.map(i=>'<div style="display:flex;justify-content:space-between;">'+i.nom+' ×'+i.qty+' <span>'+(Number(i.prix)*i.qty).toLocaleString('fr-FR')+' FCFA</span></div>').join('');if(reductionPromo>0){var tsr=cart.reduce((s,i)=>s+Number(i.prix)*i.qty,0);var mr=Math.round(tsr*reductionPromo/100);html+='<div style="color:#2E7D32;">Réduction -'+reductionPromo+'% : -'+mr.toLocaleString('fr-FR')+' FCFA</div>';}html+='<div style="font-weight:bold;margin-top:8px;">Total : '+getTotal().toLocaleString('fr-FR')+' FCFA</div>';recap.innerHTML=html;}
-    function openCheckout(){closeCart(null,true);updateRecap();document.getElementById('modal-overlay').classList.add('open');}
-    function appliquerCodePromo(){var code=document.getElementById('inp-promo').value.trim();if(!code){showToast("Entrez un code");return;}var noms=cart.map(function(i){return i.nom;}).join(",");fetch(API_URL+"?action=verifierPromo&code="+encodeURIComponent(code)+"&produits="+encodeURIComponent(noms)).then(function(r){return r.json();}).then(function(r){if(r&&r.ok&&r.reduction>0){reductionPromo=r.reduction;document.getElementById('promo-msg').textContent="✅ -"+r.reduction+"%";document.getElementById('promo-msg').style.color="#2E7D32";updateCartUI();updateRecap();showToast("Promo appliquée");}else{reductionPromo=0;document.getElementById('promo-msg').textContent="❌ Invalide";document.getElementById('promo-msg').style.color="#C62828";}}).catch(function(){showToast("Erreur");});}
-    function closeModal(){document.getElementById('modal-overlay').classList.remove('open');}
-    function closeModalOutside(e){if(e.target===document.getElementById('modal-overlay'))closeModal();}
-    function confirmerCommande(){const n=document.getElementById('inp-nom').value.trim(),t=document.getElementById('inp-tel').value.trim();const a=document.getElementById('inp-adresse').value.trim(),r=document.getElementById('inp-region').value;const q=document.getElementById('inp-quartier').value.trim(),p=document.getElementById('inp-paiement').value;if(!n||!t||!r||!q){showToast("Champs requis");return;}if(!cart.length){showToast("Panier vide");return;}const adresseComplete=q+', '+r+(a?' - '+a:'');const btn=document.getElementById('confirm-btn');btn.disabled=true;btn.textContent="Envoi...";const id="GLOW-"+Date.now().toString(36).toUpperCase();const mention=reductionPromo>0?"Promo -"+reductionPromo+"%":"";const tsr=cart.reduce((s,i)=>s+Number(i.prix)*i.qty,0);const tar=tsr*(1-reductionPromo/100);const lignes=cart.map(i=>{var pls=Number(i.prix)*i.qty;var prop=pls/tsr;var plp=Math.round(tar*prop);return{idVente:id,nomProduit:i.nom,quantite:i.qty,prixTotalPaye:plp,mentionPromo:mention,telephone:t,nomClient:n,adresse:adresseComplete,paiement:p};});var fd=new FormData();fd.append("data",JSON.stringify(lignes));fetch(API_URL+"?action=commander",{method:"POST",body:fd}).then(function(r){return r.json();}).then(function(r){if(r&&r.ok){document.getElementById('form-state').style.display='none';document.getElementById('success-state').style.display='block';cart=[];reductionPromo=0;updateCartUI();setTimeout(function(){location.reload();},2500);}else{showToast("Erreur: "+(r.error||"inconnue"));resetBtn();}}).catch(function(){showToast("Erreur connexion");resetBtn();});}
-    function resetBtn(){const btn=document.getElementById('confirm-btn');btn.disabled=false;btn.textContent='Confirmer la commande';}
-    function resetModal(){closeModal();document.getElementById('form-state').style.display='block';document.getElementById('success-state').style.display='none';document.getElementById('inp-nom').value='';document.getElementById('inp-tel').value='';document.getElementById('inp-adresse').value='';document.getElementById('inp-region').value='';document.getElementById('inp-quartier').value='';document.getElementById('inp-paiement').value='🐧 Wave';document.getElementById('inp-promo').value='';reductionPromo=0;resetBtn();}
-    function openContact(){document.getElementById('contact-overlay').classList.add('open');}
-    function closeContact(){document.getElementById('contact-overlay').classList.remove('open');}
-    function closeContactOutside(e){if(e.target===document.getElementById('contact-overlay'))closeContact();}
-    function envoyerContact(){const nom=document.getElementById('contact-nom').value.trim(),tel=document.getElementById('contact-tel').value.trim(),msg=document.getElementById('contact-msg').value.trim();if(!nom||!tel||!msg){showToast("Champs requis");return;}const texte='📩 *'+nom+'*\n📞 +221'+tel.replace(/\s/g,'')+'\n\n'+msg;fetch('https://api.telegram.org/bot'+TELEGRAM_TOKEN+'/sendMessage',{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({chat_id:TELEGRAM_CHAT_ID,text:texte,parse_mode:"Markdown"})});document.getElementById('contact-success-state').style.display='block';setTimeout(()=>closeContact(),2000);}
-    function envoyerContactFooter(){const nom=document.getElementById('footer-nom').value.trim(),tel=document.getElementById('footer-tel').value.trim(),msg=document.getElementById('footer-msg').value.trim();if(!nom||!tel||!msg){showToast("Remplissez tous les champs");return;}const texte='📩 *Message depuis le site*\n👤 '+nom+'\n📞 +221'+tel.replace(/\s/g,'')+'\n\n📝 '+msg;fetch('https://api.telegram.org/bot'+TELEGRAM_TOKEN+'/sendMessage',{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({chat_id:TELEGRAM_CHAT_ID,text:texte,parse_mode:"Markdown"})}).then(()=>{document.getElementById('footer-nom').value='';document.getElementById('footer-tel').value='';document.getElementById('footer-msg').value='';showToast("Message envoyé !");}).catch(()=>showToast("Erreur"));}
-    let toastTimer;function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2000);}
-    document.getElementById('inp-region').addEventListener('change',function(){var region=this.value.toLowerCase();var sp=document.getElementById('inp-paiement');var opts=sp.querySelectorAll('option');opts.forEach(function(o){o.style.display='';o.disabled=false;});if(region&&region!=='thiès'){opts.forEach(function(o){if(o.textContent.indexOf('Espèces')>-1){o.style.display='none';o.disabled=true;if(sp.value.indexOf('Espèces')>-1){sp.value='🐧 Wave';}}});}});
-    updateCartUI();
+    // Le script JavaScript complet (identique à votre version précédente) n'est pas répété ici pour la lisibilité,
+    // mais vous devez le conserver dans votre fichier final.
+    // Il contient toutes les fonctions : chargerProduits, renderProducts, addToCart, etc.
   </script>
 </body>
 </html>
