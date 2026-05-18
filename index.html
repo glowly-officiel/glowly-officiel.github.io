@@ -44,7 +44,7 @@
     .btn-gold { display: inline-block; background: linear-gradient(105deg, #D8A7AB, #C9A87C); color: #2E211B; padding: 14px 42px; font-weight: 700; font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; border-radius: 50px; text-decoration: none; box-shadow: 0 8px 18px rgba(165,106,97,0.25); transition: 0.3s; }
     .btn-gold:hover { transform: translateY(-2px); }
 
-    /* CARROUSEL */
+    /* CARROUSEL HORIZONTAL (images + noms, collé) */
     .carousel-section {
       background: var(--bg-beige);
       padding: 30px 0;
@@ -73,16 +73,9 @@
       padding: 0;
       -webkit-overflow-scrolling: touch;
     }
-    .carousel-track::-webkit-scrollbar {
-      height: 4px;
-    }
-    .carousel-track::-webkit-scrollbar-track {
-      background: var(--border-beige);
-    }
-    .carousel-track::-webkit-scrollbar-thumb {
-      background: var(--rose-gold);
-      border-radius: 10px;
-    }
+    .carousel-track::-webkit-scrollbar { height: 4px; }
+    .carousel-track::-webkit-scrollbar-track { background: var(--border-beige); }
+    .carousel-track::-webkit-scrollbar-thumb { background: var(--rose-gold); border-radius: 10px; }
     .carousel-item {
       flex: 0 0 auto;
       width: 130px;
@@ -92,9 +85,7 @@
       background: transparent;
       border: none;
     }
-    .carousel-item:hover {
-      transform: translateY(-4px);
-    }
+    .carousel-item:hover { transform: translateY(-4px); }
     .carousel-item-img {
       width: 100%;
       aspect-ratio: 1;
@@ -102,12 +93,7 @@
       border-radius: 12px;
       overflow: hidden;
     }
-    .carousel-item-img img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
+    .carousel-item-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
     .carousel-item-name {
       margin-top: 6px;
       font-size: 0.8rem;
@@ -119,7 +105,7 @@
     }
     .carousel-nav { display: none; }
 
-    /* BEST SELLERS - HORIZONTAL AVEC ALTERNANCE */
+    /* BEST SELLERS - FORMAT PAYSAGE AVEC ALTERNANCE */
     .section { max-width: 1280px; margin: 0 auto; padding: 80px 24px; }
     .section-title { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; text-align: center; color: var(--marron-bois); margin-bottom: 12px; }
     .section-subtitle { text-align: center; color: #9C7A6B; font-style: italic; margin-bottom: 48px; }
@@ -139,16 +125,9 @@
       border: 1px solid #F0E1D6;
       transition: 0.3s;
     }
-    .bs-card.horizontal:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 20px 35px rgba(94,58,46,0.08);
-    }
-    .bs-card.horizontal.left-img {
-      flex-direction: row;
-    }
-    .bs-card.horizontal.right-img {
-      flex-direction: row-reverse;
-    }
+    .bs-card.horizontal:hover { transform: translateY(-6px); box-shadow: 0 20px 35px rgba(94,58,46,0.08); }
+    .bs-card.horizontal.left-img { flex-direction: row; }
+    .bs-card.horizontal.right-img { flex-direction: row-reverse; }
     .bs-img {
       flex: 1;
       min-width: 280px;
@@ -188,35 +167,23 @@
       align-self: flex-start;
       transition: 0.2s;
     }
-    .btn-brown:hover {
-      background: #C9A87C;
-      transform: scale(1.02);
-    }
+    .btn-brown:hover { background: #C9A87C; transform: scale(1.02); }
+
     @media (max-width: 768px) {
-      .bs-card.horizontal,
-      .bs-card.horizontal.left-img,
-      .bs-card.horizontal.right-img {
+      .bs-card.horizontal, .bs-card.horizontal.left-img, .bs-card.horizontal.right-img {
         flex-direction: column;
       }
-      .bs-img {
-        min-height: 220px;
-        min-width: 100%;
-      }
-      .brown-bg {
-        text-align: center;
-      }
-      .btn-brown {
-        align-self: center;
-      }
+      .bs-img { min-height: 220px; min-width: 100%; }
+      .brown-bg { text-align: center; }
+      .btn-brown { align-self: center; }
     }
 
-    /* Autres sections */
+    /* Autres sections (science, grille produits, témoignages) */
     .science-section { background: #FDF4EF; padding: 60px 24px; }
     .science-flex { display: grid; gap: 32px; max-width: 1000px; margin: 0 auto; }
     @media (min-width: 700px) { .science-flex { grid-template-columns: repeat(3, 1fr); } }
     .science-item { text-align: center; background: rgba(255,245,240,0.6); padding: 24px 12px; border-radius: 32px; }
     .science-icon { font-size: 34px; }
-
     .product-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
     @media (min-width: 640px) { .product-grid { grid-template-columns: repeat(3, 1fr); } }
     @media (min-width: 1024px) { .product-grid { grid-template-columns: repeat(4, 1fr); } }
@@ -227,12 +194,10 @@
     .card-body { padding: 16px; text-align: center; }
     .card-body h3 { font-size: 0.9rem; font-weight: 500; }
     .price { font-weight: 700; color: #C28B90; }
-
     .testimonial-grid { display: grid; gap: 24px; max-width: 800px; margin: 0 auto; }
     @media (min-width: 640px) { .testimonial-grid { grid-template-columns: repeat(2, 1fr); } }
     .testimonial { background: white; padding: 28px; border-radius: 28px; border: 1px solid #F2E0D4; }
     .stars { color: #D8A7AB; margin-bottom: 12px; }
-
     footer { background: #3E2920; color: #E7D8CF; padding: 50px 24px 30px; }
     .footer-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; max-width: 1000px; margin: 0 auto 40px; }
     @media (min-width: 700px) { .footer-grid { grid-template-columns: repeat(4, 1fr); } }
@@ -241,7 +206,6 @@
     .contact-form { max-width: 400px; margin: 20px auto 0; }
     .contact-form input, .contact-form textarea { width: 100%; padding: 12px; margin-bottom: 12px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 40px; }
     .contact-form button { background: var(--gold-dore); border: none; padding: 12px; width: 100%; border-radius: 40px; font-weight: 600; color: #2E211B; cursor: pointer; }
-
     .overlay { position: fixed; inset: 0; background: rgba(62,41,32,0.65); backdrop-filter: blur(5px); z-index: 1000; display: flex; align-items: center; justify-content: center; visibility: hidden; opacity: 0; transition: 0.2s; }
     .overlay.open { visibility: visible; opacity: 1; }
     .cart-panel { position: absolute; right: 0; top: 0; bottom: 0; width: 400px; max-width: 90vw; background: white; display: flex; flex-direction: column; transform: translateX(100%); transition: 0.35s; }
@@ -283,7 +247,7 @@
   <a href="#catalogue" class="btn-gold">DÉCOUVRIR LA COLLECTION</a>
 </section>
 
-<!-- CARROUSEL -->
+<!-- ========== CARROUSEL (images + noms) ========== -->
 <section class="carousel-section" id="carouselSection">
   <div class="carousel-title">✨ Les incontournables ✨</div>
   <div class="carousel-container">
@@ -293,11 +257,12 @@
 
 <div id="coaching" style="scroll-margin-top: 80px;"></div>
 
-<!-- BEST SELLERS AVEC ALTERNANCE ET FOND MARRON -->
+<!-- ========== BEST SELLERS (4 cartes, alternance, fond marron) ========== -->
 <section class="section">
   <h2 class="section-title">Nos Best Sellers</h2>
   <p class="section-subtitle">Les produits les plus plébiscités par notre communauté</p>
   <div class="bestsellers-container">
+    <!-- Carte 1 : image gauche / texte droite -->
     <div class="bs-card horizontal left-img">
       <div class="bs-img" style="background-image: url('https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=800&q=80');"></div>
       <div class="brown-bg">
@@ -306,6 +271,7 @@
         <button class="btn-brown" onclick="addRoutine('Routine Éclat Suprême', 28500)">AJOUTER — 28 500 FCFA</button>
       </div>
     </div>
+    <!-- Carte 2 : image droite / texte gauche -->
     <div class="bs-card horizontal right-img">
       <div class="bs-img" style="background-image: url('https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=800&q=80');"></div>
       <div class="brown-bg">
@@ -314,6 +280,7 @@
         <button class="btn-brown" onclick="addRoutine('Rituel Hammam & Glow', 32900)">AJOUTER — 32 900 FCFA</button>
       </div>
     </div>
+    <!-- Carte 3 : image gauche / texte droite -->
     <div class="bs-card horizontal left-img">
       <div class="bs-img" style="background-image: url('https://images.unsplash.com/photo-1570194065650-d99fb4d8c631?w=800&q=80');"></div>
       <div class="brown-bg">
@@ -322,6 +289,7 @@
         <button class="btn-brown" onclick="addRoutine('Masque Visage BIO-Collagène', 18900)">AJOUTER — 18 900 FCFA</button>
       </div>
     </div>
+    <!-- Carte 4 : image droite / texte gauche -->
     <div class="bs-card horizontal right-img">
       <div class="bs-img" style="background-image: url('https://images.unsplash.com/photo-1600948836101-f9ffda59d250?w=800&q=80');"></div>
       <div class="brown-bg">
@@ -384,6 +352,7 @@
 
 <script>
   // ======================== CONFIGURATION ========================
+  // ⚠️ REMPLACEZ CETTE URL PAR CELLE DE VOTRE SCRIPT GAS DÉPLOYÉ (si différente)
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx6NmekfvNMCFqasTCO_QpA4l8mV2HkNgR6_cdH291ci5sa8zaKYJqj05_ZXtjL3KFa/exec';
 
   let allProducts = [];
@@ -402,6 +371,7 @@
     setTimeout(() => t.classList.remove('show'), 2500);
   }
 
+  // ========== BACKEND VIA FETCH ==========
   async function chargerProduits() {
     try {
       console.log("Chargement depuis:", SCRIPT_URL);
@@ -416,6 +386,7 @@
     } catch (err) {
       console.error("❌ Erreur chargement:", err);
       showToast("Erreur de chargement des produits. Vérifiez l'URL du backend.");
+      // Fallback : produits de démonstration pour que le carrousel ne soit pas vide
       allProducts = [
         { id: 1, nom: "Savon Curcuma", prix: 8500, img: "https://images.unsplash.com/photo-1600857062241-98e5dba7f214?w=400&q=80", cat: "Nettoyants", desc: "" },
         { id: 2, nom: "Toner Glycolique", prix: 12500, img: "https://images.unsplash.com/photo-1620916566390-22f5e7abca7e?w=400&q=80", cat: "Toners", desc: "" },
