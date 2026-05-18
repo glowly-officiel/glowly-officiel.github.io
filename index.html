@@ -65,7 +65,7 @@
     }
     .carousel-track {
       display: flex;
-      gap: 0;               /* Supprime tout espace entre les produits */
+      gap: 0;
       overflow-x: auto;
       scroll-behavior: smooth;
       scrollbar-width: thin;
@@ -82,10 +82,9 @@
       background: var(--rose-gold);
       border-radius: 10px;
     }
-    /* Un produit : image + nom, collé, sans marge */
     .carousel-item {
       flex: 0 0 auto;
-      width: 130px;          /* Ajustez la largeur selon vos besoins */
+      width: 130px;
       text-align: center;
       cursor: pointer;
       transition: transform 0.2s;
@@ -117,26 +116,90 @@
       word-break: break-word;
       padding: 0 4px;
     }
-    /* Pas de flèches */
-    .carousel-nav {
-      display: none;
-    }
+    .carousel-nav { display: none; }
 
-    /* Section des routines et autres (inchangé) */
+    /* ========== BEST SELLERS EN FORMAT PAYSAGE ========== */
     .section { max-width: 1280px; margin: 0 auto; padding: 80px 24px; }
     .section-title { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; text-align: center; color: var(--marron-bois); margin-bottom: 12px; }
     .section-subtitle { text-align: center; color: #9C7A6B; font-style: italic; margin-bottom: 48px; }
 
-    .bestsellers { display: grid; gap: 30px; grid-template-columns: 1fr; }
-    @media (min-width: 700px) { .bestsellers { grid-template-columns: repeat(2, 1fr); } }
-    .bs-card { background: white; border-radius: 28px; overflow: hidden; border: 1px solid #F0E1D6; transition: 0.3s; }
-    .bs-card:hover { transform: translateY(-6px); box-shadow: 0 20px 35px rgba(94,58,46,0.08); }
-    .bs-img { height: 280px; background-size: cover; background-position: center; }
-    .bs-body { padding: 28px; text-align: center; }
-    .bs-body h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; }
-    .btn-brown { background: #A26A5A; color: white; border: none; padding: 12px 28px; border-radius: 40px; font-size: 11px; font-weight: 600; cursor: pointer; }
-    .btn-brown:hover { background: #C28B90; }
+    .bestsellers {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+    .bs-card {
+      display: flex;
+      flex-direction: row;
+      background: white;
+      border-radius: 28px;
+      overflow: hidden;
+      border: 1px solid #F0E1D6;
+      transition: 0.3s;
+      align-items: stretch;
+    }
+    .bs-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 35px rgba(94,58,46,0.08);
+    }
+    .bs-img {
+      flex: 1;
+      min-width: 250px;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+    .bs-body {
+      flex: 1.5;
+      padding: 32px;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .bs-body h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      margin-bottom: 12px;
+    }
+    .bs-description {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+    .btn-brown {
+      background: #A26A5A;
+      color: white;
+      border: none;
+      padding: 12px 28px;
+      border-radius: 40px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      align-self: flex-start;
+    }
+    .btn-brown:hover {
+      background: #C28B90;
+    }
+    /* Responsive : sur mobile, repasser en colonne */
+    @media (max-width: 768px) {
+      .bs-card {
+        flex-direction: column;
+      }
+      .bs-img {
+        min-height: 220px;
+        flex: none;
+      }
+      .bs-body {
+        text-align: center;
+      }
+      .btn-brown {
+        align-self: center;
+      }
+    }
 
+    /* Autres sections */
     .science-section { background: #FDF4EF; padding: 60px 24px; }
     .science-flex { display: grid; gap: 32px; max-width: 1000px; margin: 0 auto; }
     @media (min-width: 700px) { .science-flex { grid-template-columns: repeat(3, 1fr); } }
@@ -219,12 +282,29 @@
 
 <div id="coaching" style="scroll-margin-top: 80px;"></div>
 
+<!-- ========== BEST SELLERS : VERSION PAYSAGE AVEC DESCRIPTION ========== -->
 <section class="section">
-  <h2 class="section-title">Nos Routines</h2>
-  <p class="section-subtitle">Les combinaisons préférées de nos clientes</p>
+  <h2 class="section-title">Nos Best Sellers</h2>
+  <p class="section-subtitle">Les produits les plus plébiscités par notre communauté</p>
   <div class="bestsellers">
-    <div class="bs-card"><div class="bs-img" style="background-image: url('https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=600&q=80');"></div><div class="bs-body"><h3>Routine Éclat Suprême</h3><p>Savon curcuma, Toner glycolique, Sérum Vitamine C, Lait Biosphere</p><button class="btn-brown" onclick="addRoutine('Routine Éclat Suprême', 28500)">AJOUTER — 28 500 FCFA</button></div></div>
-    <div class="bs-card"><div class="bs-img" style="background-image: url('https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=600&q=80');"></div><div class="bs-body"><h3>Rituel Hammam & Glow</h3><p>Gant Kessa, Huile de soin, Masque main/pied au miel de Manuka</p><button class="btn-brown" onclick="addRoutine('Rituel Hammam & Glow', 32900)">AJOUTER — 32 900 FCFA</button></div></div>
+    <!-- Carte 1 : Routine Éclat Suprême -->
+    <div class="bs-card">
+      <div class="bs-img" style="background-image: url('https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=800&q=80');"></div>
+      <div class="bs-body">
+        <h3>Routine Éclat Suprême</h3>
+        <p class="bs-description">Pourquoi ce produit est un best seller ? Cette routine complète associe savon curcuma, toner glycolique, sérum Vitamine C et lait Biosphere. Elle est plébiscitée pour son action éclaircissante progressive, sa capacité à unifier le teint et à atténuer les taches sans irritation. Les clientes adorent son effet "peau de bébé" dès les premières semaines.</p>
+        <button class="btn-brown" onclick="addRoutine('Routine Éclat Suprême', 28500)">AJOUTER — 28 500 FCFA</button>
+      </div>
+    </div>
+    <!-- Carte 2 : Rituel Hammam & Glow -->
+    <div class="bs-card">
+      <div class="bs-img" style="background-image: url('https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=800&q=80');"></div>
+      <div class="bs-body">
+        <h3>Rituel Hammam & Glow</h3>
+        <p class="bs-description">Pourquoi ce rituel est un best seller ? Grâce à son gant Kessa exfoliant, son huile de soin régénérante et son masque au miel de Manuka, ce soin transforme les peaux sèches, ternes ou rugueuses. Il est acclamé pour son effet cocooning, son odeur enveloppante et sa capacité à redonner douceur et éclat en une seule application.</p>
+        <button class="btn-brown" onclick="addRoutine('Rituel Hammam & Glow', 32900)">AJOUTER — 32 900 FCFA</button>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -279,7 +359,6 @@
 
 <script>
   // ======================== CONFIGURATION ========================
-  // 🔴 URL de votre script Apps Script déployé (déjà renseignée)
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx6NmekfvNMCFqasTCO_QpA4l8mV2HkNgR6_cdH291ci5sa8zaKYJqj05_ZXtjL3KFa/exec';
 
   let allProducts = [];
@@ -298,17 +377,14 @@
     setTimeout(() => t.classList.remove('show'), 2500);
   }
 
-  // ========== BACKEND VIA FETCH ==========
   async function chargerProduits() {
     try {
       console.log("Chargement depuis:", SCRIPT_URL);
       const response = await fetch(`${SCRIPT_URL}?action=produits`);
       const data = await response.json();
-      console.log("Réponse brute:", data);
       if (data.ok && data.produits && data.produits.length > 0) {
         allProducts = data.produits;
         console.log("✅ Produits chargés:", allProducts.length);
-        // Petite vérification : afficher les premières images pour debug
         if (allProducts[0]) console.log("Premier produit image:", allProducts[0].img);
       } else {
         throw new Error(data.error || "Aucun produit reçu");
@@ -359,7 +435,6 @@
     }
   }
 
-  // ========== CARROUSEL AVEC IMAGES + NOMS, COLLÉS ==========
   let carouselTrack = null;
 
   function initCarousel() {
@@ -370,7 +445,6 @@
       return;
     }
     carouselTrack.innerHTML = '';
-    // Dupliquer plusieurs fois pour un défilement infini fluide
     const duplicates = 3;
     for (let d = 0; d < duplicates; d++) {
       allProducts.forEach(prod => {
@@ -395,7 +469,7 @@
     autoScrollInterval = setInterval(() => {
       if (!isAutoScrolling) return;
       if (carouselTrack) {
-        const itemWidth = 130; // correspond à width:130px dans CSS
+        const itemWidth = 130;
         carouselTrack.scrollBy({ left: itemWidth, behavior: 'smooth' });
         setTimeout(() => {
           if (carouselTrack.scrollLeft + carouselTrack.clientWidth >= carouselTrack.scrollWidth - itemWidth * 2) {
@@ -412,7 +486,6 @@
     carouselTrack.addEventListener('mouseleave', () => { isAutoScrolling = true; });
   }
 
-  // ========== FONCTIONS UI STANDARD ==========
   function renderCategories() {
     const cats = [...new Set(allProducts.map(p => p.cat).filter(c => c && c.trim() !== ""))];
     const bar = document.getElementById('catBar');
@@ -437,7 +510,6 @@
 
   function escapeHtml(str) { return String(str).replace(/[&<>]/g, function(m){if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
 
-  // Panier
   function saveCart() { localStorage.setItem('glowly_cart', JSON.stringify(cart)); updateCartUI(); }
   function loadCart() { const saved = localStorage.getItem('glowly_cart'); if (saved) cart = JSON.parse(saved); updateCartUI(); }
   function updateCartUI() {
