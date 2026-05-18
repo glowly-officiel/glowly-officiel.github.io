@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
   <title>GLOWLY — Beauté Authentique</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
@@ -183,55 +183,82 @@
 <div id="toast"></div>
 
 <script>
-  // ********** PRODUITS DE SECOURS (SI BACKEND ÉCHOUÉ) **********
-  const fallbackProducts = [
-    { id: "fb1", nom: "Savon Curcuma & Aloe", prix: 8500, cat: "Nettoyants", desc: "Purifie et éclaire le teint.", img: "https://images.unsplash.com/photo-1600857062241-98e5dba7f214?w=400&q=80" },
-    { id: "fb2", nom: "Toner Glycolique PHA", prix: 12500, cat: "Toners", desc: "Exfoliation douce.", img: "https://images.unsplash.com/photo-1620916566390-22f5e7abca7e?w=400&q=80" },
-    { id: "fb3", nom: "Sérum Vitamine C 15%", prix: 22500, cat: "Sérums", desc: "Antioxydant, éclat immédiat.", img: "https://images.unsplash.com/photo-1631730359585-38a4935dbef4?w=400&q=80" },
-    { id: "fb4", nom: "Lait Hydra-Biosphere", prix: 16500, cat: "Hydratants", desc: "Niacinamide, apaise.", img: "https://images.unsplash.com/photo-1620916566390-22f5e7abca7e?w=400&q=80" },
-    { id: "fb5", nom: "Masque Miel de Manuka", prix: 14800, cat: "Masques", desc: "Réparation intense.", img: "https://images.unsplash.com/photo-1599305445671-ac291c95f0b2?w=400&q=80" },
-    { id: "fb6", nom: "Huile Régénérante", prix: 19500, cat: "Huiles", desc: "Riche en oméga.", img: "https://images.unsplash.com/photo-1617897903246-71924a6b44ca?w=400&q=80" },
-    { id: "fb7", nom: "Crème Solaire SPF50", prix: 15900, cat: "Protection", desc: "Protection totale.", img: "https://images.unsplash.com/photo-1611085583191-a3b181aaf026?w=400&q=80" },
-    { id: "fb8", nom: "Gommage Doux Enzymatique", prix: 11200, cat: "Exfoliants", desc: "Papaye, éclat.", img: "https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=400&q=80" }
-  ];
+  // ======================== CONFIGURATION ========================
+  // 🔴 REMPLACEZ CETTE URL PAR CELLE DE VOTRE SCRIPT GAS DÉPLOYÉ
+  const SCRIPT_URL = 'VOTRE_URL_SCRIPT_GAS';  // <--- À MODIFIER
 
-  let allProducts = [...fallbackProducts];
+  let allProducts = [];
   let cart = [];
   let promoReduction = 0;
   let currentLightboxProduct = null;
   let currentCategory = "";
   let currentSearch = "";
 
-  function showToast(msg) { const t = document.getElementById('toast'); t.innerText = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2500); }
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.innerText = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+  }
 
-  // Récupération depuis le backend (Google Apps Script)
-  function loadProductsFromBackend() {
-    if (typeof google !== 'undefined' && google.script && google.script.run) {
-      google.script.run.withSuccessHandler(function(response) {
-        if (response && response.ok && response.produits && response.produits.length > 0) {
-          allProducts = response.produits;
-          console.log("✅ Produits chargés depuis le backend:", allProducts.length);
-        } else {
-          console.warn("⚠️ Backend vide ou erreur, utilisation des produits de secours");
-          allProducts = [...fallbackProducts];
-        }
-        renderCategories();
-        renderProducts();
-      }).withFailureHandler(function(err) {
-        console.error("❌ Erreur backend:", err);
-        allProducts = [...fallbackProducts];
-        renderCategories();
-        renderProducts();
-        showToast("Mode démo : produits affichés localement");
-      }).obtenirProduits();
-    } else {
-      console.warn("⚠️ google.script.run non disponible (mode statique)");
-      allProducts = [...fallbackProducts];
-      renderCategories();
-      renderProducts();
+  // ========== APPELS BACKEND VIA FETCH ==========
+  async function chargerProduits() {
+    try {
+      const response = await fetch(`${SCRIPT_URL}?action=produits`);
+      const data = await response.json();
+      if (data.ok && data.produits && data.produits.length > 0) {
+        allProducts = data.produits;
+        console.log("✅ Produits chargés depuis le backend:", allProducts.length);
+      } else {
+        throw new Error("Aucun produit reçu");
+      }
+    } catch (err) {
+      console.error("Erreur chargement produits:", err);
+      showToast("Impossible de charger les produits. Vérifiez l'URL du backend.");
+      allProducts = [];
+    }
+    renderCategories();
+    renderProducts();
+  }
+
+  async function verifierCodePromo(code, productNames) {
+    try {
+      const url = `${SCRIPT_URL}?action=verifierPromo&code=${encodeURIComponent(code)}&produits=${encodeURIComponent(productNames.join(','))}`;
+      const response = await fetch(url);
+      const data = await response.json();
+      if (data.ok && data.reduction > 0) {
+        promoReduction = data.reduction;
+        document.getElementById('promoMsg').innerText = `✅ Réduction ${promoReduction} FCFA appliquée !`;
+      } else {
+        promoReduction = 0;
+        document.getElementById('promoMsg').innerText = "❌ Code invalide ou non applicable";
+      }
+      updateOrderSummary();
+    } catch (err) {
+      console.error(err);
+      showToast("Erreur lors de la vérification du code promo");
     }
   }
 
+  async function envoyerCommande(lignes) {
+    try {
+      const response = await fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors', // Important pour GAS
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(lignes)
+      });
+      // Avec no-cors, on ne peut pas lire la réponse facilement, on suppose succès
+      showToast("Commande envoyée avec succès !");
+      return true;
+    } catch (err) {
+      console.error(err);
+      showToast("Erreur lors de l'envoi de la commande");
+      return false;
+    }
+  }
+
+  // ========== FONCTIONS UI (IDENTIQUES À AVANT) ==========
   function renderCategories() {
     const cats = [...new Set(allProducts.map(p => p.cat).filter(c => c && c.trim() !== ""))];
     const bar = document.getElementById('catBar');
@@ -280,7 +307,6 @@
   function addToCart(product) { const existing = cart.find(i => i.id == product.id); if (existing) existing.qty++; else cart.push({ id: product.id, name: product.nom, price: product.prix, qty: 1 }); saveCart(); showToast(`${product.nom} ajouté au panier`); }
   function addRoutine(name, price) { const routineId = Date.now(); cart.push({ id: routineId, name: name, price: price, qty: 1 }); saveCart(); showToast(`Routine ${name} ajoutée`); }
 
-  // Lightbox
   function openLightbox(product) { currentLightboxProduct = product; document.getElementById('lbImage').src = product.img || ''; document.getElementById('lbTitle').innerText = product.nom; document.getElementById('lbPrice').innerText = Number(product.prix).toLocaleString() + ' FCFA'; document.getElementById('lbDesc').innerText = product.desc || ''; document.getElementById('lbCat').innerText = product.cat || ''; document.getElementById('lightboxOverlay').classList.add('open'); }
   function closeLightbox(e) { if (e && e.target !== e.currentTarget) return; document.getElementById('lightboxOverlay').classList.remove('open'); }
   function addCurrentLightboxToCart() { if (currentLightboxProduct) addToCart(currentLightboxProduct); closeLightbox(); }
@@ -288,26 +314,23 @@
   function openCart() { document.getElementById('cartOverlay').classList.add('open'); }
   function closeCart(e, force) { if (force || (e && e.target === document.getElementById('cartOverlay'))) document.getElementById('cartOverlay').classList.remove('open'); }
 
-  // Code promo et commande
   function applyPromoCode() {
     const code = document.getElementById('promoCode').value.trim();
     if (!code) { showToast("Entrez un code"); return; }
     const productNames = cart.map(item => item.name);
-    if (typeof google !== 'undefined' && google.script && google.script.run) {
-      google.script.run.withSuccessHandler(function(response) {
-        if (response.ok && response.reduction > 0) { promoReduction = response.reduction; document.getElementById('promoMsg').innerText = `✅ Réduction ${promoReduction} FCFA appliquée !`; updateOrderSummary(); }
-        else { promoReduction = 0; document.getElementById('promoMsg').innerText = "❌ Code invalide"; updateOrderSummary(); }
-      }).verifierPromo({ action: "verifierPromo", code: code, produits: productNames });
-    } else { showToast("Backend non disponible, code promo non vérifié"); }
+    verifierCodePromo(code, productNames);
   }
+
   function updateOrderSummary() {
     const subtotal = cart.reduce((s,i) => s + (i.price * i.qty), 0);
     const total = subtotal - promoReduction;
     document.getElementById('orderSummary').innerHTML = cart.map(i => `${escapeHtml(i.name)} x${i.qty} : ${(i.price*i.qty).toLocaleString()} FCFA`).join('<br>') + `<br><strong>Sous-total : ${subtotal.toLocaleString()} FCFA</strong><br>Réduction : -${promoReduction.toLocaleString()} FCFA<br><strong>Total : ${(total>0?total:0).toLocaleString()} FCFA</strong>`;
   }
+
   function openCheckout() { if (cart.length === 0) { showToast("Panier vide"); return; } updateOrderSummary(); document.getElementById('checkoutModal').classList.add('open'); }
   function closeCheckout(e) { if (e.target === document.getElementById('checkoutModal')) document.getElementById('checkoutModal').classList.remove('open'); }
   function generateIdVente() { return "GLW-" + Date.now() + "-" + Math.floor(Math.random() * 10000); }
+
   function confirmOrder() {
     const name = document.getElementById('checkoutName').value.trim();
     const phone = document.getElementById('checkoutPhone').value.trim();
@@ -316,25 +339,41 @@
     if (!name || !phone || !quartier) { showToast("Veuillez remplir tous les champs obligatoires (*)"); return; }
     const adresseComplete = `${quartier}, ${document.getElementById('checkoutAddress').value.trim()}, ${region}`;
     const paiement = document.getElementById('checkoutPayment').value;
-    const subtotal = cart.reduce((s,i) => s + (i.price * i.qty), 0);
-    const totalAPayer = subtotal - promoReduction;
-    const mentionPromo = promoReduction > 0 ? `Promo -${promoReduction} FCFA` : "";
-    const lignes = cart.map(item => ({ idVente: generateIdVente(), nomProduit: item.name, quantite: item.qty, prixTotalPaye: Math.round(item.price * item.qty), telephone: phone, nomClient: name, adresse: adresseComplete, paiement: paiement, mentionPromo: mentionPromo }));
-    if (typeof google !== 'undefined' && google.script && google.script.run) {
-      google.script.run.withSuccessHandler(function(response) { if (response.ok) { document.getElementById('orderSuccess').style.display = 'block'; cart = []; promoReduction = 0; saveCart(); setTimeout(() => { document.getElementById('checkoutModal').classList.remove('open'); document.getElementById('orderSuccess').style.display = 'none'; showToast("Commande confirmée !"); }, 2000); } else { showToast("Erreur: " + (response.error || "")); } }).enregistrerCommandeWeb(lignes);
-    } else { showToast("Backend non disponible, commande simulée"); document.getElementById('orderSuccess').style.display = 'block'; setTimeout(() => location.reload(), 2000); }
+    const lignes = cart.map(item => ({
+      idVente: generateIdVente(),
+      nomProduit: item.name,
+      quantite: item.qty,
+      prixTotalPaye: Math.round(item.price * item.qty),
+      telephone: phone,
+      nomClient: name,
+      adresse: adresseComplete,
+      paiement: paiement,
+      mentionPromo: promoReduction > 0 ? `Promo -${promoReduction} FCFA` : ""
+    }));
+    envoyerCommande(lignes).then(() => {
+      document.getElementById('orderSuccess').style.display = 'block';
+      cart = [];
+      promoReduction = 0;
+      saveCart();
+      setTimeout(() => {
+        document.getElementById('checkoutModal').classList.remove('open');
+        document.getElementById('orderSuccess').style.display = 'none';
+        showToast("Commande confirmée ! Nous vous contacterons.");
+      }, 2000);
+    });
   }
 
-  // Contact
   function openContactModal() { document.getElementById('contactModal').classList.add('open'); }
   function closeContactModal(e) { if (e.target === document.getElementById('contactModal')) document.getElementById('contactModal').classList.remove('open'); }
   function sendContact() { const nom = document.getElementById('contactName').value.trim(); const tel = document.getElementById('contactPhone').value.trim(); if (!nom || !tel) { showToast("Merci de remplir nom et téléphone"); return; } document.getElementById('contactAck').style.display = 'block'; setTimeout(() => { document.getElementById('contactAck').style.display = 'none'; document.getElementById('contactModal').classList.remove('open'); showToast("Message envoyé !"); }, 1200); }
   function sendFooterMessage() { const nom = document.getElementById('footerName').value.trim(); const tel = document.getElementById('footerPhone').value.trim(); if (!nom || !tel) { showToast("Merci nom et WhatsApp"); return; } showToast(`Merci ${nom}, nous vous répondons.`); document.getElementById('footerName').value = ''; document.getElementById('footerPhone').value = ''; document.getElementById('footerMsg').value = ''; }
 
-  // Initialisation
-  window.addEventListener('load', () => { loadCart(); loadProductsFromBackend(); document.getElementById('searchInput')?.addEventListener('input', () => filterProducts()); });
+  window.addEventListener('load', () => {
+    loadCart();
+    chargerProduits();
+    document.getElementById('searchInput')?.addEventListener('input', () => filterProducts());
+  });
 
-  // Exposer globalement
   window.setCategory = setCategory; window.filterProducts = filterProducts; window.changeQty = changeQty; window.removeItem = removeItem; window.addRoutine = addRoutine; window.openLightbox = openLightbox; window.closeLightbox = closeLightbox; window.addCurrentLightboxToCart = addCurrentLightboxToCart; window.openCart = openCart; window.closeCart = closeCart; window.openCheckout = openCheckout; window.closeCheckout = closeCheckout; window.applyPromoCode = applyPromoCode; window.confirmOrder = confirmOrder; window.openContactModal = openContactModal; window.closeContactModal = closeContactModal; window.sendContact = sendContact; window.sendFooterMessage = sendFooterMessage;
 </script>
 </body>
