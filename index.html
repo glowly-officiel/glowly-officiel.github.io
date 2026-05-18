@@ -42,9 +42,117 @@
     .hero-text-section p { max-width: 620px; margin: 0 auto 24px; color: #6E4E40; }
     .btn-gold { display: inline-block; background: linear-gradient(105deg, #D8A7AB, #C9A87C); color: #2E211B; padding: 14px 42px; font-weight: 700; font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; border-radius: 50px; text-decoration: none; box-shadow: 0 8px 18px rgba(165,106,97,0.25); transition: 0.3s; }
     .btn-gold:hover { transform: translateY(-2px); }
+
+    /* ========== CARROUSEL INFINI ========== */
+    .carousel-section {
+      background: var(--bg-beige);
+      padding: 40px 0;
+      border-top: 1px solid var(--border-beige);
+      border-bottom: 1px solid var(--border-beige);
+      margin: 0;
+    }
+    .carousel-title {
+      text-align: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      color: var(--marron-bois);
+      margin-bottom: 20px;
+    }
+    .carousel-container {
+      position: relative;
+      max-width: 1200px;
+      margin: 0 auto;
+      overflow: hidden;
+    }
+    .carousel-track {
+      display: flex;
+      gap: 20px;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      scrollbar-width: thin;
+      padding: 20px 24px;
+      -webkit-overflow-scrolling: touch;
+    }
+    .carousel-track::-webkit-scrollbar {
+      height: 6px;
+    }
+    .carousel-track::-webkit-scrollbar-track {
+      background: var(--border-beige);
+      border-radius: 10px;
+    }
+    .carousel-track::-webkit-scrollbar-thumb {
+      background: var(--rose-gold);
+      border-radius: 10px;
+    }
+    .carousel-card {
+      flex: 0 0 220px;
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: 0.2s;
+      border: 1px solid #F2E2D8;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+    }
+    .carousel-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--rose-gold);
+      box-shadow: 0 12px 20px rgba(94,58,46,0.08);
+    }
+    .carousel-card-img {
+      aspect-ratio: 1;
+      background: #FEF5ED;
+    }
+    .carousel-card-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .carousel-card-body {
+      padding: 12px;
+      text-align: center;
+    }
+    .carousel-card-body h4 {
+      font-size: 0.85rem;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+    .carousel-price {
+      font-weight: 700;
+      color: #C28B90;
+      font-size: 0.9rem;
+    }
+    .carousel-nav {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 15px;
+    }
+    .carousel-btn {
+      background: var(--rose-gold);
+      border: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      font-size: 1.2rem;
+      cursor: pointer;
+      color: var(--marron-bois);
+      transition: 0.2s;
+    }
+    .carousel-btn:hover {
+      background: var(--rose-gold-fonce);
+      color: white;
+    }
+    @media (max-width: 640px) {
+      .carousel-card { flex: 0 0 160px; }
+      .carousel-card-body h4 { font-size: 0.75rem; }
+    }
+
+    /* Sections communes */
     .section { max-width: 1280px; margin: 0 auto; padding: 80px 24px; }
     .section-title { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; text-align: center; color: var(--marron-bois); margin-bottom: 12px; }
     .section-subtitle { text-align: center; color: #9C7A6B; font-style: italic; margin-bottom: 48px; }
+
     .bestsellers { display: grid; gap: 30px; grid-template-columns: 1fr; }
     @media (min-width: 700px) { .bestsellers { grid-template-columns: repeat(2, 1fr); } }
     .bs-card { background: white; border-radius: 28px; overflow: hidden; border: 1px solid #F0E1D6; transition: 0.3s; }
@@ -54,11 +162,13 @@
     .bs-body h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; }
     .btn-brown { background: #A26A5A; color: white; border: none; padding: 12px 28px; border-radius: 40px; font-size: 11px; font-weight: 600; cursor: pointer; }
     .btn-brown:hover { background: #C28B90; }
+
     .science-section { background: #FDF4EF; padding: 60px 24px; }
     .science-flex { display: grid; gap: 32px; max-width: 1000px; margin: 0 auto; }
     @media (min-width: 700px) { .science-flex { grid-template-columns: repeat(3, 1fr); } }
     .science-item { text-align: center; background: rgba(255,245,240,0.6); padding: 24px 12px; border-radius: 32px; }
     .science-icon { font-size: 34px; }
+
     .product-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
     @media (min-width: 640px) { .product-grid { grid-template-columns: repeat(3, 1fr); } }
     @media (min-width: 1024px) { .product-grid { grid-template-columns: repeat(4, 1fr); } }
@@ -69,10 +179,12 @@
     .card-body { padding: 16px; text-align: center; }
     .card-body h3 { font-size: 0.9rem; font-weight: 500; }
     .price { font-weight: 700; color: #C28B90; }
+
     .testimonial-grid { display: grid; gap: 24px; max-width: 800px; margin: 0 auto; }
     @media (min-width: 640px) { .testimonial-grid { grid-template-columns: repeat(2, 1fr); } }
     .testimonial { background: white; padding: 28px; border-radius: 28px; border: 1px solid #F2E0D4; }
     .stars { color: #D8A7AB; margin-bottom: 12px; }
+
     footer { background: #3E2920; color: #E7D8CF; padding: 50px 24px 30px; }
     .footer-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; max-width: 1000px; margin: 0 auto 40px; }
     @media (min-width: 700px) { .footer-grid { grid-template-columns: repeat(4, 1fr); } }
@@ -81,6 +193,7 @@
     .contact-form { max-width: 400px; margin: 20px auto 0; }
     .contact-form input, .contact-form textarea { width: 100%; padding: 12px; margin-bottom: 12px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 40px; }
     .contact-form button { background: var(--gold-dore); border: none; padding: 12px; width: 100%; border-radius: 40px; font-weight: 600; color: #2E211B; cursor: pointer; }
+
     .overlay { position: fixed; inset: 0; background: rgba(62,41,32,0.65); backdrop-filter: blur(5px); z-index: 1000; display: flex; align-items: center; justify-content: center; visibility: hidden; opacity: 0; transition: 0.2s; }
     .overlay.open { visibility: visible; opacity: 1; }
     .cart-panel { position: absolute; right: 0; top: 0; bottom: 0; width: 400px; max-width: 90vw; background: white; display: flex; flex-direction: column; transform: translateX(100%); transition: 0.35s; }
@@ -120,6 +233,18 @@
   <h1>L'art du soin authentique</h1>
   <p>Des formules certifiées à l'international, sans hydroquinone, pour révéler l'éclat de votre peau en toute sécurité.</p>
   <a href="#catalogue" class="btn-gold">DÉCOUVRIR LA COLLECTION</a>
+</section>
+
+<!-- ========== CARROUSEL INFINI DE PRODUITS ========== -->
+<section class="carousel-section" id="carouselSection">
+  <div class="carousel-title">✨ Les incontournables ✨</div>
+  <div class="carousel-container">
+    <div class="carousel-track" id="carouselTrack"></div>
+    <div class="carousel-nav">
+      <button class="carousel-btn" id="carouselPrev">‹</button>
+      <button class="carousel-btn" id="carouselNext">›</button>
+    </div>
+  </div>
 </section>
 
 <div id="coaching" style="scroll-margin-top: 80px;"></div>
@@ -171,7 +296,7 @@
   <p style="text-align:center; margin-top:30px; font-size:11px;">© 2026 Glowly — Tous droits réservés.</p>
 </footer>
 
-<!-- MODALS -->
+<!-- MODALS (identique) -->
 <div id="lightboxOverlay" class="overlay" onclick="closeLightbox(event)"><div class="lightbox-container" onclick="event.stopPropagation()"><div style="flex:1; padding:30px;"><img id="lbImage" style="max-height:55vh; width:100%; object-fit:contain;"></div><div style="flex:1; padding:30px;"><div id="lbCat" style="font-size:12px; letter-spacing:2px; color:var(--rose-gold-fonce);"></div><h2 id="lbTitle" style="margin:12px 0;"></h2><p id="lbPrice" style="font-size:24px; font-weight:bold;"></p><p id="lbDesc" style="color:#6B5A48;"></p><button class="btn-brown" onclick="addCurrentLightboxToCart()" style="margin-top:20px;">Ajouter au panier</button></div></div></div>
 
 <div id="cartOverlay" class="overlay" onclick="closeCart(event)"><div id="cartPanel" class="cart-panel" onclick="event.stopPropagation()"><div style="padding:24px; border-bottom:1px solid var(--border-beige); display:flex; justify-content:space-between;"><h3>Panier</h3><button onclick="closeCart(null,true)" style="background:none; border:none; font-size:20px;">✕</button></div><div id="cartItems" style="flex:1; overflow:auto; padding:20px;"></div><div id="cartFooter" style="padding:20px; border-top:1px solid var(--border-beige); display:none;"><div style="display:flex; justify-content:space-between;"><span>Total</span><strong id="cartTotal">0 FCFA</strong></div><button class="btn-brown" onclick="openCheckout()" style="width:100%; margin-top:16px;">Commander</button></div></div></div>
@@ -185,7 +310,7 @@
 <script>
   // ======================== CONFIGURATION ========================
   // 🔴 REMPLACEZ CETTE URL PAR CELLE DE VOTRE SCRIPT GAS DÉPLOYÉ
-  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw6XIJmgkI409RuBRANcDfBAziH--tEEYWKmVkwqDerZr3ijQVm31HgOpt6h6AyrBdc/exec';  // <--- À MODIFIER
+  const SCRIPT_URL = 'VOTRE_URL_SCRIPT_GAS';  // <--- À MODIFIER
 
   let allProducts = [];
   let cart = [];
@@ -193,6 +318,8 @@
   let currentLightboxProduct = null;
   let currentCategory = "";
   let currentSearch = "";
+  let autoScrollInterval = null;
+  let isAutoScrolling = true;
 
   function showToast(msg) {
     const t = document.getElementById('toast');
@@ -201,7 +328,7 @@
     setTimeout(() => t.classList.remove('show'), 2500);
   }
 
-  // ========== APPELS BACKEND VIA FETCH ==========
+  // ========== BACKEND VIA FETCH ==========
   async function chargerProduits() {
     try {
       const response = await fetch(`${SCRIPT_URL}?action=produits`);
@@ -219,6 +346,7 @@
     }
     renderCategories();
     renderProducts();
+    initCarousel();   // Initialise le carrousel après chargement
   }
 
   async function verifierCodePromo(code, productNames) {
@@ -242,13 +370,12 @@
 
   async function envoyerCommande(lignes) {
     try {
-      const response = await fetch(SCRIPT_URL, {
+      await fetch(SCRIPT_URL, {
         method: 'POST',
-        mode: 'no-cors', // Important pour GAS
+        mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(lignes)
       });
-      // Avec no-cors, on ne peut pas lire la réponse facilement, on suppose succès
       showToast("Commande envoyée avec succès !");
       return true;
     } catch (err) {
@@ -258,7 +385,91 @@
     }
   }
 
-  // ========== FONCTIONS UI (IDENTIQUES À AVANT) ==========
+  // ========== CARROUSEL INFINI ==========
+  let carouselTrack = null;
+  let carouselIndex = 0;
+  let carouselCards = [];
+
+  function initCarousel() {
+    carouselTrack = document.getElementById('carouselTrack');
+    if (!carouselTrack) return;
+    if (allProducts.length === 0) {
+      carouselTrack.innerHTML = '<div style="padding:20px; text-align:center;">Aucun produit disponible</div>';
+      return;
+    }
+    // Construire les cartes du carrousel
+    carouselTrack.innerHTML = '';
+    allProducts.forEach(prod => {
+      const card = document.createElement('div');
+      card.className = 'carousel-card';
+      card.onclick = () => openLightbox(prod);
+      card.innerHTML = `
+        <div class="carousel-card-img"><img src="${prod.img || 'https://placehold.co/400x400/FEF5ED/C28B90?text=Glowly'}" alt="${escapeHtml(prod.nom)}" loading="lazy"></div>
+        <div class="carousel-card-body">
+          <h4>${escapeHtml(prod.nom)}</h4>
+          <div class="carousel-price">${Number(prod.prix).toLocaleString()} FCFA</div>
+        </div>
+      `;
+      carouselTrack.appendChild(card);
+    });
+    // Dupliquer pour l'effet infini (optionnel, mais simple)
+    const cloneCount = Math.ceil(window.innerWidth / 240) * 2;
+    for (let i = 0; i < cloneCount; i++) {
+      allProducts.forEach(prod => {
+        const clone = document.createElement('div');
+        clone.className = 'carousel-card';
+        clone.onclick = () => openLightbox(prod);
+        clone.innerHTML = `
+          <div class="carousel-card-img"><img src="${prod.img || 'https://placehold.co/400x400/FEF5ED/C28B90?text=Glowly'}" alt="${escapeHtml(prod.nom)}" loading="lazy"></div>
+          <div class="carousel-card-body">
+            <h4>${escapeHtml(prod.nom)}</h4>
+            <div class="carousel-price">${Number(prod.prix).toLocaleString()} FCFA</div>
+          </div>
+        `;
+        carouselTrack.appendChild(clone);
+      });
+    }
+    carouselCards = [...carouselTrack.children];
+    startAutoScroll();
+    attachCarouselEvents();
+  }
+
+  function startAutoScroll() {
+    if (autoScrollInterval) clearInterval(autoScrollInterval);
+    autoScrollInterval = setInterval(() => {
+      if (!isAutoScrolling) return;
+      if (carouselTrack) {
+        const scrollAmount = 260; // largeur approximative d'une carte + gap
+        carouselTrack.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+        // Réinitialisation pour effet infini : si on arrive trop près de la fin, revenir au début sans à-coup
+        setTimeout(() => {
+          if (carouselTrack.scrollLeft + carouselTrack.clientWidth >= carouselTrack.scrollWidth - 400) {
+            carouselTrack.scrollTo({ left: 100, behavior: 'auto' });
+          }
+        }, 300);
+      }
+    }, 3000);
+  }
+
+  function attachCarouselEvents() {
+    const prevBtn = document.getElementById('carouselPrev');
+    const nextBtn = document.getElementById('carouselNext');
+    if (prevBtn) prevBtn.onclick = () => {
+      isAutoScrolling = false;
+      carouselTrack.scrollBy({ left: -260, behavior: 'smooth' });
+      setTimeout(() => { isAutoScrolling = true; }, 5000);
+    };
+    if (nextBtn) nextBtn.onclick = () => {
+      isAutoScrolling = false;
+      carouselTrack.scrollBy({ left: 260, behavior: 'smooth' });
+      setTimeout(() => { isAutoScrolling = true; }, 5000);
+    };
+    // Arrêt temporaire du défilement auto au survol
+    carouselTrack.addEventListener('mouseenter', () => { isAutoScrolling = false; });
+    carouselTrack.addEventListener('mouseleave', () => { isAutoScrolling = true; });
+  }
+
+  // ========== FONCTIONS UI STANDARD ==========
   function renderCategories() {
     const cats = [...new Set(allProducts.map(p => p.cat).filter(c => c && c.trim() !== ""))];
     const bar = document.getElementById('catBar');
