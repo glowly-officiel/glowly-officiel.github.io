@@ -43,7 +43,7 @@
     .btn-gold { display: inline-block; background: linear-gradient(105deg, #D8A7AB, #C9A87C); color: #2E211B; padding: 14px 42px; font-weight: 700; font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; border-radius: 50px; text-decoration: none; box-shadow: 0 8px 18px rgba(165,106,97,0.25); transition: 0.3s; }
     .btn-gold:hover { transform: translateY(-2px); }
 
-    /* ========== CARROUSEL STYLE SHANANCE : bande épurée, noms seuls, collés ========== */
+    /* ========== CARROUSEL STYLE SHANANCE : uniquement les noms, collés ========== */
     .carousel-section {
       background: var(--bg-beige);
       padding: 30px 0;
@@ -65,7 +65,7 @@
     }
     .carousel-track {
       display: flex;
-      gap: 0;                /* Pas d'espace entre les éléments */
+      gap: 0;
       overflow-x: auto;
       scroll-behavior: smooth;
       scrollbar-width: thin;
@@ -83,12 +83,11 @@
       background: var(--rose-gold);
       border-radius: 10px;
     }
-    /* Élément produit : uniquement le nom, en ligne */
     .carousel-item {
       display: inline-block;
       flex: 0 0 auto;
       padding: 8px 0;
-      margin-right: 2rem;    /* Espacement entre les noms (peut être réduit à 1rem ou 0) */
+      margin-right: 1.5rem;   /* espace léger, tu peux le réduire à 0 pour coller parfaitement */
       font-size: 1.1rem;
       font-weight: 500;
       color: var(--text-brun);
@@ -99,12 +98,11 @@
     .carousel-item:hover {
       color: var(--rose-gold-fonce);
     }
-    /* Pas de flèches */
     .carousel-nav {
       display: none;
     }
 
-    /* Autres sections inchangées */
+    /* ========== GRILLE PRODUITS AVEC IMAGES ========== */
     .section { max-width: 1280px; margin: 0 auto; padding: 80px 24px; }
     .section-title { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; text-align: center; color: var(--marron-bois); margin-bottom: 12px; }
     .section-subtitle { text-align: center; color: #9C7A6B; font-style: italic; margin-bottom: 48px; }
@@ -191,7 +189,7 @@
   <a href="#catalogue" class="btn-gold">DÉCOUVRIR LA COLLECTION</a>
 </section>
 
-<!-- ========== CARROUSEL : UNIQUEMENT LES NOMS DES PRODUITS (SANS PRIX) ========== -->
+<!-- ========== CARROUSEL : UNIQUEMENT LES NOMS DES PRODUITS (COMME SHANANCE) ========== -->
 <section class="carousel-section" id="carouselSection">
   <div class="carousel-title">✨ Les incontournables ✨</div>
   <div class="carousel-container">
@@ -248,7 +246,7 @@
   <p style="text-align:center; margin-top:30px; font-size:11px;">© 2026 Glowly — Tous droits réservés.</p>
 </footer>
 
-<!-- MODALS (inchangées) -->
+<!-- MODALS -->
 <div id="lightboxOverlay" class="overlay" onclick="closeLightbox(event)"><div class="lightbox-container" onclick="event.stopPropagation()"><div style="flex:1; padding:30px;"><img id="lbImage" style="max-height:55vh; width:100%; object-fit:contain;"></div><div style="flex:1; padding:30px;"><div id="lbCat" style="font-size:12px; letter-spacing:2px; color:var(--rose-gold-fonce);"></div><h2 id="lbTitle" style="margin:12px 0;"></h2><p id="lbPrice" style="font-size:24px; font-weight:bold;"></p><p id="lbDesc" style="color:#6B5A48;"></p><button class="btn-brown" onclick="addCurrentLightboxToCart()" style="margin-top:20px;">Ajouter au panier</button></div></div></div>
 
 <div id="cartOverlay" class="overlay" onclick="closeCart(event)"><div id="cartPanel" class="cart-panel" onclick="event.stopPropagation()"><div style="padding:24px; border-bottom:1px solid var(--border-beige); display:flex; justify-content:space-between;"><h3>Panier</h3><button onclick="closeCart(null,true)" style="background:none; border:none; font-size:20px;">✕</button></div><div id="cartItems" style="flex:1; overflow:auto; padding:20px;"></div><div id="cartFooter" style="padding:20px; border-top:1px solid var(--border-beige); display:none;"><div style="display:flex; justify-content:space-between;"><span>Total</span><strong id="cartTotal">0 FCFA</strong></div><button class="btn-brown" onclick="openCheckout()" style="width:100%; margin-top:16px;">Commander</button></div></div></div>
@@ -261,7 +259,7 @@
 
 <script>
   // ======================== CONFIGURATION ========================
-  // 🔴 REMPLACEZ CETTE URL PAR CELLE DE VOTRE SCRIPT GAS DÉPLOYÉ (si nécessaire)
+  // 🔴 REMPLACEZ CETTE URL PAR CELLE DE VOTRE SCRIPT GAS DÉPLOYÉ (si différente)
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx6NmekfvNMCFqasTCO_QpA4l8mV2HkNgR6_cdH291ci5sa8zaKYJqj05_ZXtjL3KFa/exec';
 
   let allProducts = [];
@@ -339,7 +337,7 @@
     }
   }
 
-  // ========== CARROUSEL (uniquement le nom, pas de prix) ==========
+  // ========== CARROUSEL (UNIQUEMENT NOMS, SANS PRIX) ==========
   let carouselTrack = null;
 
   function initCarousel() {
@@ -350,14 +348,13 @@
       return;
     }
     carouselTrack.innerHTML = '';
-    // Duplication pour effet infini fluide
+    // Duplication pour effet infini
     const duplicates = 4;
     for (let d = 0; d < duplicates; d++) {
       allProducts.forEach(prod => {
         const item = document.createElement('div');
         item.className = 'carousel-item';
         item.onclick = () => openLightbox(prod);
-        // Affichage : uniquement le nom, sans le prix
         item.innerHTML = `<span>${escapeHtml(prod.nom)}</span>`;
         carouselTrack.appendChild(item);
       });
@@ -371,8 +368,7 @@
     autoScrollInterval = setInterval(() => {
       if (!isAutoScrolling) return;
       if (carouselTrack) {
-        // Largeur moyenne d'un élément + marge (environ 150px)
-        const scrollAmount = 150;
+        const scrollAmount = 130; // ajuste selon la largeur moyenne d'un nom
         carouselTrack.scrollBy({ left: scrollAmount, behavior: 'smooth' });
         setTimeout(() => {
           if (carouselTrack.scrollLeft + carouselTrack.clientWidth >= carouselTrack.scrollWidth - 400) {
@@ -389,7 +385,7 @@
     carouselTrack.addEventListener('mouseleave', () => { isAutoScrolling = true; });
   }
 
-  // ========== FONCTIONS UI STANDARD (inchangées) ==========
+  // ========== FONCTIONS UI STANDARD ==========
   function renderCategories() {
     const cats = [...new Set(allProducts.map(p => p.cat).filter(c => c && c.trim() !== ""))];
     const bar = document.getElementById('catBar');
@@ -409,7 +405,7 @@
     if (currentCategory) filtered = filtered.filter(p => p.cat === currentCategory);
     if (currentSearch) filtered = filtered.filter(p => p.nom.toLowerCase().includes(currentSearch) || (p.cat && p.cat.toLowerCase().includes(currentSearch)));
     if (filtered.length === 0) { grid.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:40px;">Aucun produit trouvé</div>'; return; }
-    grid.innerHTML = filtered.map(p => `<div class="card" onclick='openLightbox(${JSON.stringify(p).replace(/'/g, "&#39;")})'><div class="card-img"><img src="${p.img || 'https://placehold.co/400x400/FEF5ED/C28B90?text=Glowly'}" alt="${escapeHtml(p.nom)}" loading="lazy"></div><div class="card-body"><h3>${escapeHtml(p.nom)}</h3><div class="price">${Number(p.prix).toLocaleString()} FCFA</div></div></div>`).join('');
+    grid.innerHTML = filtered.map(p => `<div class="card" onclick='openLightbox(${JSON.stringify(p).replace(/'/g, "&#39;")})'><div class="card-img"><img src="${p.img || 'https://placehold.co/400x400/FEF5ED/C28B90?text=Glowly'}" alt="${escapeHtml(p.nom)}" loading="lazy" onerror="this.src='https://placehold.co/400x400/FEF5ED/C28B90?text=Image'"></div><div class="card-body"><h3>${escapeHtml(p.nom)}</h3><div class="price">${Number(p.prix).toLocaleString()} FCFA</div></div></div>`).join('');
   }
 
   function escapeHtml(str) { return String(str).replace(/[&<>]/g, function(m){if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
@@ -505,7 +501,6 @@
     document.getElementById('searchInput')?.addEventListener('input', () => filterProducts());
   });
 
-  // Exposer les fonctions globales
   window.setCategory = setCategory; window.filterProducts = filterProducts; window.changeQty = changeQty; window.removeItem = removeItem; window.addRoutine = addRoutine; window.openLightbox = openLightbox; window.closeLightbox = closeLightbox; window.addCurrentLightboxToCart = addCurrentLightboxToCart; window.openCart = openCart; window.closeCart = closeCart; window.openCheckout = openCheckout; window.closeCheckout = closeCheckout; window.applyPromoCode = applyPromoCode; window.confirmOrder = confirmOrder; window.openContactModal = openContactModal; window.closeContactModal = closeContactModal; window.sendContact = sendContact; window.sendFooterMessage = sendFooterMessage;
 </script>
 </body>
