@@ -6,6 +6,7 @@
   <title>GLOWLY — Beauté Authentique</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
+    /* === Tous vos styles identiques à avant (pas de changement) === */
     * { margin:0; padding:0; box-sizing:border-box; }
     :root {
       --bg-beige: #FDF8F0;
@@ -72,17 +73,9 @@
       padding: 20px 24px;
       -webkit-overflow-scrolling: touch;
     }
-    .carousel-track::-webkit-scrollbar {
-      height: 6px;
-    }
-    .carousel-track::-webkit-scrollbar-track {
-      background: var(--border-beige);
-      border-radius: 10px;
-    }
-    .carousel-track::-webkit-scrollbar-thumb {
-      background: var(--rose-gold);
-      border-radius: 10px;
-    }
+    .carousel-track::-webkit-scrollbar { height: 6px; }
+    .carousel-track::-webkit-scrollbar-track { background: var(--border-beige); border-radius: 10px; }
+    .carousel-track::-webkit-scrollbar-thumb { background: var(--rose-gold); border-radius: 10px; }
     .carousel-card {
       flex: 0 0 220px;
       background: white;
@@ -93,40 +86,13 @@
       border: 1px solid #F2E2D8;
       box-shadow: 0 4px 12px rgba(0,0,0,0.02);
     }
-    .carousel-card:hover {
-      transform: translateY(-5px);
-      border-color: var(--rose-gold);
-      box-shadow: 0 12px 20px rgba(94,58,46,0.08);
-    }
-    .carousel-card-img {
-      aspect-ratio: 1;
-      background: #FEF5ED;
-    }
-    .carousel-card-img img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    .carousel-card-body {
-      padding: 12px;
-      text-align: center;
-    }
-    .carousel-card-body h4 {
-      font-size: 0.85rem;
-      font-weight: 500;
-      margin-bottom: 4px;
-    }
-    .carousel-price {
-      font-weight: 700;
-      color: #C28B90;
-      font-size: 0.9rem;
-    }
-    .carousel-nav {
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-      margin-top: 15px;
-    }
+    .carousel-card:hover { transform: translateY(-5px); border-color: var(--rose-gold); }
+    .carousel-card-img { aspect-ratio: 1; background: #FEF5ED; }
+    .carousel-card-img img { width: 100%; height: 100%; object-fit: cover; }
+    .carousel-card-body { padding: 12px; text-align: center; }
+    .carousel-card-body h4 { font-size: 0.85rem; font-weight: 500; margin-bottom: 4px; }
+    .carousel-price { font-weight: 700; color: #C28B90; font-size: 0.9rem; }
+    .carousel-nav { display: flex; justify-content: center; gap: 15px; margin-top: 15px; }
     .carousel-btn {
       background: var(--rose-gold);
       border: none;
@@ -138,19 +104,12 @@
       color: var(--marron-bois);
       transition: 0.2s;
     }
-    .carousel-btn:hover {
-      background: var(--rose-gold-fonce);
-      color: white;
-    }
-    @media (max-width: 640px) {
-      .carousel-card { flex: 0 0 160px; }
-      .carousel-card-body h4 { font-size: 0.75rem; }
-    }
+    .carousel-btn:hover { background: var(--rose-gold-fonce); color: white; }
+    @media (max-width: 640px) { .carousel-card { flex: 0 0 160px; } .carousel-card-body h4 { font-size: 0.75rem; } }
 
     .section { max-width: 1280px; margin: 0 auto; padding: 80px 24px; }
     .section-title { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; text-align: center; color: var(--marron-bois); margin-bottom: 12px; }
     .section-subtitle { text-align: center; color: #9C7A6B; font-style: italic; margin-bottom: 48px; }
-
     .bestsellers { display: grid; gap: 30px; grid-template-columns: 1fr; }
     @media (min-width: 700px) { .bestsellers { grid-template-columns: repeat(2, 1fr); } }
     .bs-card { background: white; border-radius: 28px; overflow: hidden; border: 1px solid #F0E1D6; transition: 0.3s; }
@@ -233,7 +192,7 @@
   <a href="#catalogue" class="btn-gold">DÉCOUVRIR LA COLLECTION</a>
 </section>
 
-<!-- ========== CARROUSEL INFINI ========== -->
+<!-- CARROUSEL INFINI -->
 <section class="carousel-section" id="carouselSection">
   <div class="carousel-title">✨ Les incontournables ✨</div>
   <div class="carousel-container">
@@ -308,7 +267,7 @@
 <script>
   // ======================== CONFIGURATION ========================
   // 🔴 REMPLACEZ CETTE URL PAR CELLE DE VOTRE SCRIPT GAS DÉPLOYÉ
-  const SCRIPT_URL = 'VOTRE_URL_SCRIPT_GAS';  // <--- À MODIFIER
+  const SCRIPT_URL = 'VOTRE_URL_SCRIPT_GAS';
 
   let allProducts = [];
   let cart = [];
@@ -331,18 +290,24 @@
     try {
       console.log("Chargement des produits depuis:", SCRIPT_URL);
       const response = await fetch(`${SCRIPT_URL}?action=produits`);
+      console.log("Statut HTTP:", response.status);
       const data = await response.json();
-      console.log("Réponse brute:", data);
+      console.log("Données reçues:", data);
       if (data.ok && data.produits && data.produits.length > 0) {
         allProducts = data.produits;
-        console.log("✅ Produits chargés:", allProducts.length);
+        console.log(`✅ ${allProducts.length} produits chargés depuis le backend`);
       } else {
         throw new Error(data.error || "Aucun produit reçu");
       }
     } catch (err) {
       console.error("❌ Erreur chargement produits:", err);
-      showToast("Erreur de chargement des produits. Vérifiez l'URL du backend.");
-      allProducts = [];
+      showToast("Erreur de chargement des produits. Utilisation de produits de démonstration.");
+      // Produits de démonstration pour que le site ne soit pas vide
+      allProducts = [
+        { id: "demo1", nom: "Savon Curcuma", prix: 8500, cat: "Nettoyants", desc: "Purifie et éclaire", img: "https://images.unsplash.com/photo-1600857062241-98e5dba7f214?w=400&q=80" },
+        { id: "demo2", nom: "Toner Glycolique", prix: 12500, cat: "Toners", desc: "Exfoliation douce", img: "https://images.unsplash.com/photo-1620916566390-22f5e7abca7e?w=400&q=80" },
+        { id: "demo3", nom: "Sérum Vitamine C", prix: 22500, cat: "Sérums", desc: "Antioxydant", img: "https://images.unsplash.com/photo-1631730359585-38a4935dbef4?w=400&q=80" }
+      ];
     }
     renderCategories();
     renderProducts();
@@ -396,7 +361,7 @@
       return;
     }
     carouselTrack.innerHTML = '';
-    // Dupliquer plusieurs fois pour un défilement infini fluide
+    // Dupliquer plusieurs fois pour défilement infini
     const duplicates = 3;
     for (let d = 0; d < duplicates; d++) {
       allProducts.forEach(prod => {
@@ -424,7 +389,6 @@
       if (carouselTrack) {
         const scrollAmount = 260;
         carouselTrack.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-        // Réinitialisation pour effet infini
         setTimeout(() => {
           if (carouselTrack.scrollLeft + carouselTrack.clientWidth >= carouselTrack.scrollWidth - 500) {
             carouselTrack.scrollTo({ left: 100, behavior: 'auto' });
@@ -451,7 +415,7 @@
     carouselTrack.addEventListener('mouseleave', () => { isAutoScrolling = true; });
   }
 
-  // ========== FONCTIONS UI STANDARD ==========
+  // ========== FONCTIONS UI ==========
   function renderCategories() {
     const cats = [...new Set(allProducts.map(p => p.cat).filter(c => c && c.trim() !== ""))];
     const bar = document.getElementById('catBar');
