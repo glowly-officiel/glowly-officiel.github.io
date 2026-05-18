@@ -42,27 +42,115 @@
     .hero-text-section p { max-width: 620px; margin: 0 auto 24px; color: #6E4E40; }
     .btn-gold { display: inline-block; background: linear-gradient(105deg, #D8A7AB, #C9A87C); color: #2E211B; padding: 14px 42px; font-weight: 700; font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; border-radius: 50px; text-decoration: none; box-shadow: 0 8px 18px rgba(165,106,97,0.25); transition: 0.3s; }
     .btn-gold:hover { transform: translateY(-2px); }
-    .carousel-section { background: var(--bg-beige); padding: 40px 0; border-top: 1px solid var(--border-beige); border-bottom: 1px solid var(--border-beige); }
-    .carousel-title { text-align: center; font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; color: var(--marron-bois); margin-bottom: 20px; }
-    .carousel-container { position: relative; max-width: 1200px; margin: 0 auto; overflow: hidden; }
-    .carousel-track { display: flex; gap: 20px; overflow-x: auto; scroll-behavior: smooth; scrollbar-width: thin; padding: 20px 24px; }
-    .carousel-track::-webkit-scrollbar { height: 6px; }
-    .carousel-track::-webkit-scrollbar-track { background: var(--border-beige); border-radius: 10px; }
-    .carousel-track::-webkit-scrollbar-thumb { background: var(--rose-gold); border-radius: 10px; }
-    .carousel-card { flex: 0 0 220px; background: white; border-radius: 20px; overflow: hidden; cursor: pointer; transition: 0.2s; border: 1px solid #F2E2D8; }
-    .carousel-card:hover { transform: translateY(-5px); border-color: var(--rose-gold); box-shadow: 0 12px 20px rgba(94,58,46,0.08); }
-    .carousel-card-img { aspect-ratio: 1; background: #FEF5ED; }
-    .carousel-card-img img { width: 100%; height: 100%; object-fit: cover; }
-    .carousel-card-body { padding: 12px; text-align: center; }
-    .carousel-card-body h4 { font-size: 0.85rem; font-weight: 500; margin-bottom: 4px; }
-    .carousel-price { font-weight: 700; color: #C28B90; font-size: 0.9rem; }
-    .carousel-nav { display: flex; justify-content: center; gap: 15px; margin-top: 15px; }
-    .carousel-btn { background: var(--rose-gold); border: none; width: 40px; height: 40px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; color: var(--marron-bois); }
-    .carousel-btn:hover { background: var(--rose-gold-fonce); color: white; }
-    @media (max-width: 640px) { .carousel-card { flex: 0 0 160px; } }
+
+    .carousel-section {
+      background: var(--bg-beige);
+      padding: 40px 0;
+      border-top: 1px solid var(--border-beige);
+      border-bottom: 1px solid var(--border-beige);
+      margin: 0;
+    }
+    .carousel-title {
+      text-align: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      color: var(--marron-bois);
+      margin-bottom: 20px;
+    }
+    .carousel-container {
+      position: relative;
+      max-width: 1200px;
+      margin: 0 auto;
+      overflow: hidden;
+    }
+    .carousel-track {
+      display: flex;
+      gap: 20px;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      scrollbar-width: thin;
+      padding: 20px 24px;
+      -webkit-overflow-scrolling: touch;
+    }
+    .carousel-track::-webkit-scrollbar {
+      height: 6px;
+    }
+    .carousel-track::-webkit-scrollbar-track {
+      background: var(--border-beige);
+      border-radius: 10px;
+    }
+    .carousel-track::-webkit-scrollbar-thumb {
+      background: var(--rose-gold);
+      border-radius: 10px;
+    }
+    .carousel-card {
+      flex: 0 0 220px;
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: 0.2s;
+      border: 1px solid #F2E2D8;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+    }
+    .carousel-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--rose-gold);
+      box-shadow: 0 12px 20px rgba(94,58,46,0.08);
+    }
+    .carousel-card-img {
+      aspect-ratio: 1;
+      background: #FEF5ED;
+    }
+    .carousel-card-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .carousel-card-body {
+      padding: 12px;
+      text-align: center;
+    }
+    .carousel-card-body h4 {
+      font-size: 0.85rem;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+    .carousel-price {
+      font-weight: 700;
+      color: #C28B90;
+      font-size: 0.9rem;
+    }
+    .carousel-nav {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 15px;
+    }
+    .carousel-btn {
+      background: var(--rose-gold);
+      border: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      font-size: 1.2rem;
+      cursor: pointer;
+      color: var(--marron-bois);
+      transition: 0.2s;
+    }
+    .carousel-btn:hover {
+      background: var(--rose-gold-fonce);
+      color: white;
+    }
+    @media (max-width: 640px) {
+      .carousel-card { flex: 0 0 160px; }
+      .carousel-card-body h4 { font-size: 0.75rem; }
+    }
+
     .section { max-width: 1280px; margin: 0 auto; padding: 80px 24px; }
     .section-title { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; text-align: center; color: var(--marron-bois); margin-bottom: 12px; }
     .section-subtitle { text-align: center; color: #9C7A6B; font-style: italic; margin-bottom: 48px; }
+
     .bestsellers { display: grid; gap: 30px; grid-template-columns: 1fr; }
     @media (min-width: 700px) { .bestsellers { grid-template-columns: repeat(2, 1fr); } }
     .bs-card { background: white; border-radius: 28px; overflow: hidden; border: 1px solid #F0E1D6; transition: 0.3s; }
@@ -72,11 +160,13 @@
     .bs-body h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; }
     .btn-brown { background: #A26A5A; color: white; border: none; padding: 12px 28px; border-radius: 40px; font-size: 11px; font-weight: 600; cursor: pointer; }
     .btn-brown:hover { background: #C28B90; }
+
     .science-section { background: #FDF4EF; padding: 60px 24px; }
     .science-flex { display: grid; gap: 32px; max-width: 1000px; margin: 0 auto; }
     @media (min-width: 700px) { .science-flex { grid-template-columns: repeat(3, 1fr); } }
     .science-item { text-align: center; background: rgba(255,245,240,0.6); padding: 24px 12px; border-radius: 32px; }
     .science-icon { font-size: 34px; }
+
     .product-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
     @media (min-width: 640px) { .product-grid { grid-template-columns: repeat(3, 1fr); } }
     @media (min-width: 1024px) { .product-grid { grid-template-columns: repeat(4, 1fr); } }
@@ -87,10 +177,12 @@
     .card-body { padding: 16px; text-align: center; }
     .card-body h3 { font-size: 0.9rem; font-weight: 500; }
     .price { font-weight: 700; color: #C28B90; }
+
     .testimonial-grid { display: grid; gap: 24px; max-width: 800px; margin: 0 auto; }
     @media (min-width: 640px) { .testimonial-grid { grid-template-columns: repeat(2, 1fr); } }
     .testimonial { background: white; padding: 28px; border-radius: 28px; border: 1px solid #F2E0D4; }
     .stars { color: #D8A7AB; margin-bottom: 12px; }
+
     footer { background: #3E2920; color: #E7D8CF; padding: 50px 24px 30px; }
     .footer-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; max-width: 1000px; margin: 0 auto 40px; }
     @media (min-width: 700px) { .footer-grid { grid-template-columns: repeat(4, 1fr); } }
@@ -99,6 +191,7 @@
     .contact-form { max-width: 400px; margin: 20px auto 0; }
     .contact-form input, .contact-form textarea { width: 100%; padding: 12px; margin-bottom: 12px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 40px; }
     .contact-form button { background: var(--gold-dore); border: none; padding: 12px; width: 100%; border-radius: 40px; font-weight: 600; color: #2E211B; cursor: pointer; }
+
     .overlay { position: fixed; inset: 0; background: rgba(62,41,32,0.65); backdrop-filter: blur(5px); z-index: 1000; display: flex; align-items: center; justify-content: center; visibility: hidden; opacity: 0; transition: 0.2s; }
     .overlay.open { visibility: visible; opacity: 1; }
     .cart-panel { position: absolute; right: 0; top: 0; bottom: 0; width: 400px; max-width: 90vw; background: white; display: flex; flex-direction: column; transform: translateX(100%); transition: 0.35s; }
@@ -111,7 +204,6 @@
     #toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #3E2920; color: #f5e2d6; padding: 12px 28px; border-radius: 60px; font-size: 13px; z-index: 1100; opacity: 0; transition: 0.2s; pointer-events: none; }
     #toast.show { opacity: 1; }
     .loader { text-align: center; padding: 40px; color: var(--rose-gold-fonce); }
-    .error-banner { background: #ffebee; color: #c62828; text-align: center; padding: 8px; font-size: 12px; margin: 10px 20px; border-radius: 30px; }
   </style>
 </head>
 <body>
@@ -141,8 +233,8 @@
   <a href="#catalogue" class="btn-gold">DÉCOUVRIR LA COLLECTION</a>
 </section>
 
-<!-- CARROUSEL -->
-<section class="carousel-section">
+<!-- ========== CARROUSEL INFINI ========== -->
+<section class="carousel-section" id="carouselSection">
   <div class="carousel-title">✨ Les incontournables ✨</div>
   <div class="carousel-container">
     <div class="carousel-track" id="carouselTrack"></div>
@@ -212,26 +304,13 @@
 <div id="contactModal" class="overlay" onclick="closeContactModal(event)"><div class="modal-card" onclick="event.stopPropagation()"><h3>Nous contacter</h3><div class="field"><label>Nom</label><input type="text" id="contactName"></div><div class="field"><label>WhatsApp</label><input type="tel" id="contactPhone"></div><div class="field"><label>Message</label><textarea id="contactMessage" rows="3"></textarea></div><button class="btn-brown" onclick="sendContact()" style="width:100%;">Envoyer</button><div id="contactAck" style="display:none; text-align:center; margin-top:12px;">✅ Message envoyé !</div></div></div>
 
 <div id="toast"></div>
-<div id="errorBanner" class="error-banner" style="display:none;"></div>
 
 <script>
   // ======================== CONFIGURATION ========================
   // 🔴 REMPLACEZ CETTE URL PAR CELLE DE VOTRE SCRIPT GAS DÉPLOYÉ
   const SCRIPT_URL = 'VOTRE_URL_SCRIPT_GAS';  // <--- À MODIFIER
 
-  // Produits de démonstration (fallback)
-  const fallbackProducts = [
-    { id: "fb1", nom: "Savon Curcuma & Aloe", prix: 8500, cat: "Nettoyants", desc: "Purifie et éclaire le teint.", img: "https://images.unsplash.com/photo-1600857062241-98e5dba7f214?w=400&q=80" },
-    { id: "fb2", nom: "Toner Glycolique PHA", prix: 12500, cat: "Toners", desc: "Exfoliation douce.", img: "https://images.unsplash.com/photo-1620916566390-22f5e7abca7e?w=400&q=80" },
-    { id: "fb3", nom: "Sérum Vitamine C 15%", prix: 22500, cat: "Sérums", desc: "Antioxydant, éclat immédiat.", img: "https://images.unsplash.com/photo-1631730359585-38a4935dbef4?w=400&q=80" },
-    { id: "fb4", nom: "Lait Hydra-Biosphere", prix: 16500, cat: "Hydratants", desc: "Niacinamide, apaise.", img: "https://images.unsplash.com/photo-1620916566390-22f5e7abca7e?w=400&q=80" },
-    { id: "fb5", nom: "Masque Miel de Manuka", prix: 14800, cat: "Masques", desc: "Réparation intense.", img: "https://images.unsplash.com/photo-1599305445671-ac291c95f0b2?w=400&q=80" },
-    { id: "fb6", nom: "Huile Régénérante", prix: 19500, cat: "Huiles", desc: "Riche en oméga.", img: "https://images.unsplash.com/photo-1617897903246-71924a6b44ca?w=400&q=80" },
-    { id: "fb7", nom: "Crème Solaire SPF50", prix: 15900, cat: "Protection", desc: "Protection totale.", img: "https://images.unsplash.com/photo-1611085583191-a3b181aaf026?w=400&q=80" },
-    { id: "fb8", nom: "Gommage Doux Enzymatique", prix: 11200, cat: "Exfoliants", desc: "Papaye, éclat.", img: "https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=400&q=80" }
-  ];
-
-  let allProducts = [...fallbackProducts];
+  let allProducts = [];
   let cart = [];
   let promoReduction = 0;
   let currentLightboxProduct = null;
@@ -239,7 +318,6 @@
   let currentSearch = "";
   let autoScrollInterval = null;
   let isAutoScrolling = true;
-  let backendOk = false;
 
   function showToast(msg) {
     const t = document.getElementById('toast');
@@ -248,32 +326,23 @@
     setTimeout(() => t.classList.remove('show'), 2500);
   }
 
-  function showError(msg) {
-    const banner = document.getElementById('errorBanner');
-    banner.innerText = msg;
-    banner.style.display = 'block';
-    setTimeout(() => banner.style.display = 'none', 8000);
-  }
-
   // ========== BACKEND VIA FETCH ==========
   async function chargerProduits() {
     try {
-      const response = await fetch(`${SCRIPT_URL}?action=produits`, { mode: 'cors' });
-      if (!response.ok) throw new Error('HTTP ' + response.status);
+      console.log("Chargement des produits depuis:", SCRIPT_URL);
+      const response = await fetch(`${SCRIPT_URL}?action=produits`);
       const data = await response.json();
+      console.log("Réponse brute:", data);
       if (data.ok && data.produits && data.produits.length > 0) {
         allProducts = data.produits;
-        backendOk = true;
-        console.log("✅ Produits chargés depuis le backend:", allProducts.length);
-        showToast("Produits synchronisés avec la base");
+        console.log("✅ Produits chargés:", allProducts.length);
       } else {
-        throw new Error("Aucun produit reçu");
+        throw new Error(data.error || "Aucun produit reçu");
       }
     } catch (err) {
-      console.error("Erreur chargement produits:", err);
-      showError("⚠️ Impossible de communiquer avec le serveur. Affichage des produits de démonstration.");
-      allProducts = [...fallbackProducts];
-      backendOk = false;
+      console.error("❌ Erreur chargement produits:", err);
+      showToast("Erreur de chargement des produits. Vérifiez l'URL du backend.");
+      allProducts = [];
     }
     renderCategories();
     renderProducts();
@@ -281,10 +350,6 @@
   }
 
   async function verifierCodePromo(code, productNames) {
-    if (!backendOk) {
-      showToast("Mode démo : code promo non vérifié");
-      return;
-    }
     try {
       const url = `${SCRIPT_URL}?action=verifierPromo&code=${encodeURIComponent(code)}&produits=${encodeURIComponent(productNames.join(','))}`;
       const response = await fetch(url);
@@ -294,20 +359,16 @@
         document.getElementById('promoMsg').innerText = `✅ Réduction ${promoReduction} FCFA appliquée !`;
       } else {
         promoReduction = 0;
-        document.getElementById('promoMsg').innerText = "❌ Code invalide";
+        document.getElementById('promoMsg').innerText = "❌ Code invalide ou non applicable";
       }
       updateOrderSummary();
     } catch (err) {
       console.error(err);
-      showToast("Erreur vérification code promo");
+      showToast("Erreur lors de la vérification du code promo");
     }
   }
 
   async function envoyerCommande(lignes) {
-    if (!backendOk) {
-      showToast("Mode démo : commande simulée (aucune donnée envoyée)");
-      return true;
-    }
     try {
       await fetch(SCRIPT_URL, {
         method: 'POST',
@@ -319,7 +380,7 @@
       return true;
     } catch (err) {
       console.error(err);
-      showToast("Erreur lors de l'envoi");
+      showToast("Erreur lors de l'envoi de la commande");
       return false;
     }
   }
@@ -335,9 +396,9 @@
       return;
     }
     carouselTrack.innerHTML = '';
-    // On duplique les produits plusieurs fois pour un effet infini fluide
-    const clones = 3;
-    for (let c = 0; c < clones; c++) {
+    // Dupliquer plusieurs fois pour un défilement infini fluide
+    const duplicates = 3;
+    for (let d = 0; d < duplicates; d++) {
       allProducts.forEach(prod => {
         const card = document.createElement('div');
         card.className = 'carousel-card';
@@ -359,16 +420,18 @@
   function startAutoScroll() {
     if (autoScrollInterval) clearInterval(autoScrollInterval);
     autoScrollInterval = setInterval(() => {
-      if (!isAutoScrolling || !carouselTrack) return;
-      const scrollAmount = 250;
-      carouselTrack.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-      // Réinitialisation douce pour effet infini
-      setTimeout(() => {
-        if (carouselTrack.scrollLeft + carouselTrack.clientWidth >= carouselTrack.scrollWidth - 400) {
-          carouselTrack.scrollTo({ left: 100, behavior: 'auto' });
-        }
-      }, 300);
-    }, 2800);
+      if (!isAutoScrolling) return;
+      if (carouselTrack) {
+        const scrollAmount = 260;
+        carouselTrack.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+        // Réinitialisation pour effet infini
+        setTimeout(() => {
+          if (carouselTrack.scrollLeft + carouselTrack.clientWidth >= carouselTrack.scrollWidth - 500) {
+            carouselTrack.scrollTo({ left: 100, behavior: 'auto' });
+          }
+        }, 300);
+      }
+    }, 3000);
   }
 
   function attachCarouselEvents() {
@@ -376,19 +439,19 @@
     const nextBtn = document.getElementById('carouselNext');
     if (prevBtn) prevBtn.onclick = () => {
       isAutoScrolling = false;
-      carouselTrack.scrollBy({ left: -250, behavior: 'smooth' });
-      setTimeout(() => { isAutoScrolling = true; }, 4000);
+      carouselTrack.scrollBy({ left: -260, behavior: 'smooth' });
+      setTimeout(() => { isAutoScrolling = true; }, 5000);
     };
     if (nextBtn) nextBtn.onclick = () => {
       isAutoScrolling = false;
-      carouselTrack.scrollBy({ left: 250, behavior: 'smooth' });
-      setTimeout(() => { isAutoScrolling = true; }, 4000);
+      carouselTrack.scrollBy({ left: 260, behavior: 'smooth' });
+      setTimeout(() => { isAutoScrolling = true; }, 5000);
     };
     carouselTrack.addEventListener('mouseenter', () => { isAutoScrolling = false; });
     carouselTrack.addEventListener('mouseleave', () => { isAutoScrolling = true; });
   }
 
-  // ========== UI STANDARD ==========
+  // ========== FONCTIONS UI STANDARD ==========
   function renderCategories() {
     const cats = [...new Set(allProducts.map(p => p.cat).filter(c => c && c.trim() !== ""))];
     const bar = document.getElementById('catBar');
