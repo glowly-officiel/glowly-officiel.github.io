@@ -105,7 +105,7 @@
     }
     .carousel-nav { display: none; }
 
-    /* BEST SELLERS - FORMAT PAYSAGE AVEC ALTERNANCE */
+    /* BEST SELLERS - FORMAT PAYSAGE AVEC ALTERNANCE (HORIZONTAL MÊME SUR MOBILE) */
     .section { max-width: 1280px; margin: 0 auto; padding: 80px 24px; }
     .section-title { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; text-align: center; color: var(--marron-bois); margin-bottom: 12px; }
     .section-subtitle { text-align: center; color: #9C7A6B; font-style: italic; margin-bottom: 48px; }
@@ -169,13 +169,26 @@
     }
     .btn-brown:hover { background: #C9A87C; transform: scale(1.02); }
 
+    /* Version mobile : on garde l'horizontal, on réduit juste les tailles */
     @media (max-width: 768px) {
-      .bs-card.horizontal, .bs-card.horizontal.left-img, .bs-card.horizontal.right-img {
-        flex-direction: column;
+      .bs-img {
+        min-width: 120px;   /* réduction pour que ça tienne */
       }
-      .bs-img { min-height: 220px; min-width: 100%; }
-      .brown-bg { text-align: center; }
-      .btn-brown { align-self: center; }
+      .brown-bg {
+        padding: 12px;
+      }
+      .brown-bg h3 {
+        font-size: 1rem;
+        margin-bottom: 6px;
+      }
+      .bs-description {
+        font-size: 0.7rem;
+        margin-bottom: 10px;
+      }
+      .btn-brown {
+        padding: 6px 10px;
+        font-size: 8px;
+      }
     }
 
     /* Autres sections (science, grille produits, témoignages) */
@@ -206,6 +219,7 @@
     .contact-form { max-width: 400px; margin: 20px auto 0; }
     .contact-form input, .contact-form textarea { width: 100%; padding: 12px; margin-bottom: 12px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 40px; }
     .contact-form button { background: var(--gold-dore); border: none; padding: 12px; width: 100%; border-radius: 40px; font-weight: 600; color: #2E211B; cursor: pointer; }
+
     .overlay { position: fixed; inset: 0; background: rgba(62,41,32,0.65); backdrop-filter: blur(5px); z-index: 1000; display: flex; align-items: center; justify-content: center; visibility: hidden; opacity: 0; transition: 0.2s; }
     .overlay.open { visibility: visible; opacity: 1; }
     .cart-panel { position: absolute; right: 0; top: 0; bottom: 0; width: 400px; max-width: 90vw; background: white; display: flex; flex-direction: column; transform: translateX(100%); transition: 0.35s; }
@@ -257,7 +271,7 @@
 
 <div id="coaching" style="scroll-margin-top: 80px;"></div>
 
-<!-- ========== BEST SELLERS (4 cartes, alternance, fond marron) ========== -->
+<!-- ========== BEST SELLERS (4 cartes, alternance, fond marron, horizontal même sur mobile) ========== -->
 <section class="section">
   <h2 class="section-title">Nos Best Sellers</h2>
   <p class="section-subtitle">Les produits les plus plébiscités par notre communauté</p>
@@ -352,7 +366,7 @@
 
 <script>
   // ======================== CONFIGURATION ========================
-  // ⚠️ REMPLACEZ CETTE URL PAR CELLE DE VOTRE SCRIPT GAS DÉPLOYÉ (si différente)
+  // 🔴 REMPLACEZ CETTE URL PAR CELLE DE VOTRE SCRIPT GAS DÉPLOYÉ
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx6NmekfvNMCFqasTCO_QpA4l8mV2HkNgR6_cdH291ci5sa8zaKYJqj05_ZXtjL3KFa/exec';
 
   let allProducts = [];
@@ -386,7 +400,6 @@
     } catch (err) {
       console.error("❌ Erreur chargement:", err);
       showToast("Erreur de chargement des produits. Vérifiez l'URL du backend.");
-      // Fallback : produits de démonstration pour que le carrousel ne soit pas vide
       allProducts = [
         { id: 1, nom: "Savon Curcuma", prix: 8500, img: "https://images.unsplash.com/photo-1600857062241-98e5dba7f214?w=400&q=80", cat: "Nettoyants", desc: "" },
         { id: 2, nom: "Toner Glycolique", prix: 12500, img: "https://images.unsplash.com/photo-1620916566390-22f5e7abca7e?w=400&q=80", cat: "Toners", desc: "" },
