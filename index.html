@@ -43,7 +43,7 @@
     .btn-gold { display: inline-block; background: linear-gradient(105deg, #D8A7AB, #C9A87C); color: #2E211B; padding: 14px 42px; font-weight: 700; font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; border-radius: 50px; text-decoration: none; box-shadow: 0 8px 18px rgba(165,106,97,0.25); transition: 0.3s; }
     .btn-gold:hover { transform: translateY(-2px); }
 
-    /* ========== CARROUSEL STYLE SHANANCE (noms seuls, collés, sans flèches) ========== */
+    /* ========== CARROUSEL AVEC IMAGES ET NOMS, COLLÉS ========== */
     .carousel-section {
       background: var(--bg-beige);
       padding: 30px 0;
@@ -65,13 +65,12 @@
     }
     .carousel-track {
       display: flex;
-      gap: 0;
+      gap: 0;                /* pas d'espace entre les éléments */
       overflow-x: auto;
       scroll-behavior: smooth;
       scrollbar-width: thin;
       padding: 0;
       -webkit-overflow-scrolling: touch;
-      white-space: nowrap;
     }
     .carousel-track::-webkit-scrollbar {
       height: 4px;
@@ -84,25 +83,46 @@
       border-radius: 10px;
     }
     .carousel-item {
-      display: inline-block;
       flex: 0 0 auto;
-      padding: 8px 0;
-      margin-right: 1rem;      /* espace léger, tu peux mettre 0.5rem ou 0 pour coller davantage */
-      font-size: 1rem;
-      font-weight: 500;
-      color: var(--text-brun);
+      width: 180px;          /* largeur fixe pour uniformité */
       cursor: pointer;
-      transition: color 0.2s;
-      white-space: nowrap;
+      transition: transform 0.2s;
+      background: white;
+      border: 1px solid #F2E2D8;
+      border-radius: 12px;
+      overflow: hidden;
+      margin: 0;
     }
     .carousel-item:hover {
-      color: var(--rose-gold-fonce);
+      transform: translateY(-5px);
+      border-color: var(--rose-gold);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.05);
     }
+    .carousel-item-img {
+      width: 100%;
+      aspect-ratio: 1;
+      background: #FEF5ED;
+    }
+    .carousel-item-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .carousel-item-name {
+      padding: 10px 8px;
+      text-align: center;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-brun);
+      white-space: normal;
+      word-break: break-word;
+    }
+    /* Pas de flèches */
     .carousel-nav {
       display: none;
     }
 
-    /* Section des routines et autres (inchangé) */
+    /* Sections classiques */
     .section { max-width: 1280px; margin: 0 auto; padding: 80px 24px; }
     .section-title { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; text-align: center; color: var(--marron-bois); margin-bottom: 12px; }
     .section-subtitle { text-align: center; color: #9C7A6B; font-style: italic; margin-bottom: 48px; }
@@ -189,7 +209,7 @@
   <a href="#catalogue" class="btn-gold">DÉCOUVRIR LA COLLECTION</a>
 </section>
 
-<!-- ========== CARROUSEL : UNIQUEMENT LES NOMS (COMME SHANANCE) ========== -->
+<!-- ========== CARROUSEL AVEC IMAGES + NOMS (COLLÉS) ========== -->
 <section class="carousel-section" id="carouselSection">
   <div class="carousel-title">✨ Les incontournables ✨</div>
   <div class="carousel-container">
@@ -259,7 +279,7 @@
 
 <script>
   // ======================== CONFIGURATION ========================
-  // 🔴 URL de votre script Apps Script déployé (déjà renseignée)
+  // 🔴 REMPLACEZ CETTE URL PAR CELLE DE VOTRE SCRIPT GAS DÉPLOYÉ
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx6NmekfvNMCFqasTCO_QpA4l8mV2HkNgR6_cdH291ci5sa8zaKYJqj05_ZXtjL3KFa/exec';
 
   let allProducts = [];
@@ -278,21 +298,18 @@
     setTimeout(() => t.classList.remove('show'), 2500);
   }
 
-  // ========== BACKEND VIA FETCH ==========
   async function chargerProduits() {
     try {
       console.log("Chargement depuis:", SCRIPT_URL);
       const response = await fetch(`${SCRIPT_URL}?action=produits`);
       const data = await response.json();
-      console.log("Réponse brute:", data);
       if (data.ok && data.produits && data.produits.length > 0) {
         allProducts = data.produits;
-        console.log("✅ Produits chargés:", allProducts.length);
       } else {
         throw new Error(data.error || "Aucun produit reçu");
       }
     } catch (err) {
-      console.error("❌ Erreur chargement:", err);
+      console.error(err);
       showToast("Erreur de chargement des produits. Vérifiez l'URL du backend.");
       allProducts = [];
     }
@@ -337,7 +354,7 @@
     }
   }
 
-  // ========== CARROUSEL (UNIQUEMENT NOMS, COLLÉ, DÉFILEMENT AUTO) ==========
+  // ========== CARROUSEL AVEC IMAGES ==========
   let carouselTrack = null;
 
   function initCarousel() {
@@ -348,15 +365,18 @@
       return;
     }
     carouselTrack.innerHTML = '';
-    // Duplication pour effet infini (4 fois pour un flux continu)
+    // Duplication pour effet infini (4 fois)
     const duplicates = 4;
     for (let d = 0; d < duplicates; d++) {
       allProducts.forEach(prod => {
-        const item = document.createElement('div');
-        item.className = 'carousel-item';
-        item.onclick = () => openLightbox(prod);
-        item.innerHTML = `<span>${escapeHtml(prod.nom)}</span>`;
-        carouselTrack.appendChild(item);
+        const card = document.createElement('div');
+        card.className = 'carousel-item';
+        card.onclick = () => openLightbox(prod);
+        card.innerHTML = `
+          <div class="carousel-item-img"><img src="${prod.img || 'https://placehold.co/400x400/FEF5ED/C28B90?text=Glowly'}" alt="${escapeHtml(prod.nom)}" loading="lazy" onerror="this.src='https://placehold.co/400x400/FEF5ED/C28B90?text=Image'"></div>
+          <div class="carousel-item-name">${escapeHtml(prod.nom)}</div>
+        `;
+        carouselTrack.appendChild(card);
       });
     }
     startAutoScroll();
@@ -368,7 +388,7 @@
     autoScrollInterval = setInterval(() => {
       if (!isAutoScrolling) return;
       if (carouselTrack) {
-        const scrollAmount = 130; // ajustable selon la largeur de vos noms
+        const scrollAmount = 180; // largeur approximative d'un élément (180px)
         carouselTrack.scrollBy({ left: scrollAmount, behavior: 'smooth' });
         setTimeout(() => {
           if (carouselTrack.scrollLeft + carouselTrack.clientWidth >= carouselTrack.scrollWidth - 400) {
@@ -385,7 +405,7 @@
     carouselTrack.addEventListener('mouseleave', () => { isAutoScrolling = true; });
   }
 
-  // ========== FONCTIONS UI STANDARD ==========
+  // ========== FONCTIONS STANDARD ==========
   function renderCategories() {
     const cats = [...new Set(allProducts.map(p => p.cat).filter(c => c && c.trim() !== ""))];
     const bar = document.getElementById('catBar');
