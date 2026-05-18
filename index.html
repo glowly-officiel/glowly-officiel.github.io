@@ -3,733 +3,606 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-  <title>GLOWLY — Maison de Beauté Authentique</title>
-  <meta name="description" content="Glowly - L'art du soin authentique. Formules certifiées internationales, sans hydroquinone, pour révéler l'éclat naturel de votre peau.">
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='%23FEF9EF' stroke='%23C5A267' stroke-width='2'/%3E%3Ctext x='50' y='72' font-size='65' text-anchor='middle' fill='%233D2A1C'%3E✨%3C/text%3E%3C/svg%3E">
+  <title>GLOWLY — Beauté Naturelle Premium</title>
+  <meta name="description" content="Glowly - Maison de beauté naturelle. Soins visage, corps et cheveux inspirés de la nature.">
+  <meta name="keywords" content="glowly, beauté, soins naturels, masque visage, sérum, Dakar, Sénégal">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='%23FDFBF7' stroke='%23C5A880' stroke-width='2'/%3E%3Ctext x='50' y='72' font-size='65' text-anchor='middle' fill='%233D2A1C'%3E✨%3C/text%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
     :root {
-      --bg: #FEF9EF;
+      --bg: #FDFBF7;
       --surface: #FFFFFF;
-      --border: #EADDCB;
-      --border-light: #F5EDE1;
-      --text: #382A1F;
-      --text-muted: #8F7A66;
-      --accent-gold: #C5A267;
-      --accent-deep: #9C7A4A;
-      --gold-light: #E8D5B5;
-      --brown-warm: #5C4030;
-      --shadow-sm: 0 12px 28px rgba(0, 0, 0, 0.03);
-      --radius-card: 16px;
-      --transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+      --border: #E8E0D5;
+      --border-light: #F0EBE3;
+      --text: #3D2A1C;
+      --text-muted: #8C8279;
+      --accent: #C5A880;
+      --accent-dark: #A68A65;
+      --accent-light: #F2ECE1;
+      --brown: #3D2A1C;
+      --brown-dark: #2A1A0F;
+      --gold-dim: rgba(197,168,128,0.10);
+      --radius: 4px;
+      --ease: cubic-bezier(0.16,1,0.3,1);
     }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    img { display:block; max-width:100%; height:auto; }
+    button { cursor:pointer; font-family: inherit; }
+    a { text-decoration: none; color: inherit; }
 
-    body {
-      font-family: 'Inter', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.5;
-      scroll-behavior: smooth;
-    }
+    .announcement { background: var(--brown); color: white; text-align: center; padding: 12px 16px; font-size: 13px; letter-spacing: 0.04em; }
 
-    img {
-      max-width: 100%;
-      display: block;
-    }
+    header { position: sticky; top: 0; z-index: 100; background: rgba(253,251,247,0.94); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); }
+    .header-inner { max-width: 1280px; margin: 0 auto; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; }
+    .logo { font-family: 'Cormorant Garamond', serif; font-size: 28px; color: var(--brown); letter-spacing: 0.15em; font-weight: 500; text-transform: uppercase; }
+    .nav-links { display: none; gap: 32px; }
+    @media (min-width: 769px) { .nav-links { display: flex; } }
+    .nav-links a { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); font-weight: 500; transition: color 0.2s; white-space: nowrap; }
+    .nav-links a:hover { color: var(--brown); }
+    .header-actions { display: flex; gap: 12px; align-items: center; }
+    .btn-outline { background: transparent; border: 1px solid var(--accent); color: var(--accent-dark); padding: 8px 20px; border-radius: 100px; font-size: 11px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; transition: 0.2s; white-space: nowrap; }
+    .btn-outline:hover { background: var(--accent); color: white; }
+    .cart-btn { display: flex; align-items: center; gap: 6px; background: var(--surface); border: 1px solid var(--border); padding: 8px 20px; border-radius: 100px; font-size: 11px; font-weight: 500; color: var(--text); transition: 0.2s; white-space: nowrap; }
+    .cart-btn:hover { border-color: var(--accent); color: var(--accent-dark); }
+    .cart-count { background: var(--accent); color: white; width: 18px; height: 18px; border-radius: 50%; font-size: 10px; display: flex; align-items: center; justify-content: center; }
 
-    /* annonce */
-    .top-bar {
-      background: var(--brown-warm);
-      color: #FEF0E3;
-      text-align: center;
-      padding: 12px 16px;
-      font-size: 12px;
-      letter-spacing: 0.04em;
-      font-weight: 500;
-    }
+    .sub-nav { background: var(--accent-light); border-bottom: 1px solid var(--border); }
+    .sub-nav-inner { max-width: 1280px; margin: 0 auto; padding: 0 24px; display: flex; justify-content: center; gap: 32px; overflow-x: auto; }
+    .sub-nav a { display: inline-block; padding: 16px 0; font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text); font-weight: 500; white-space: nowrap; border-bottom: 2px solid transparent; transition: border-color 0.2s, color 0.2s; }
+    .sub-nav a:hover, .sub-nav a.active { color: var(--accent-dark); border-bottom-color: var(--accent); }
 
-    /* header */
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: rgba(254, 249, 239, 0.96);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .header-container {
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 14px 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .logo {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 28px;
-      font-weight: 500;
-      letter-spacing: 0.2em;
-      color: var(--brown-warm);
-      text-transform: uppercase;
-    }
-
-    .nav-links {
-      display: none;
-      gap: 36px;
-    }
-
-    @media (min-width: 768px) {
-      .nav-links {
-        display: flex;
-      }
-    }
-
-    .nav-links a {
-      font-size: 12px;
-      font-weight: 500;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      transition: color 0.2s;
-    }
-
-    .nav-links a:hover {
-      color: var(--accent-deep);
-    }
-
-    .header-actions {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-    }
-
-    .btn-outline {
-      background: transparent;
-      border: 1px solid var(--accent-gold);
-      color: var(--accent-deep);
-      padding: 8px 20px;
-      border-radius: 60px;
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      transition: 0.2s;
-    }
-
-    .btn-outline:hover {
-      background: var(--accent-gold);
-      color: white;
-    }
-
-    .cart-btn {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      padding: 8px 20px;
-      border-radius: 60px;
-      font-size: 11px;
-      font-weight: 600;
-      transition: 0.2s;
-    }
-
-    .cart-btn:hover {
-      border-color: var(--accent-gold);
-    }
-
-    .cart-count {
-      background: var(--accent-deep);
-      color: white;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      font-size: 10px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    /* image héro */
-    .hero-img {
+    .hero-image {
       width: 100%;
-      max-height: 75vh;
+      height: auto;
+      max-height: 80vh;
       object-fit: cover;
-      display: block;
     }
 
-    /* SECTION TEXTE : COULEURS COMPATIBLES AVEC LA PHOTO (or, beige chaud, brun élégant) */
-    .hero-text {
-      background: #FCF7EF;
-      padding: 60px 24px;
+    /* SECTION TEXTE – tons or rose, beige, doré */
+    .hero-text-section {
+      background: #FDF4F0;
+      padding: 50px 24px;
       text-align: center;
-      border-bottom: 1px solid #F1E7DC;
     }
-
-    .hero-text h1 {
+    .hero-text-section h1 {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(2.6rem, 8vw, 5rem);
+      font-size: clamp(32px, 8vw, 64px);
       font-weight: 500;
-      letter-spacing: -0.01em;
-      margin-bottom: 18px;
-      background: linear-gradient(135deg, #C5A267 0%, #A67C45 35%, #8B5E2E 100%);
-      background-clip: text;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, #D4A5A5 0%, #C28B8B 30%, #B87A6E 70%, #C5A267 100%);
       -webkit-background-clip: text;
-      color: transparent;
-      text-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.1));
     }
-
-    .hero-text p {
-      font-size: 1rem;
-      max-width: 620px;
-      margin: 0 auto 28px;
-      color: #5F4A36;
-      font-weight: 400;
+    .hero-text-section p {
+      font-size: 16px;
+      color: #6B5A4E;
+      max-width: 600px;
+      margin: 0 auto 24px;
       line-height: 1.6;
     }
-
-    .btn-gold-luxury {
+    .btn-gold {
       display: inline-block;
-      background: linear-gradient(105deg, #C2A063, #AA8046);
-      color: #1F1A14;
-      padding: 14px 42px;
-      font-weight: 700;
-      font-size: 0.75rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      border-radius: 50px;
-      border: none;
-      box-shadow: 0 8px 18px rgba(156, 110, 52, 0.25);
-      transition: transform 0.25s ease, box-shadow 0.25s;
-      text-decoration: none;
-      cursor: pointer;
-    }
-
-    .btn-gold-luxury:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 14px 26px rgba(128, 84, 34, 0.3);
-      background: linear-gradient(105deg, #CFAF78, #B88B4E);
-      color: #1A120B;
-    }
-
-    /* sections communes */
-    .section {
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 70px 24px;
-    }
-
-    .section-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 2.5rem;
-      font-weight: 400;
-      text-align: center;
-      color: #3E2C1E;
-      margin-bottom: 12px;
-    }
-
-    .section-sub {
-      text-align: center;
-      color: var(--text-muted);
-      font-style: italic;
-      margin-bottom: 48px;
-    }
-
-    /* bestsellers */
-    .bestseller-grid {
-      display: grid;
-      gap: 30px;
-      grid-template-columns: 1fr;
-    }
-
-    @media (min-width: 700px) {
-      .bestseller-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    .bestseller-card {
-      background: var(--surface);
-      border-radius: 24px;
-      overflow: hidden;
-      box-shadow: var(--shadow-sm);
-      transition: var(--transition);
-    }
-
-    .bestseller-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 20px 35px rgba(0, 0, 0, 0.05);
-    }
-
-    .bestseller-img {
-      height: 280px;
-      background-size: cover;
-      background-position: center;
-    }
-
-    .bestseller-content {
-      padding: 28px;
-      text-align: center;
-    }
-
-    .bestseller-content h3 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.6rem;
-      margin-bottom: 8px;
-    }
-
-    /* sciences */
-    .science-section {
-      background: #F8F1E6;
-      padding: 60px 24px;
-    }
-
-    .science-flex {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 32px;
-      max-width: 1000px;
-      margin: 0 auto;
-    }
-
-    @media (min-width: 700px) {
-      .science-flex {
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
-
-    .science-item {
-      text-align: center;
-    }
-
-    /* grille produits */
-    .product-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
-    }
-
-    @media (min-width: 640px) {
-      .product-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
-
-    @media (min-width: 1024px) {
-      .product-grid {
-        grid-template-columns: repeat(4, 1fr);
-      }
-    }
-
-    .product-card {
-      background: white;
-      border-radius: 18px;
-      overflow: hidden;
-      border: 1px solid var(--border-light);
-      transition: all 0.2s;
-      cursor: pointer;
-    }
-
-    .product-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 18px 28px rgba(0, 0, 0, 0.04);
-    }
-
-    .product-img {
-      aspect-ratio: 1 / 1;
-      background: #FBF5EA;
-      object-fit: cover;
-      width: 100%;
-    }
-
-    .product-info {
-      padding: 16px;
-      text-align: center;
-    }
-
-    .product-title {
-      font-weight: 500;
-      font-size: 0.9rem;
-      margin-bottom: 4px;
-    }
-
-    .product-price {
-      font-weight: 700;
-      color: #9C7A4A;
-    }
-
-    /* footer */
-    footer {
-      background: #2D241C;
-      color: #D9CFC2;
-      padding: 50px 24px 30px;
-    }
-
-    .footer-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .footer-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 30px;
-      margin-bottom: 40px;
-    }
-
-    @media (min-width: 700px) {
-      .footer-grid {
-        grid-template-columns: repeat(4, 1fr);
-      }
-    }
-
-    /* overlays & modals */
-    .overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.6);
-      backdrop-filter: blur(5px);
-      z-index: 1000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      visibility: hidden;
-      opacity: 0;
-      transition: 0.25s;
-    }
-
-    .overlay.open {
-      visibility: visible;
-      opacity: 1;
-    }
-
-    .cart-panel {
-      position: absolute;
-      right: 0;
-      top: 0;
-      bottom: 0;
-      width: 400px;
-      max-width: 90vw;
-      background: white;
-      display: flex;
-      flex-direction: column;
-      box-shadow: -10px 0 30px rgba(0, 0, 0, 0.08);
-      transform: translateX(100%);
-      transition: transform 0.35s ease;
-    }
-
-    .overlay.open .cart-panel {
-      transform: translateX(0);
-    }
-
-    .modal-card {
-      background: white;
-      border-radius: 28px;
-      max-width: 480px;
-      width: 90%;
-      padding: 32px;
-      max-height: 90vh;
-      overflow-y: auto;
-    }
-
-    .lightbox-container {
-      background: white;
-      display: flex;
-      flex-wrap: wrap;
-      max-width: 1000px;
-      width: 90%;
-      border-radius: 32px;
-      overflow: hidden;
-    }
-
-    .btn-brown {
-      background: #5C4030;
-      color: white;
-      border: none;
-      padding: 12px 20px;
-      font-weight: 600;
-      letter-spacing: 0.05em;
-      border-radius: 40px;
-    }
-
-    #toast-msg {
-      position: fixed;
-      bottom: 28px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #2D241C;
-      color: #f2e2d2;
-      padding: 12px 28px;
-      border-radius: 60px;
+      background: linear-gradient(135deg, #C5A267 0%, #B88B4E 100%);
+      color: #1A1A1A;
+      padding: 14px 36px;
       font-size: 13px;
-      z-index: 1200;
-      opacity: 0;
-      transition: opacity 0.25s;
-      pointer-events: none;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border: none;
+      border-radius: 50px;
+      box-shadow: 0 4px 20px rgba(165, 126, 68, 0.4);
+      transition: all 0.3s;
     }
+    .btn-gold:hover {
+      box-shadow: 0 8px 30px rgba(165, 126, 68, 0.6);
+      transform: translateY(-2px);
+    }
+
+    .section { max-width: 1280px; margin: 0 auto; padding: 80px 24px; }
+    .section-title { font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 400; text-align: center; color: var(--brown); margin-bottom: 8px; }
+    .section-subtitle { font-style: italic; color: var(--text-muted); text-align: center; margin-bottom: 48px; font-size: 16px; }
+
+    .bestsellers { display: grid; grid-template-columns: 1fr; gap: 30px; }
+    @media (min-width: 600px) { .bestsellers { grid-template-columns: repeat(2, 1fr); } }
+    .bs-card { border-radius: 12px; overflow: hidden; background: var(--surface); box-shadow: 0 4px 20px rgba(0,0,0,0.02); transition: box-shadow 0.3s; }
+    .bs-card:hover { box-shadow: 0 12px 35px rgba(0,0,0,0.04); }
+    .bs-img { height: 300px; background-size: cover; background-position: center; }
+    .bs-body { padding: 24px; text-align: center; }
+    .bs-body h3 { font-family: 'Cormorant Garamond', serif; font-size: 24px; margin-bottom: 8px; }
+    .bs-body p { color: var(--text-muted); font-size: 14px; margin-bottom: 20px; }
+    .btn-brown { display: inline-block; background: var(--brown); color: white; padding: 12px 28px; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; border: none; transition: background 0.3s; }
+    .btn-brown:hover { background: var(--brown-dark); }
+
+    .science { background: var(--accent-light); padding: 60px 24px; }
+    .science-grid { display: grid; grid-template-columns: 1fr; gap: 30px; max-width: 1000px; margin: 0 auto; }
+    @media (min-width: 600px) { .science-grid { grid-template-columns: repeat(3, 1fr); } }
+    .science-item { text-align: center; padding: 20px; }
+    .science-icon { font-size: 32px; margin-bottom: 12px; }
+    .science-item h4 { font-family: 'Cormorant Garamond', serif; font-size: 20px; margin-bottom: 8px; color: var(--brown); }
+    .science-item p { font-size: 13px; color: var(--text-muted); }
+
+    .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    @media (min-width: 600px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (min-width: 960px) { .grid { grid-template-columns: repeat(4, 1fr); gap: 20px; } }
+    .card { background: var(--surface); border-radius: 0; overflow: hidden; cursor: pointer; transition: transform 0.3s, box-shadow 0.3s; border: 1px solid var(--border-light); }
+    .card:hover { transform: translateY(-4px); box-shadow: 0 15px 30px rgba(0,0,0,0.03); }
+    .card-img { aspect-ratio: 1 / 1; background: #F5F1EA; position: relative; }
+    .card-img img { width: 100%; height: 100%; object-fit: cover; mix-blend-mode: multiply; }
+    .card-badge { position: absolute; top: 12px; left: 12px; background: var(--brown); color: white; padding: 4px 10px; font-size: 10px; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; }
+    .card-body { padding: 16px; text-align: center; }
+    .card-body h3 { font-size: 14px; font-weight: 500; margin-bottom: 4px; }
+    .card-body .price { font-size: 16px; font-weight: 600; color: var(--brown); }
+
+    .testimonials { background: var(--bg); }
+    .testimonial-grid { display: grid; grid-template-columns: 1fr; gap: 24px; max-width: 800px; margin: 0 auto; }
+    @media (min-width: 600px) { .testimonial-grid { grid-template-columns: repeat(2, 1fr); } }
+    .testimonial { background: var(--surface); padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); border: 1px solid var(--border-light); }
+    .stars { color: #E6B422; font-size: 14px; margin-bottom: 12px; }
+    .testimonial p { font-style: italic; color: var(--text-muted); margin-bottom: 16px; }
+    .author { font-weight: 600; font-size: 14px; }
+
+    footer { background: var(--brown); color: #D9CFC4; padding: 60px 24px 30px; }
+    .footer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; max-width: 1000px; margin: 0 auto 30px; }
+    @media (min-width: 600px) { .footer-grid { grid-template-columns: repeat(4, 1fr); } }
+    .footer-col h4 { color: white; font-size: 14px; margin-bottom: 16px; }
+    .footer-col a { font-size: 13px; color: #C5B8AD; display: block; margin-bottom: 8px; }
+    .contact-form { max-width: 400px; margin: 30px auto 0; }
+    .contact-form input, .contact-form textarea { width: 100%; padding: 12px; margin-bottom: 12px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: white; font-size: 13px; }
+    .contact-form button { background: var(--accent); color: white; border: none; padding: 12px 24px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; width: 100%; }
+
+    #lightbox-overlay, #cart-overlay, #modal-overlay, #contact-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(6px); z-index: 2000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+    #lightbox-overlay.open, #cart-overlay.open, #modal-overlay.open, #contact-overlay.open { opacity: 1; pointer-events: all; }
+    .lightbox-layout { background: white; display: flex; width: 90vw; max-width: 1000px; border-radius: 8px; overflow: hidden; box-shadow: 0 30px 60px rgba(0,0,0,0.1); }
+    @media (max-width: 768px) { .lightbox-layout { flex-direction: column; } }
+    .lightbox-gallery { flex: 1; background: #F9F6F0; display: flex; align-items: center; justify-content: center; padding: 30px; position: relative; }
+    .lightbox-gallery img { max-height: 60vh; object-fit: contain; }
+    .lightbox-info { flex: 0.9; padding: 40px; display: flex; flex-direction: column; justify-content: center; gap: 16px; }
+    .lightbox-add-btn { background: var(--accent); color: white; border: none; padding: 14px 24px; font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
+    #cart-panel { position: absolute; right: 0; top: 0; bottom: 0; width: 400px; max-width: 100vw; background: white; border-left: 1px solid var(--border); display: flex; flex-direction: column; transform: translateX(100%); transition: transform 0.4s; }
+    #cart-overlay.open #cart-panel { transform: translateX(0); }
+    .modal { background: white; border-radius: 8px; padding: 36px; max-width: 480px; width: 100%; max-height: 90vh; overflow-y: auto; }
+    .field { margin-bottom: 16px; }
+    .field label { font-size: 11px; letter-spacing: 0.05em; color: var(--text-muted); display: block; margin-bottom: 6px; text-transform: uppercase; }
+    .field input, .field select, .field textarea { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 4px; font-size: 13px; background: var(--bg); }
+    #toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: var(--brown); color: white; padding: 12px 28px; border-radius: 100px; font-size: 13px; z-index: 9999; opacity: 0; transition: opacity 0.3s; }
+    #toast.show { opacity: 1; }
+    .no-result { text-align: center; padding: 50px; color: var(--text-muted); }
   </style>
 </head>
 <body>
-<div class="top-bar">✨ Livraison offerte à Dakar dès 35 000 FCFA | Fabrication certifiée ISO & GMP ✨</div>
-<header>
-  <div class="header-container">
-    <div class="logo">GLOWLY</div>
-    <div class="nav-links">
-      <a href="#">Accueil</a>
-      <a href="#catalogue">Collection</a>
-      <a href="#coaching">Coaching</a>
+  <div class="announcement">Livraison express partout au Sénégal | Commandez avant 14h pour une expédition rapide</div>
+  <header>
+    <div class="header-inner">
+      <div class="logo">GLOWLY</div>
+      <div class="nav-links">
+        <a href="#">Accueil</a>
+        <a href="#catalogue">Boutique</a>
+        <a href="#coaching">Coaching</a>
+        <a href="#histoire">Notre histoire</a>
+      </div>
+      <div class="header-actions">
+        <button class="btn-outline" onclick="openContact()">Contact</button>
+        <button class="cart-btn" onclick="openCart()">Panier <span class="cart-count" id="cart-count">0</span></button>
+      </div>
+    </div>
+  </header>
+
+  <div class="sub-nav">
+    <div class="sub-nav-inner">
+      <a href="#" class="active">Accueil</a>
+      <a href="#catalogue">Boutique</a>
+      <a href="#coaching">Coaching en skin care</a>
       <a href="#histoire">Notre histoire</a>
     </div>
-    <div class="header-actions">
-      <button class="btn-outline" id="contactModalBtn">Contact</button>
-      <button class="cart-btn" id="openCartBtn">Panier <span class="cart-count" id="cartCountDisplay">0</span></button>
-    </div>
   </div>
-</header>
 
-<!-- Image principale fournie par l'utilisateur -->
-<img class="hero-img" src="https://raw.githubusercontent.com/glowly-officiel/glowly-officiel.github.io/main/21433a69-25ae-46fa-8880-3f693289a165.png" alt="Glowly Maison de Beauté" onerror="this.src='https://placehold.co/1200x700/FCF3E5/9C7A4A?text=GLOWLY+MAISON+DE+BEAUTE'">
+  <img class="hero-image" src="https://raw.githubusercontent.com/glowly-officiel/glowly-officiel.github.io/main/21433a69-25ae-46fa-8880-3f693289a165.png" alt="Glowly">
 
-<!-- Section texte repensée avec des tons chauds, or et brun élégant (compatible photo) -->
-<section class="hero-text">
-  <h1>L'art du soin authentique</h1>
-  <p>Des formules certifiées à l'international, sans hydroquinone, pour révéler l'éclat de votre peau en toute sécurité.</p>
-  <a href="#catalogue" class="btn-gold-luxury">DÉCOUVRIR LA COLLECTION</a>
-</section>
+  <section class="hero-text-section">
+    <h1>L'art du soin authentique</h1>
+    <p>Des formules certifiées à l'international, sans hydroquinone, pour révéler l'éclat de votre peau en toute sécurité.</p>
+    <a href="#catalogue" class="btn-gold">DÉCOUVRIR LA COLLECTION</a>
+  </section>
 
-<!-- best sellers -->
-<div class="section">
-  <h2 class="section-title">Routines d'exception</h2>
-  <div class="section-sub">Les rituels préférés de notre communauté</div>
-  <div class="bestseller-grid">
-    <div class="bestseller-card">
-      <div class="bestseller-img" style="background-image: url('https://images.unsplash.com/photo-1596462502278-27bfe8ef36c5?w=600&q=85');"></div>
-      <div class="bestseller-content">
-        <h3>Éclat Lumineux</h3>
-        <p>Savon curcuma + Sérum Vitamine C + Fluide niacinamide</p>
-        <button class="btn-brown" onclick="addRoutineToCart('Routine Éclat Lumineux', 28500)">Ajouter au panier — 28 500 FCFA</button>
-      </div>
-    </div>
-    <div class="bestseller-card">
-      <div class="bestseller-img" style="background-image: url('https://images.unsplash.com/photo-1570194065650-d99fb4d8c631?w=600&q=85');"></div>
-      <div class="bestseller-content">
-        <h3>Hammam & Réparation</h3>
-        <p>Gant Kessa, Huile de soin régénérante, Masque Manuka</p>
-        <button class="btn-brown" onclick="addRoutineToCart('Rituel Hammam & Réparation', 32900)">Ajouter — 32 900 FCFA</button>
-      </div>
-    </div>
-  </div>
-</div>
+  <div id="coaching" style="height:1px;"></div>
 
-<!-- science -->
-<div class="science-section">
-  <h2 class="section-title">L'excellence de nos formules</h2>
-  <div class="science-flex">
-    <div class="science-item"><span style="font-size:32px;">🌍</span><h4>Certifiées internationales</h4><p>ISO 22716, GMP, sans cruauté</p></div>
-    <div class="science-item"><span style="font-size:32px;">🧪</span><h4>Sans hydroquinone & dérivés nocifs</h4><p>Skin safe, actifs propres</p></div>
-    <div class="science-item"><span style="font-size:32px;">✨</span><h4>Made for melanin-rich skin</h4><p>Formulé pour un éclat durable et sûr</p></div>
-  </div>
-</div>
-
-<!-- CATALOGUE produit dynamique -->
-<div class="section" id="catalogue">
-  <h2 class="section-title">Notre Collection</h2>
-  <div style="max-width: 400px; margin: 0 auto 30px;">
-    <input type="text" id="searchInput" placeholder="🔍 Rechercher un soin..." style="width:100%; padding:12px 18px; border-radius:50px; border:1px solid var(--border); background:white;">
-  </div>
-  <div id="productGrid" class="product-grid"></div>
-</div>
-
-<!-- témoignages -->
-<div class="section">
-  <h2 class="section-title">Ils nous confient leur peau</h2>
-  <div style="display:grid; gap:24px; max-width:700px; margin:0 auto;">
-    <div style="background:white; padding:28px; border-radius:24px;"><span style="color:#C5A267;">★★★★★</span><p style="margin:12px 0">"Après des années d'hyperpigmentation, la routine sans hydroquinone Glowly a transformé mon teint. Éclat naturel et sécurité enfin réunis."</p><strong>— Aminata D.</strong></div>
-    <div style="background:white; padding:28px; border-radius:24px;"><span style="color:#C5A267;">★★★★★</span><p>"Le masque au miel de Manuka a sauvé mes mains gercées, et le toner glycolique est incroyablement doux."</p><strong>— Marième S.</strong></div>
-  </div>
-</div>
-
-<div id="histoire" style="scroll-margin-top:70px;"></div>
-<footer>
-  <div class="footer-inner">
-    <div class="footer-grid">
-      <div><h4 style="color:#EADDCB;">À propos</h4><a href="#" style="display:block; color:#BAA88F;">Notre histoire</a><a href="#" style="display:block; color:#BAA88F;">Ingrédients clés</a></div>
-      <div><h4 style="color:#EADDCB;">Aide</h4><a href="#" style="display:block; color:#BAA88F;">Livraison Sénégal</a><a href="#" style="display:block; color:#BAA88F;">FAQ</a></div>
-      <div><h4 style="color:#EADDCB;">Légal</h4><a href="#" style="display:block; color:#BAA88F;">CGV</a><a href="#" style="display:block; color:#BAA88F;">Confidentialité</a></div>
-      <div><h4 style="color:#EADDCB;">Suivez-nous</h4><a href="#" style="display:block; color:#BAA88F;">Instagram</a><a href="#" style="display:block; color:#BAA88F;">TikTok</a></div>
-    </div>
-    <div style="text-align:center; font-size:12px; margin-top:20px;">© 2026 GLOWLY — Maison de Beauté Authentique</div>
-  </div>
-</footer>
-
-<!-- MODALS -->
-<div id="cartOverlay" class="overlay"><div class="cart-panel"><div style="padding:24px; border-bottom:1px solid #EADDCB; display:flex; justify-content:space-between;"><h3>Panier</h3><button id="closeCartBtn" style="background:none; border:none; font-size:20px;">✕</button></div><div id="cartItemsList" style="flex:1; overflow:auto; padding:20px;"></div><div id="cartFooter" style="padding:20px; border-top:1px solid #EADDCB;"><div style="display:flex; justify-content:space-between;"><span>Total</span><strong id="cartTotalAmount">0 FCFA</strong></div><button id="checkoutBtnModal" class="btn-brown" style="width:100%; margin-top:16px;">Commander</button></div></div></div>
-
-<div id="checkoutModal" class="overlay"><div class="modal-card"><h3 style="font-family:'Cormorant Garamond';">Finaliser la commande</h3><div id="orderSummary" style="background:#F8F2E9; padding:12px; border-radius:16px; margin:16px 0;"></div><input type="text" id="fullName" placeholder="Nom complet *" style="width:100%; margin:8px 0; padding:12px;"><input type="tel" id="phoneNumber" placeholder="Téléphone (WhatsApp) *" style="width:100%; margin:8px 0; padding:12px;"><select id="regionSelect" style="width:100%; margin:8px 0; padding:12px;"><option>Dakar</option><option>Thiès</option><option>Saint-Louis</option><option>Autre région</option></select><input type="text" id="address" placeholder="Quartier / adresse"><div style="margin:12px 0;"><input type="text" id="promoCodeInput" placeholder="Code promo (GLOWLY20)"><button id="applyPromoBtn" style="margin-left:8px;">Appliquer</button><span id="promoMessage" style="font-size:12px;"></span></div><button id="confirmOrderBtn" class="btn-brown" style="width:100%;">Confirmer la commande</button><div id="orderSuccessMsg" style="display:none; text-align:center; margin-top:16px;color:#9C7A4A;">✅ Commande envoyée ! Nous vous contacterons.</div></div></div>
-
-<div id="contactModal" class="overlay"><div class="modal-card"><h3>Contacter Glowly</h3><input type="text" id="contactName" placeholder="Votre nom" style="width:100%; margin:8px 0; padding:12px;"><input type="tel" id="contactPhone" placeholder="WhatsApp" style="width:100%; margin:8px 0; padding:12px;"><textarea id="contactMsg" rows="3" placeholder="Message..." style="width:100%; margin:8px 0; padding:12px;"></textarea><button id="sendContactBtn" class="btn-brown">Envoyer</button><div id="contactAck" style="margin-top:12px; font-size:13px;"></div></div></div>
-
-<div id="lightboxModal" class="overlay"><div class="lightbox-container" style="background:white;"><div style="flex:1; padding:30px;"><img id="lbImage" style="max-height:55vh; object-fit:contain; margin:0 auto; width:100%;"></div><div style="flex:1; padding:30px;"><span id="lbCategory" style="font-size:12px; letter-spacing:2px;"></span><h2 id="lbTitle" style="margin:10px 0;"></h2><p id="lbPrice" style="font-size:24px; font-weight:bold;"></p><p id="lbDesc" style="color:#6B5A48;"></p><button id="lbAddCart" class="btn-brown" style="margin-top:20px;">Ajouter au panier</button></div></div></div>
-
-<div id="toast-msg"></div>
-
-<script>
-  // Produits (collection réelle)
-  const products = [
-    { id:1, name:"Savon Curcuma & Aloe", price:8500, category:"Nettoyants", desc:"Doux, éclaircit l'uniformité.", img:"https://images.unsplash.com/photo-1600857062241-98e5dba7f214?w=400&q=80" },
-    { id:2, name:"Toner Glycolique PHA", price:12500, category:"Toners", desc:"Exfoliation douce, sans irritation.", img:"https://images.unsplash.com/photo-1620916566390-22f5e7abca7e?w=400&q=80" },
-    { id:3, name:"Sérum Vitamine C 15%", price:22500, category:"Sérums", desc:"Antioxydant, éclat instantané.", img:"https://images.unsplash.com/photo-1631730359585-38a4935dbef4?w=400&q=80" },
-    { id:4, name:"Lait Hydra-Biosphere", price:16500, category:"Hydratants", desc:"Riche en niacinamide, apaise.", img:"https://images.unsplash.com/photo-1620916566390-22f5e7abca7e?w=400&q=80" },
-    { id:5, name:"Masque Miel de Manuka", price:14800, category:"Masques", desc:"Réparation intense, mains & visage.", img:"https://images.unsplash.com/photo-1599305445671-ac291c95f0b2?w=400&q=80" },
-    { id:6, name:"Huile Régénérante Séquoia", price:19500, category:"Huiles", desc:"Riche en oméga, éclat absolu.", img:"https://images.unsplash.com/photo-1617897903246-71924a6b44ca?w=400&q=80" },
-    { id:7, name:"Crème Solaire SPF50", price:15900, category:"Protection", desc:"Non grasse, protection totale.", img:"https://images.unsplash.com/photo-1611085583191-a3b181aaf026?w=400&q=80" },
-    { id:8, name:"Gommage Doux Enzymatique", price:11200, category:"Exfoliants", desc:"Papaye, éclat en douceur.", img:"https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=400&q=80" }
-  ];
-
-  let cart = [];
-  let currentPromo = 0;
-  let currentLightboxProduct = null;
-
-  function saveCart() { localStorage.setItem('glowlyCart', JSON.stringify(cart)); updateCartUI(); }
-  function loadCart() { const c = localStorage.getItem('glowlyCart'); if(c) cart = JSON.parse(c); updateCartUI(); }
-
-  function updateCartUI() {
-    const countSpan = document.getElementById('cartCountDisplay');
-    const totalItems = cart.reduce((s,i)=> s+i.qty,0);
-    if(countSpan) countSpan.innerText = totalItems;
-    const cartList = document.getElementById('cartItemsList');
-    const cartFooter = document.getElementById('cartFooter');
-    if(cartList){
-      if(cart.length===0){
-        cartList.innerHTML = '<div style="padding:20px;text-align:center;">Votre panier est vide</div>';
-        if(cartFooter) cartFooter.style.display = 'none';
-      } else {
-        cartList.innerHTML = cart.map(item => `<div style="display:flex; justify-content:space-between; margin-bottom:16px; border-bottom:1px solid #eee; padding-bottom:8px;"><div><strong>${item.name}</strong><br>${item.price.toLocaleString()} FCFA x ${item.qty}</div><div><button onclick="changeQty(${item.id}, -1)">-</button> ${item.qty} <button onclick="changeQty(${item.id}, 1)">+</button> <button onclick="removeItem(${item.id})" style="color:red;">🗑️</button></div></div>`).join('');
-        if(cartFooter) cartFooter.style.display = 'block';
-        const subtotal = cart.reduce((s,i)=> s + (i.price * i.qty),0);
-        const total = subtotal - currentPromo;
-        document.getElementById('cartTotalAmount').innerText = (total>0?total:0).toLocaleString() + ' FCFA';
-      }
-    }
-  }
-
-  function changeQty(id, delta){
-    const idx = cart.findIndex(i=>i.id===id);
-    if(idx!==-1){
-      cart[idx].qty += delta;
-      if(cart[idx].qty<=0) cart.splice(idx,1);
-      saveCart();
-    }
-  }
-  function removeItem(id){ cart = cart.filter(i=>i.id!==id); saveCart(); }
-
-  function addToCart(prod){
-    const existing = cart.find(i=>i.id===prod.id);
-    if(existing) existing.qty++;
-    else cart.push({...prod, qty:1});
-    saveCart();
-    showToast(`${prod.name} ajouté au panier`);
-  }
-
-  function addRoutineToCart(name, price){
-    const routineItem = { id: Date.now(), name, price, qty:1, img:'' };
-    cart.push(routineItem);
-    saveCart();
-    showToast(`Routine ${name} ajoutée`);
-  }
-
-  function showToast(msg){
-    const t = document.getElementById('toast-msg');
-    t.innerText = msg;
-    t.style.opacity = '1';
-    setTimeout(()=>{ t.style.opacity = '0'; }, 2300);
-  }
-
-  function renderProducts(filter=''){
-    const grid = document.getElementById('productGrid');
-    const filtered = products.filter(p=> p.name.toLowerCase().includes(filter.toLowerCase()) || p.category.toLowerCase().includes(filter.toLowerCase()));
-    if(filtered.length===0){ grid.innerHTML='<div class="section" style="grid-column:1/-1; text-align:center;">Aucun produit trouvé</div>'; return;}
-    grid.innerHTML = filtered.map(p=>`
-      <div class="product-card" onclick="openLightbox(${p.id})">
-        <img class="product-img" src="${p.img}" alt="${p.name}" onerror="this.src='https://placehold.co/400x400/F4EADF/B68B40?text=Glowly'">
-        <div class="product-info">
-          <div class="product-title">${p.name}</div>
-          <div class="product-price">${p.price.toLocaleString()} FCFA</div>
+  <section class="section">
+    <h2 class="section-title">Nos Routines</h2>
+    <p class="section-subtitle">Les combinaisons préférées de nos clientes</p>
+    <div class="bestsellers">
+      <div class="bs-card">
+        <div class="bs-img" style="background-image: url('https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=600&q=85');"></div>
+        <div class="bs-body">
+          <h3>Routine Éclat Suprême</h3>
+          <p>Savon curcuma, Toner glycolique, Sérum Vitamine C, Lait Biosphere</p>
+          <button class="btn-brown" onclick="ajouterRoutine('Routine Éclat Suprême', 28500)">DÉCOUVRIR LA ROUTINE</button>
         </div>
       </div>
-    `).join('');
-  }
+      <div class="bs-card">
+        <div class="bs-img" style="background-image: url('https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=600&q=85');"></div>
+        <div class="bs-body">
+          <h3>Rituel Hammam & Glow</h3>
+          <p>Gant Kessa, Huile de soin, Masque main/pied au miel de Manuka</p>
+          <button class="btn-brown" onclick="ajouterRoutine('Rituel Hammam & Glow', 32900)">DÉCOUVRIR LA ROUTINE</button>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  window.openLightbox = (id)=>{
-    const prod = products.find(p=>p.id===id);
-    if(prod){
-      currentLightboxProduct = prod;
-      document.getElementById('lbImage').src = prod.img;
-      document.getElementById('lbTitle').innerText = prod.name;
-      document.getElementById('lbPrice').innerText = prod.price.toLocaleString() + ' FCFA';
-      document.getElementById('lbDesc').innerText = prod.desc;
-      document.getElementById('lbCategory').innerText = prod.category;
-      document.getElementById('lightboxModal').classList.add('open');
+  <section class="science">
+    <h2 class="section-title" style="margin-bottom: 40px;">Pourquoi nos formules ?</h2>
+    <div class="science-grid">
+      <div class="science-item"><div class="science-icon">🔬</div><h4>Normes ISO & GMP</h4><p>Fabriqué dans des laboratoires certifiés aux normes internationales les plus strictes.</p></div>
+      <div class="science-item"><div class="science-icon">🌿</div><h4>100% Végan & Halal</h4><p>Des ingrédients nobles, purs, sans cruauté animale et respectueux de vos valeurs.</p></div>
+      <div class="science-item"><div class="science-icon">🛡️</div><h4>Barrière Cutanée Protégée</h4><p>Des actifs comme la Niacinamide qui apaisent et renforcent la peau, sans l'agresser.</p></div>
+    </div>
+  </section>
+
+  <div class="section" id="catalogue">
+    <h2 class="section-title">Notre Collection</h2>
+    <div style="max-width: 400px; margin: 0 auto 30px;">
+      <div style="position: relative;">
+        <svg style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; color: var(--text-muted);" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="text" id="search-bar" placeholder="Rechercher..." oninput="filtrerProduits()" style="width:100%; padding:12px 16px 12px 42px; border:1px solid var(--border); border-radius:100px; background:white; font-size:13px;">
+      </div>
+    </div>
+    <div id="cat-bar" style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-bottom: 30px;"></div>
+    <div class="grid" id="product-grid"></div>
+  </div>
+
+  <section class="section testimonials" id="testimonials">
+    <h2 class="section-title">Ce que nos clientes disent</h2>
+    <div class="testimonial-grid">
+      <div class="testimonial"><div class="stars">★★★★★</div><p>"Ma peau n'a jamais été aussi uniforme et hydratée. Les taches sur mes quintos ont totalement disparu en un mois grâce au toner et au lait. Merci Glowly !"</p><div class="author">— Ndeye F., Dakar</div></div>
+      <div class="testimonial"><div class="stars">★★★★★</div><p>"Le masque main au miel de Manuka est un miracle. Mes mains sont douces et les gerçures ont disparu en 3 jours. Je recommande à 100%."</p><div class="author">— Fatima S., Thiès</div></div>
+    </div>
+  </section>
+
+  <div id="histoire" style="height:1px;"></div>
+
+  <footer id="footer">
+    <div style="text-align: center; margin-bottom: 40px;"><div style="font-family: 'Cormorant Garamond', serif; font-size: 32px; color: white; letter-spacing: 0.1em;">GLOWLY</div><p style="color: #C5B8AD; margin-top: 8px;">Beauté Naturelle · Dakar, Sénégal</p></div>
+    <div class="footer-grid">
+      <div class="footer-col"><h4>À propos</h4><a href="#">Notre histoire</a><a href="#">Ingrédients</a><a href="#">Engagements</a></div>
+      <div class="footer-col"><h4>Aide</h4><a href="#">Livraison</a><a href="#">FAQ</a><a href="#">Contact</a></div>
+      <div class="footer-col"><h4>Légal</h4><a href="#">Mentions légales</a><a href="#">CGV</a></div>
+      <div class="footer-col"><h4>Suivez-nous</h4><a href="#">Instagram</a><a href="#">TikTok</a><a href="#">Facebook</a></div>
+    </div>
+    <div class="contact-form">
+      <h4 style="color: white; margin-bottom: 12px;">Écrivez-nous directement</h4>
+      <input type="text" id="footer-nom" placeholder="Votre nom">
+      <input type="tel" id="footer-tel" placeholder="WhatsApp">
+      <textarea id="footer-msg" rows="3" placeholder="Votre message..."></textarea>
+      <button onclick="envoyerContactFooter()">Envoyer mon message</button>
+    </div>
+    <p style="text-align: center; margin-top: 30px; font-size: 11px; color: #8C8279;">© 2026 Glowly — Tous droits réservés.</p>
+  </footer>
+
+  <!-- MODALS -->
+  <div id="lightbox-overlay" onclick="closeLightbox(event)">
+    <button class="lightbox-close" onclick="closeLightbox()" style="position: absolute; top: 20px; right: 30px; background: white; border: none; width: 36px; height: 36px; border-radius: 50%; font-size: 18px; z-index: 10;">✕</button>
+    <div class="lightbox-layout" onclick="event.stopPropagation()">
+      <div class="lightbox-gallery"><img id="lightbox-main" src="" alt=""/></div>
+      <div class="lightbox-info">
+        <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.3em;color:var(--accent-dark);" id="lightbox-cat"></div>
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:28px;" id="lightbox-title"></h3>
+        <div style="font-size:24px;font-weight:600;" id="lightbox-price"></div>
+        <p style="color:var(--text-muted);line-height:1.7;" id="lightbox-desc"></p>
+        <button class="lightbox-add-btn" id="lightbox-add-btn" onclick="addToCartFromLightbox()">+ Ajouter au panier</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="cart-overlay" onclick="closeCart(event)"><div id="cart-panel">
+    <div style="padding:24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;"><h3 style="font-family:'Cormorant Garamond',serif;">Panier</h3><button onclick="closeCart(null,true)" style="background:none;border:none;font-size:18px;color:var(--text-muted);">✕</button></div>
+    <div id="cart-items-list" style="flex:1;overflow-y:auto;padding:20px;"></div>
+    <div id="cart-foot" style="padding:24px;border-top:1px solid var(--border);display:none;"><div style="display:flex;justify-content:space-between;margin-bottom:16px;"><span>Total</span><strong id="cart-total">0 FCFA</strong></div><button onclick="openCheckout()" class="btn-brown" style="width:100%;">Commander</button></div>
+  </div></div>
+
+  <div id="modal-overlay" onclick="closeModalOutside(event)"><div class="modal">
+    <div id="form-state"><h3 style="font-family:'Cormorant Garamond',serif;">Votre Commande</h3><div id="order-recap" style="background:var(--bg);padding:14px;border-radius:4px;margin:16px 0;font-size:13px;"></div>
+      <div class="field"><label>Nom complet *</label><input type="text" id="inp-nom" placeholder="Fatou Diallo"></div>
+      <div class="field"><label>Téléphone *</label><input type="tel" id="inp-tel" placeholder="77 123 45 67"></div>
+      <div class="field"><label>Région *</label><select id="inp-region"><option value="">Sélectionnez</option><option>Dakar</option><option>Thiès</option><option>Diourbel</option><option>Saint-Louis</option><option>Louga</option><option>Fatick</option><option>Kaolack</option><option>Ziguinchor</option><option>Tambacounda</option><option>Kolda</option><option>Matam</option><option>Kaffrine</option><option>Kédougou</option><option>Sédhiou</option><option>Autre</option></select></div>
+      <div class="field"><label>Quartier *</label><input type="text" id="inp-quartier" placeholder="Médina, Ouakam..."></div>
+      <div class="field"><label>Adresse</label><input type="text" id="inp-adresse" placeholder="Rue, porte..."></div>
+      <div class="field"><label>Paiement</label><select id="inp-paiement"><option>🐧 Wave</option><option>🟠 Orange Money</option><option>💵 Espèces à la livraison</option></select></div>
+      <div class="field"><label>Code promo</label><div style="display:flex;gap:8px;"><input type="text" id="inp-promo" placeholder="GLOWLY20" style="flex:1;"><button onclick="appliquerCodePromo()" style="background:var(--accent);color:white;border:none;padding:10px 18px;font-size:12px;font-weight:600;">Appliquer</button></div><span id="promo-msg" style="font-size:10px;"></span></div>
+      <button class="btn-brown" style="width:100%;margin-top:12px;" onclick="confirmerCommande()" id="confirm-btn">Confirmer la commande</button>
+    </div>
+    <div id="success-state" style="display:none;text-align:center;padding:20px;"><div style="font-size:40px;">✓</div><h3>Commande confirmée !</h3><p style="color:var(--text-muted);">Nous vous contacterons sous peu.</p><button class="btn-brown" onclick="resetModal()">Continuer</button></div>
+  </div></div>
+
+  <div id="contact-overlay" onclick="closeContactOutside(event)"><div class="modal" onclick="event.stopPropagation()"><h3 style="font-family:'Cormorant Garamond',serif;">Nous Contacter</h3>
+    <div class="field"><label>Nom</label><input type="text" id="contact-nom"></div>
+    <div class="field"><label>WhatsApp</label><input type="tel" id="contact-tel"></div>
+    <div class="field"><label>Message</label><textarea id="contact-msg" rows="3"></textarea></div>
+    <button class="btn-brown" onclick="envoyerContact()" style="width:100%;">Envoyer</button>
+    <div id="contact-success-state" style="display:none;text-align:center;margin-top:16px;">Envoyé !</div>
+  </div></div>
+
+  <div id="toast"></div>
+
+  <script>
+    // ---------- DONNÉES PRODUITS ----------
+    const produits = [
+      { id: 1, nom: "Savon Curcuma & Aloe", prix: 8500, categorie: "Nettoyants", desc: "Purifie et éclaire le teint en douceur.", image: "https://images.unsplash.com/photo-1600857062241-98e5dba7f214?w=400&q=80" },
+      { id: 2, nom: "Toner Glycolique PHA", prix: 12500, categorie: "Toners", desc: "Exfoliation douce, texture lissée.", image: "https://images.unsplash.com/photo-1620916566390-22f5e7abca7e?w=400&q=80" },
+      { id: 3, nom: "Sérum Vitamine C 15%", prix: 22500, categorie: "Sérums", desc: "Antioxydant, éclat immédiat.", image: "https://images.unsplash.com/photo-1631730359585-38a4935dbef4?w=400&q=80" },
+      { id: 4, nom: "Lait Hydra-Biosphere", prix: 16500, categorie: "Hydratants", desc: "Niacinamide, apaise et repulpe.", image: "https://images.unsplash.com/photo-1620916566390-22f5e7abca7e?w=400&q=80" },
+      { id: 5, nom: "Masque Miel de Manuka", prix: 14800, categorie: "Masques", desc: "Réparation intense, mains & visage.", image: "https://images.unsplash.com/photo-1599305445671-ac291c95f0b2?w=400&q=80" },
+      { id: 6, nom: "Huile Régénérante Séquoia", prix: 19500, categorie: "Huiles", desc: "Riche en oméga, éclat absolu.", image: "https://images.unsplash.com/photo-1617897903246-71924a6b44ca?w=400&q=80" },
+      { id: 7, nom: "Crème Solaire SPF50", prix: 15900, categorie: "Protection", desc: "Non grasse, protection totale.", image: "https://images.unsplash.com/photo-1611085583191-a3b181aaf026?w=400&q=80" },
+      { id: 8, nom: "Gommage Doux Enzymatique", prix: 11200, categorie: "Exfoliants", desc: "Papaye, éclat en douceur.", image: "https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=400&q=80" }
+    ];
+
+    let panier = [];
+    let reductionPromo = 0;
+    let currentLightboxProduit = null;
+
+    // Helper toast
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.innerText = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2500);
     }
-  };
-  document.getElementById('lbAddCart')?.addEventListener('click',()=>{ if(currentLightboxProduct) addToCart(currentLightboxProduct); document.getElementById('lightboxModal').classList.remove('open'); });
 
-  // cart & modal events
-  document.getElementById('openCartBtn')?.addEventListener('click',()=>document.getElementById('cartOverlay').classList.add('open'));
-  document.getElementById('closeCartBtn')?.addEventListener('click',()=>document.getElementById('cartOverlay').classList.remove('open'));
-  document.getElementById('cartOverlay')?.addEventListener('click',(e)=>{ if(e.target===document.getElementById('cartOverlay')) document.getElementById('cartOverlay').classList.remove('open');});
-  document.getElementById('lightboxModal')?.addEventListener('click',(e)=>{ if(e.target===document.getElementById('lightboxModal')) document.getElementById('lightboxModal').classList.remove('open');});
-  document.getElementById('checkoutBtnModal')?.addEventListener('click',()=>{ document.getElementById('cartOverlay').classList.remove('open'); openCheckoutModal(); });
-  function openCheckoutModal(){
-    const summaryDiv = document.getElementById('orderSummary');
-    const subtotal = cart.reduce((s,i)=>s+(i.price*i.qty),0);
-    const totalAfterPromo = subtotal - currentPromo;
-    summaryDiv.innerHTML = cart.map(i=>`${i.name} x${i.qty} : ${(i.price*i.qty).toLocaleString()} FCFA`).join('<br>') + `<br><strong>Sous-total : ${subtotal.toLocaleString()} FCFA</strong><br>Réduction: -${currentPromo.toLocaleString()} FCFA<br><strong>Total: ${(totalAfterPromo>0?totalAfterPromo:0).toLocaleString()} FCFA</strong>`;
-    document.getElementById('checkoutModal').classList.add('open');
-  }
-  document.getElementById('applyPromoBtn')?.addEventListener('click',()=>{
-    const code = document.getElementById('promoCodeInput').value.trim();
-    if(code==='GLOWLY20'){ currentPromo = Math.floor(cart.reduce((s,i)=>s+(i.price*i.qty),0)*0.2); document.getElementById('promoMessage').innerText='Code promo 20% appliqué !';}
-    else { currentPromo=0; document.getElementById('promoMessage').innerText='Code invalide';}
-    openCheckoutModal();
-  });
-  document.getElementById('confirmOrderBtn')?.addEventListener('click',()=>{
-    const name = document.getElementById('fullName').value;
-    const tel = document.getElementById('phoneNumber').value;
-    if(!name || !tel){ showToast('Veuillez entrer nom et téléphone'); return; }
-    const orderData = { items: cart, total: cart.reduce((s,i)=>s+(i.price*i.qty),0)-currentPromo, client: name, tel, region: document.getElementById('regionSelect').value, address: document.getElementById('address').value };
-    console.log('Commande:', orderData);
-    showToast(`Merci ${name}, votre commande est enregistrée !`);
-    cart = []; currentPromo=0; saveCart();
-    document.getElementById('checkoutModal').classList.remove('open');
-    document.getElementById('cartOverlay').classList.remove('open');
-  });
+    // Panier : sauvegarde localstorage
+    function sauvegarderPanier() {
+      localStorage.setItem('glowly_panier', JSON.stringify(panier));
+      mettreAJourUI();
+    }
 
-  // contact modal
-  document.getElementById('contactModalBtn')?.addEventListener('click',()=>document.getElementById('contactModal').classList.add('open'));
-  document.getElementById('sendContactBtn')?.addEventListener('click',()=>{
-    const nom = document.getElementById('contactName').value;
-    const tel = document.getElementById('contactPhone').value;
-    const msg = document.getElementById('contactMsg').value;
-    if(nom && tel){ document.getElementById('contactAck').innerHTML='✅ Message envoyé, nous vous répondrons rapidement.'; setTimeout(()=>{ document.getElementById('contactModal').classList.remove('open'); document.getElementById('contactAck').innerHTML=''; },1500);}
-    else showToast('Merci de remplir nom et téléphone');
-  });
-  document.getElementById('contactModal')?.addEventListener('click',(e)=>{ if(e.target===document.getElementById('contactModal')) document.getElementById('contactModal').classList.remove('open');});
-  document.getElementById('checkoutModal')?.addEventListener('click',(e)=>{ if(e.target===document.getElementById('checkoutModal')) document.getElementById('checkoutModal').classList.remove('open');});
+    function chargerPanier() {
+      const saved = localStorage.getItem('glowly_panier');
+      if (saved) panier = JSON.parse(saved);
+      mettreAJourUI();
+    }
 
-  document.getElementById('searchInput')?.addEventListener('input',(e)=>renderProducts(e.target.value));
-  window.addEventListener('load',()=>{ loadCart(); renderProducts(); });
-</script>
+    function mettreAJourUI() {
+      const countSpan = document.getElementById('cart-count');
+      const totalItems = panier.reduce((acc, p) => acc + p.qty, 0);
+      countSpan.innerText = totalItems;
+
+      const cartList = document.getElementById('cart-items-list');
+      const cartFoot = document.getElementById('cart-foot');
+      if (panier.length === 0) {
+        cartList.innerHTML = '<div style="text-align:center;padding:30px;">Votre panier est vide</div>';
+        cartFoot.style.display = 'none';
+      } else {
+        cartList.innerHTML = panier.map(p => `
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px; border-bottom:1px solid #eee; padding-bottom:8px;">
+            <div><strong>${p.nom}</strong><br>${p.prix.toLocaleString()} FCFA x ${p.qty}</div>
+            <div>
+              <button onclick="modifierQuantite(${p.id}, -1)" style="background:#eee; border:none; width:28px;">-</button>
+              <span style="margin:0 6px;">${p.qty}</span>
+              <button onclick="modifierQuantite(${p.id}, 1)" style="background:#eee; border:none; width:28px;">+</button>
+              <button onclick="supprimerProduit(${p.id})" style="background:none; border:none; color:#b00; margin-left:8px;">🗑️</button>
+            </div>
+          </div>
+        `).join('');
+        cartFoot.style.display = 'block';
+        const subTotal = panier.reduce((s, p) => s + (p.prix * p.qty), 0);
+        const total = subTotal - reductionPromo;
+        document.getElementById('cart-total').innerText = (total > 0 ? total : 0).toLocaleString() + ' FCFA';
+      }
+    }
+
+    function modifierQuantite(id, delta) {
+      const idx = panier.findIndex(p => p.id === id);
+      if (idx !== -1) {
+        panier[idx].qty += delta;
+        if (panier[idx].qty <= 0) panier.splice(idx, 1);
+        sauvegarderPanier();
+      }
+    }
+    function supprimerProduit(id) {
+      panier = panier.filter(p => p.id !== id);
+      sauvegarderPanier();
+    }
+
+    function ajouterAuPanier(produit) {
+      const existant = panier.find(p => p.id === produit.id);
+      if (existant) existant.qty++;
+      else panier.push({ ...produit, qty: 1 });
+      sauvegarderPanier();
+      showToast(`${produit.nom} ajouté au panier`);
+    }
+
+    function ajouterRoutine(nom, prix) {
+      const routine = { id: Date.now(), nom, prix, qty: 1, categorie: "Routine", desc: "", image: "" };
+      panier.push(routine);
+      sauvegarderPanier();
+      showToast(`Routine ${nom} ajoutée !`);
+    }
+
+    // Lightbox
+    function openLightbox(produit) {
+      currentLightboxProduit = produit;
+      document.getElementById('lightbox-main').src = produit.image;
+      document.getElementById('lightbox-title').innerText = produit.nom;
+      document.getElementById('lightbox-price').innerText = produit.prix.toLocaleString() + ' FCFA';
+      document.getElementById('lightbox-desc').innerText = produit.desc;
+      document.getElementById('lightbox-cat').innerText = produit.categorie;
+      document.getElementById('lightbox-overlay').classList.add('open');
+    }
+    function closeLightbox(e) {
+      if (e && e.target !== e.currentTarget && !e.target.classList?.contains('lightbox-close')) return;
+      document.getElementById('lightbox-overlay').classList.remove('open');
+    }
+    function addToCartFromLightbox() {
+      if (currentLightboxProduit) ajouterAuPanier(currentLightboxProduit);
+      closeLightbox();
+    }
+
+    // Affichage catalogue avec catégories
+    let currentFilter = '';
+    function filtrerProduits() {
+      const search = document.getElementById('search-bar').value.toLowerCase();
+      currentFilter = search;
+      afficherProduits();
+    }
+    function afficherProduits() {
+      const grid = document.getElementById('product-grid');
+      let filtres = produits.filter(p => p.nom.toLowerCase().includes(currentFilter) || p.categorie.toLowerCase().includes(currentFilter));
+      if (filtres.length === 0) {
+        grid.innerHTML = '<div class="no-result">Aucun produit trouvé</div>';
+        return;
+      }
+      grid.innerHTML = filtres.map(p => `
+        <div class="card" onclick="openLightbox(${JSON.stringify(p).replace(/"/g, '&quot;')})">
+          <div class="card-img"><img src="${p.image}" alt="${p.nom}" loading="lazy"></div>
+          <div class="card-body"><h3>${p.nom}</h3><div class="price">${p.prix.toLocaleString()} FCFA</div></div>
+        </div>
+      `).join('');
+    }
+
+    // Catégories dynamiques
+    function genererCategories() {
+      const cats = [...new Set(produits.map(p => p.categorie))];
+      const bar = document.getElementById('cat-bar');
+      bar.innerHTML = `<button onclick="filtrerCategorie('')" class="btn-outline" style="background:${!currentCat?'var(--accent)':'transparent'};color:${!currentCat?'white':'var(--accent-dark)'}">Tous</button>` +
+        cats.map(cat => `<button onclick="filtrerCategorie('${cat}')" class="btn-outline" style="background:${currentCat===cat?'var(--accent)':'transparent'};color:${currentCat===cat?'white':'var(--accent-dark)'}">${cat}</button>`).join('');
+    }
+    let currentCat = '';
+    function filtrerCategorie(cat) {
+      currentCat = cat;
+      const search = document.getElementById('search-bar').value.toLowerCase();
+      let filtres = produits;
+      if (cat) filtres = filtres.filter(p => p.categorie === cat);
+      if (search) filtres = filtres.filter(p => p.nom.toLowerCase().includes(search));
+      const grid = document.getElementById('product-grid');
+      if (filtres.length === 0) grid.innerHTML = '<div class="no-result">Aucun produit</div>';
+      else {
+        grid.innerHTML = filtres.map(p => `<div class="card" onclick="openLightbox(${JSON.stringify(p).replace(/"/g, '&quot;')})"><div class="card-img"><img src="${p.image}" alt="${p.nom}"></div><div class="card-body"><h3>${p.nom}</h3><div class="price">${p.prix.toLocaleString()} FCFA</div></div></div>`).join('');
+      }
+      genererCategories();
+    }
+
+    // Panier overlay
+    function openCart() { document.getElementById('cart-overlay').classList.add('open'); }
+    function closeCart(e, force) { if (force || (e && e.target === document.getElementById('cart-overlay'))) document.getElementById('cart-overlay').classList.remove('open'); }
+
+    // Checkout modal
+    function openCheckout() {
+      const recap = document.getElementById('order-recap');
+      const sub = panier.reduce((s, p) => s + (p.prix * p.qty), 0);
+      const total = sub - reductionPromo;
+      recap.innerHTML = panier.map(p => `${p.nom} x${p.qty} : ${(p.prix*p.qty).toLocaleString()} FCFA`).join('<br>') + `<br><strong>Sous-total : ${sub.toLocaleString()} FCFA</strong><br>Réduction : -${reductionPromo.toLocaleString()} FCFA<br><strong>Total : ${(total>0?total:0).toLocaleString()} FCFA</strong>`;
+      document.getElementById('modal-overlay').classList.add('open');
+    }
+    function closeModalOutside(e) { if (e.target === document.getElementById('modal-overlay')) document.getElementById('modal-overlay').classList.remove('open'); }
+    function resetModal() {
+      document.getElementById('form-state').style.display = 'block';
+      document.getElementById('success-state').style.display = 'none';
+      document.getElementById('modal-overlay').classList.remove('open');
+      reductionPromo = 0;
+      document.getElementById('promo-msg').innerText = '';
+      document.getElementById('inp-promo').value = '';
+    }
+    function appliquerCodePromo() {
+      const code = document.getElementById('inp-promo').value.trim();
+      if (code === 'GLOWLY20') {
+        const sub = panier.reduce((s, p) => s + (p.prix * p.qty), 0);
+        reductionPromo = Math.floor(sub * 0.2);
+        document.getElementById('promo-msg').innerText = '✅ Code 20% appliqué !';
+      } else {
+        reductionPromo = 0;
+        document.getElementById('promo-msg').innerText = '❌ Code invalide';
+      }
+      const recapDiv = document.getElementById('order-recap');
+      const subT = panier.reduce((s, p) => s + (p.prix * p.qty), 0);
+      const newTotal = subT - reductionPromo;
+      recapDiv.innerHTML = panier.map(p => `${p.nom} x${p.qty} : ${(p.prix*p.qty).toLocaleString()} FCFA`).join('<br>') + `<br><strong>Sous-total : ${subT.toLocaleString()} FCFA</strong><br>Réduction : -${reductionPromo.toLocaleString()} FCFA<br><strong>Total : ${(newTotal>0?newTotal:0).toLocaleString()} FCFA</strong>`;
+    }
+    function confirmerCommande() {
+      const nom = document.getElementById('inp-nom').value.trim();
+      const tel = document.getElementById('inp-tel').value.trim();
+      if (!nom || !tel) { showToast('Veuillez renseigner nom et téléphone'); return; }
+      const region = document.getElementById('inp-region').value;
+      if (!region) { showToast('Choisissez une région'); return; }
+      const quartier = document.getElementById('inp-quartier').value.trim();
+      if (!quartier) { showToast('Indiquez votre quartier'); return; }
+      // Simulation succès
+      document.getElementById('form-state').style.display = 'none';
+      document.getElementById('success-state').style.display = 'block';
+      panier = [];
+      reductionPromo = 0;
+      sauvegarderPanier();
+      setTimeout(() => {
+        resetModal();
+        document.getElementById('cart-overlay').classList.remove('open');
+      }, 2000);
+    }
+
+    // Contact modals
+    function openContact() { document.getElementById('contact-overlay').classList.add('open'); }
+    function closeContactOutside(e) { if (e.target === document.getElementById('contact-overlay')) document.getElementById('contact-overlay').classList.remove('open'); }
+    function envoyerContact() {
+      const nom = document.getElementById('contact-nom').value.trim();
+      const tel = document.getElementById('contact-tel').value.trim();
+      if (!nom || !tel) { showToast('Merci de remplir nom et téléphone'); return; }
+      document.getElementById('contact-success-state').style.display = 'block';
+      setTimeout(() => {
+        document.getElementById('contact-success-state').style.display = 'none';
+        document.getElementById('contact-overlay').classList.remove('open');
+        document.getElementById('contact-nom').value = '';
+        document.getElementById('contact-tel').value = '';
+        document.getElementById('contact-msg').value = '';
+        showToast('Message envoyé !');
+      }, 1200);
+    }
+    function envoyerContactFooter() {
+      const nom = document.getElementById('footer-nom').value.trim();
+      const tel = document.getElementById('footer-tel').value.trim();
+      if (!nom || !tel) { showToast('Merci nom et WhatsApp'); return; }
+      showToast(`Merci ${nom}, nous vous répondons rapidement.`);
+      document.getElementById('footer-nom').value = '';
+      document.getElementById('footer-tel').value = '';
+      document.getElementById('footer-msg').value = '';
+    }
+
+    // Initialisation
+    window.addEventListener('load', () => {
+      chargerPanier();
+      genererCategories();
+      afficherProduits();
+      // Écouter recherche
+      document.getElementById('search-bar').addEventListener('input', () => {
+        currentCat = '';
+        currentFilter = document.getElementById('search-bar').value.toLowerCase();
+        filtrerProduits();
+        genererCategories();
+      });
+    });
+    // Expose global functions
+    window.modifierQuantite = modifierQuantite;
+    window.supprimerProduit = supprimerProduit;
+    window.ajouterRoutine = ajouterRoutine;
+    window.openLightbox = openLightbox;
+    window.closeLightbox = closeLightbox;
+    window.addToCartFromLightbox = addToCartFromLightbox;
+    window.openCart = openCart;
+    window.closeCart = closeCart;
+    window.openCheckout = openCheckout;
+    window.closeModalOutside = closeModalOutside;
+    window.appliquerCodePromo = appliquerCodePromo;
+    window.confirmerCommande = confirmerCommande;
+    window.resetModal = resetModal;
+    window.openContact = openContact;
+    window.closeContactOutside = closeContactOutside;
+    window.envoyerContact = envoyerContact;
+    window.envoyerContactFooter = envoyerContactFooter;
+    window.filtrerProduits = filtrerProduits;
+    window.filtrerCategorie = filtrerCategorie;
+  </script>
 </body>
 </html>
