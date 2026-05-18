@@ -37,23 +37,28 @@
     /* Barre d'annonce */
     .announcement { background: var(--brown); color: white; text-align: center; padding: 12px 16px; font-size: 13px; letter-spacing: 0.04em; }
 
-    /* Header centré */
+    /* Header */
     header { position: sticky; top: 0; z-index: 100; background: rgba(253,251,247,0.94); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); }
-    .header-inner { max-width: 1280px; margin: 0 auto; padding: 20px 24px; display: flex; align-items: center; justify-content: center; position: relative; }
+    .header-inner { max-width: 1280px; margin: 0 auto; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; }
     .logo { font-family: 'Cormorant Garamond', serif; font-size: 28px; color: var(--brown); letter-spacing: 0.15em; font-weight: 500; text-transform: uppercase; }
-    .nav-links { display: none; }
+    .nav-links { display: none; gap: 32px; }
     @media (min-width: 769px) {
-      .nav-links { display: flex; gap: 32px; position: absolute; left: 24px; }
-      .header-inner { justify-content: center; }
+      .nav-links { display: flex; }
     }
-    .nav-links a { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); font-weight: 500; transition: color 0.2s; }
+    .nav-links a { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); font-weight: 500; transition: color 0.2s; white-space: nowrap; }
     .nav-links a:hover { color: var(--brown); }
-    .header-actions { position: absolute; right: 24px; display: flex; gap: 12px; align-items: center; }
-    .btn-outline { background: transparent; border: 1px solid var(--accent); color: var(--accent-dark); padding: 8px 20px; border-radius: 100px; font-size: 11px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; transition: 0.2s; }
+    .header-actions { display: flex; gap: 12px; align-items: center; }
+    .btn-outline { background: transparent; border: 1px solid var(--accent); color: var(--accent-dark); padding: 8px 20px; border-radius: 100px; font-size: 11px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; transition: 0.2s; white-space: nowrap; }
     .btn-outline:hover { background: var(--accent); color: white; }
-    .cart-btn { display: flex; align-items: center; gap: 6px; background: var(--surface); border: 1px solid var(--border); padding: 8px 20px; border-radius: 100px; font-size: 11px; font-weight: 500; color: var(--text); transition: 0.2s; }
+    .cart-btn { display: flex; align-items: center; gap: 6px; background: var(--surface); border: 1px solid var(--border); padding: 8px 20px; border-radius: 100px; font-size: 11px; font-weight: 500; color: var(--text); transition: 0.2s; white-space: nowrap; }
     .cart-btn:hover { border-color: var(--accent); color: var(--accent-dark); }
     .cart-count { background: var(--accent); color: white; width: 18px; height: 18px; border-radius: 50%; font-size: 10px; display: flex; align-items: center; justify-content: center; }
+
+    /* Barre de navigation secondaire (sous la bannière) */
+    .sub-nav { background: var(--accent-light); border-bottom: 1px solid var(--border); }
+    .sub-nav-inner { max-width: 1280px; margin: 0 auto; padding: 0 24px; display: flex; justify-content: center; gap: 32px; overflow-x: auto; }
+    .sub-nav a { display: inline-block; padding: 16px 0; font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text); font-weight: 500; white-space: nowrap; border-bottom: 2px solid transparent; transition: border-color 0.2s, color 0.2s; }
+    .sub-nav a:hover, .sub-nav a.active { color: var(--accent-dark); border-bottom-color: var(--accent); }
 
     /* Hero */
     .hero { position: relative; background: url('https://images.unsplash.com/photo-1611930022073-b7a4ba5fcccd?w=1200&q=80') center/cover no-repeat; min-height: 80vh; display: flex; align-items: center; }
@@ -146,19 +151,29 @@
   <div class="announcement">Livraison express partout au Sénégal | Commandez avant 14h pour une expédition rapide</div>
   <header>
     <div class="header-inner">
-      <nav class="nav-links">
+      <div class="logo">GLOWLY</div>
+      <div class="nav-links">
         <a href="#">Accueil</a>
         <a href="#catalogue">Boutique</a>
-        <a href="#testimonials">Avis</a>
-        <a href="#footer">Contact</a>
-      </nav>
-      <div class="logo">GLOWLY</div>
+        <a href="#coaching">Coaching</a>
+        <a href="#histoire">Notre histoire</a>
+      </div>
       <div class="header-actions">
         <button class="btn-outline" onclick="openContact()">Contact</button>
         <button class="cart-btn" onclick="openCart()">Panier <span class="cart-count" id="cart-count">0</span></button>
       </div>
     </div>
   </header>
+
+  <!-- Barre de navigation secondaire (toujours visible) -->
+  <div class="sub-nav">
+    <div class="sub-nav-inner">
+      <a href="#" class="active">Accueil</a>
+      <a href="#catalogue">Boutique</a>
+      <a href="#coaching">Coaching en skin care</a>
+      <a href="#histoire">Notre histoire</a>
+    </div>
+  </div>
 
   <!-- HERO -->
   <section class="hero">
@@ -169,6 +184,9 @@
       <a href="#catalogue" class="btn-white">DÉCOUVRIR LA COLLECTION</a>
     </div>
   </section>
+
+  <!-- COACHING (ancre) -->
+  <div id="coaching" style="height:1px;"></div>
 
   <!-- BEST SELLERS -->
   <section class="section">
@@ -245,6 +263,9 @@
       </div>
     </div>
   </section>
+
+  <!-- NOTRE HISTOIRE (ancre) -->
+  <div id="histoire" style="height:1px;"></div>
 
   <!-- FOOTER -->
   <footer id="footer">
