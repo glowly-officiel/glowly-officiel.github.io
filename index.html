@@ -43,7 +43,7 @@
     .btn-gold { display: inline-block; background: linear-gradient(105deg, #D8A7AB, #C9A87C); color: #2E211B; padding: 14px 42px; font-weight: 700; font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; border-radius: 50px; text-decoration: none; box-shadow: 0 8px 18px rgba(165,106,97,0.25); transition: 0.3s; }
     .btn-gold:hover { transform: translateY(-2px); }
 
-    /* ========== CARROUSEL AVEC IMAGES ET NOMS, COLLÉS ========== */
+    /* ========== CARROUSEL : bande horizontale avec images + noms, collés ========== */
     .carousel-section {
       background: var(--bg-beige);
       padding: 30px 0;
@@ -59,13 +59,13 @@
       margin-bottom: 20px;
     }
     .carousel-container {
-      position: relative;
       width: 100%;
       overflow: hidden;
+      position: relative;
     }
     .carousel-track {
       display: flex;
-      gap: 0;                /* pas d'espace entre les éléments */
+      gap: 0;               /* Supprime tout espace entre les produits */
       overflow-x: auto;
       scroll-behavior: smooth;
       scrollbar-width: thin;
@@ -82,47 +82,47 @@
       background: var(--rose-gold);
       border-radius: 10px;
     }
+    /* Un produit : image + nom, collé, sans marge */
     .carousel-item {
       flex: 0 0 auto;
-      width: 180px;          /* largeur fixe pour uniformité */
+      width: 130px;          /* Ajustez la largeur selon vos besoins */
+      text-align: center;
       cursor: pointer;
       transition: transform 0.2s;
-      background: white;
-      border: 1px solid #F2E2D8;
-      border-radius: 12px;
-      overflow: hidden;
-      margin: 0;
+      background: transparent;
+      border: none;
     }
     .carousel-item:hover {
-      transform: translateY(-5px);
-      border-color: var(--rose-gold);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+      transform: translateY(-4px);
     }
     .carousel-item-img {
       width: 100%;
       aspect-ratio: 1;
       background: #FEF5ED;
+      border-radius: 12px;
+      overflow: hidden;
     }
     .carousel-item-img img {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      display: block;
     }
     .carousel-item-name {
-      padding: 10px 8px;
-      text-align: center;
-      font-size: 0.85rem;
+      margin-top: 6px;
+      font-size: 0.8rem;
       font-weight: 500;
       color: var(--text-brun);
       white-space: normal;
       word-break: break-word;
+      padding: 0 4px;
     }
     /* Pas de flèches */
     .carousel-nav {
       display: none;
     }
 
-    /* Sections classiques */
+    /* Section des routines et autres (inchangé) */
     .section { max-width: 1280px; margin: 0 auto; padding: 80px 24px; }
     .section-title { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; text-align: center; color: var(--marron-bois); margin-bottom: 12px; }
     .section-subtitle { text-align: center; color: #9C7A6B; font-style: italic; margin-bottom: 48px; }
@@ -209,7 +209,7 @@
   <a href="#catalogue" class="btn-gold">DÉCOUVRIR LA COLLECTION</a>
 </section>
 
-<!-- ========== CARROUSEL AVEC IMAGES + NOMS (COLLÉS) ========== -->
+<!-- ========== CARROUSEL AVEC IMAGES + NOMS, COLLÉS ========== -->
 <section class="carousel-section" id="carouselSection">
   <div class="carousel-title">✨ Les incontournables ✨</div>
   <div class="carousel-container">
@@ -279,7 +279,7 @@
 
 <script>
   // ======================== CONFIGURATION ========================
-  // 🔴 REMPLACEZ CETTE URL PAR CELLE DE VOTRE SCRIPT GAS DÉPLOYÉ
+  // 🔴 URL de votre script Apps Script déployé (déjà renseignée)
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx6NmekfvNMCFqasTCO_QpA4l8mV2HkNgR6_cdH291ci5sa8zaKYJqj05_ZXtjL3KFa/exec';
 
   let allProducts = [];
@@ -298,18 +298,23 @@
     setTimeout(() => t.classList.remove('show'), 2500);
   }
 
+  // ========== BACKEND VIA FETCH ==========
   async function chargerProduits() {
     try {
       console.log("Chargement depuis:", SCRIPT_URL);
       const response = await fetch(`${SCRIPT_URL}?action=produits`);
       const data = await response.json();
+      console.log("Réponse brute:", data);
       if (data.ok && data.produits && data.produits.length > 0) {
         allProducts = data.produits;
+        console.log("✅ Produits chargés:", allProducts.length);
+        // Petite vérification : afficher les premières images pour debug
+        if (allProducts[0]) console.log("Premier produit image:", allProducts[0].img);
       } else {
         throw new Error(data.error || "Aucun produit reçu");
       }
     } catch (err) {
-      console.error(err);
+      console.error("❌ Erreur chargement:", err);
       showToast("Erreur de chargement des produits. Vérifiez l'URL du backend.");
       allProducts = [];
     }
@@ -354,7 +359,7 @@
     }
   }
 
-  // ========== CARROUSEL AVEC IMAGES ==========
+  // ========== CARROUSEL AVEC IMAGES + NOMS, COLLÉS ==========
   let carouselTrack = null;
 
   function initCarousel() {
@@ -365,18 +370,20 @@
       return;
     }
     carouselTrack.innerHTML = '';
-    // Duplication pour effet infini (4 fois)
-    const duplicates = 4;
+    // Dupliquer plusieurs fois pour un défilement infini fluide
+    const duplicates = 3;
     for (let d = 0; d < duplicates; d++) {
       allProducts.forEach(prod => {
-        const card = document.createElement('div');
-        card.className = 'carousel-item';
-        card.onclick = () => openLightbox(prod);
-        card.innerHTML = `
-          <div class="carousel-item-img"><img src="${prod.img || 'https://placehold.co/400x400/FEF5ED/C28B90?text=Glowly'}" alt="${escapeHtml(prod.nom)}" loading="lazy" onerror="this.src='https://placehold.co/400x400/FEF5ED/C28B90?text=Image'"></div>
+        const item = document.createElement('div');
+        item.className = 'carousel-item';
+        item.onclick = () => openLightbox(prod);
+        item.innerHTML = `
+          <div class="carousel-item-img">
+            <img src="${prod.img || 'https://placehold.co/400x400/FEF5ED/C28B90?text=Image'}" alt="${escapeHtml(prod.nom)}" loading="lazy" onerror="this.src='https://placehold.co/400x400/FEF5ED/C28B90?text=Image'">
+          </div>
           <div class="carousel-item-name">${escapeHtml(prod.nom)}</div>
         `;
-        carouselTrack.appendChild(card);
+        carouselTrack.appendChild(item);
       });
     }
     startAutoScroll();
@@ -388,10 +395,10 @@
     autoScrollInterval = setInterval(() => {
       if (!isAutoScrolling) return;
       if (carouselTrack) {
-        const scrollAmount = 180; // largeur approximative d'un élément (180px)
-        carouselTrack.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+        const itemWidth = 130; // correspond à width:130px dans CSS
+        carouselTrack.scrollBy({ left: itemWidth, behavior: 'smooth' });
         setTimeout(() => {
-          if (carouselTrack.scrollLeft + carouselTrack.clientWidth >= carouselTrack.scrollWidth - 400) {
+          if (carouselTrack.scrollLeft + carouselTrack.clientWidth >= carouselTrack.scrollWidth - itemWidth * 2) {
             carouselTrack.scrollTo({ left: 20, behavior: 'auto' });
           }
         }, 300);
@@ -405,7 +412,7 @@
     carouselTrack.addEventListener('mouseleave', () => { isAutoScrolling = true; });
   }
 
-  // ========== FONCTIONS STANDARD ==========
+  // ========== FONCTIONS UI STANDARD ==========
   function renderCategories() {
     const cats = [...new Set(allProducts.map(p => p.cat).filter(c => c && c.trim() !== ""))];
     const bar = document.getElementById('catBar');
