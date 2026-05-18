@@ -119,7 +119,7 @@
     }
     .carousel-nav { display: none; }
 
-    /* ========== BEST SELLERS - CARTES PAYSAGE AVEC FOND MARRON SUR LE TEXTE ========== */
+    /* ========== BEST SELLERS - CARTES PAYSAGE AVEC FOND MARRON SUR LE TEXTE ET ALTERNANCE ========== */
     .section { max-width: 1280px; margin: 0 auto; padding: 80px 24px; }
     .section-title { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; text-align: center; color: var(--marron-bois); margin-bottom: 12px; }
     .section-subtitle { text-align: center; color: #9C7A6B; font-style: italic; margin-bottom: 48px; }
@@ -142,7 +142,11 @@
       transform: translateY(-6px);
       box-shadow: 0 20px 35px rgba(94,58,46,0.08);
     }
-    /* Alternance : image à gauche par défaut, image à droite avec .reverse */
+    /* Par défaut : image à gauche, texte à droite */
+    .bs-card {
+      flex-direction: row;
+    }
+    /* Inverser l'ordre : image à droite, texte à gauche */
     .bs-card.reverse {
       flex-direction: row-reverse;
     }
@@ -305,7 +309,7 @@
         <button class="btn-brown" onclick="addRoutine('Routine Éclat Suprême', 28500)">AJOUTER — 28 500 FCFA</button>
       </div>
     </div>
-    <!-- Carte 2 : image droite / texte marron gauche -->
+    <!-- Carte 2 : image droite / texte marron gauche (reverse) -->
     <div class="bs-card reverse">
       <div class="bs-img" style="background-image: url('https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=800&q=80');"></div>
       <div class="bs-body">
@@ -323,7 +327,7 @@
         <button class="btn-brown" onclick="addRoutine('Masque Visage BIO-Collagène', 18900)">AJOUTER — 18 900 FCFA</button>
       </div>
     </div>
-    <!-- Carte 4 : image droite / texte marron gauche -->
+    <!-- Carte 4 : image droite / texte marron gauche (reverse) -->
     <div class="bs-card reverse">
       <div class="bs-img" style="background-image: url('https://images.unsplash.com/photo-1600948836101-f9ffda59d250?w=800&q=80');"></div>
       <div class="bs-body">
