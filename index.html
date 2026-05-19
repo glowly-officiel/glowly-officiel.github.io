@@ -99,7 +99,7 @@
       padding: 0 4px;
     }
 
-    /* BEST SELLERS - DESKTOP (alternance paysage) */
+    /* BEST SELLERS - DESKTOP */
     .section { max-width: 1280px; margin: 0 auto; padding: 80px 24px; }
     .section-title { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; text-align: center; color: var(--marron-bois); margin-bottom: 12px; }
     .section-subtitle { text-align: center; color: #9C7A6B; font-style: italic; margin-bottom: 48px; }
@@ -128,8 +128,16 @@
       .bs-img {
         flex: 1;
         min-width: 280px;
-        background-size: cover;
-        background-position: center;
+        background: #FEF5ED;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .bs-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
       }
       .brown-bg {
         flex: 1.5;
@@ -182,9 +190,16 @@
       .bs-img {
         width: 120px;
         flex-shrink: 0;
-        background-size: cover;
-        background-position: center;
+        background: #FEF5ED;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .bs-img img {
+        width: 100%;
         height: 100%;
+        object-fit: cover;
+        display: block;
       }
       .brown-bg {
         flex: 1;
@@ -218,7 +233,7 @@
         cursor: pointer;
         align-self: flex-start;
       }
-      /* Désactiver alternance sur mobile */
+      /* Désactiver alternance sur mobile (toujours image à gauche) */
       .bs-card.right-img .bs-img { order: 0; }
       .bs-card.right-img .brown-bg { order: 1; }
     }
@@ -303,7 +318,7 @@
 
 <div id="coaching" style="scroll-margin-top: 80px;"></div>
 
-<!-- BEST SELLERS DYNAMIQUES (générés par JavaScript) -->
+<!-- BEST SELLERS DYNAMIQUES -->
 <section class="section">
   <h2 class="section-title">Nos Best Sellers</h2>
   <p class="section-subtitle">Les produits les plus plébiscités par notre communauté</p>
@@ -361,8 +376,8 @@
 
 <script>
   // ======================== CONFIGURATION ========================
-  // ⚠️ REMPLACEZ CETTE URL PAR CELLE DE VOTRE SCRIPT GAS DÉPLOYÉ
-  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwWOydcV72jHFPXujqCHGCJPzAk0Z0PDD2E-oXKDSTTSQU9F41QkEJ6qZocaJXkTRJH/exec';
+  // 🔴 REMPLACEZ CETTE URL PAR CELLE DE VOTRE SCRIPT GAS DÉPLOYÉ
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx6NmekfvNMCFqasTCO_QpA4l8mV2HkNgR6_cdH291ci5sa8zaKYJqj05_ZXtjL3KFa/exec';
 
   let allProducts = [];
   let cart = [];
@@ -405,7 +420,7 @@
     initCarousel();
   }
 
-  // === BEST SELLERS DYNAMIQUES ===
+  // === BEST SELLERS DYNAMIQUES (avec balise <img> et fallback) ===
   async function chargerBestSellers() {
     const container = document.getElementById('bestsellersContainer');
     if (!container) return;
@@ -417,12 +432,15 @@
         let html = '';
         data.bestsellers.forEach((prod, index) => {
           const directionClass = (index % 2 === 0) ? 'left-img' : 'right-img';
-          const imgUrl = prod.img || 'https://placehold.co/800x800/FEF5ED/C28B90?text=Image';
+          // Image par défaut si l'URL est vide ou invalide
+          const imgSrc = prod.img && prod.img.trim() !== '' ? prod.img : 'https://placehold.co/800x800/FEF5ED/C28B90?text=Glowly';
           const description = prod.desc || `Découvrez ${prod.nom}, un produit plébiscité par notre communauté pour sa qualité exceptionnelle.`;
           const prix = Number(prod.prix).toLocaleString();
           html += `
             <div class="bs-card ${directionClass}">
-              <div class="bs-img" style="background-image: url('${imgUrl}');"></div>
+              <div class="bs-img">
+                <img src="${escapeHtml(imgSrc)}" alt="${escapeHtml(prod.nom)}" onerror="this.src='https://placehold.co/800x800/FEF5ED/C28B90?text=Glowly'">
+              </div>
               <div class="brown-bg">
                 <h3>${escapeHtml(prod.nom)}</h3>
                 <p class="bs-description">Pourquoi ce produit est un best seller ? ${escapeHtml(description)}</p>
@@ -493,9 +511,10 @@
         const item = document.createElement('div');
         item.className = 'carousel-item';
         item.onclick = () => openLightbox(prod);
+        const imgSrc = prod.img || 'https://placehold.co/400x400/FEF5ED/C28B90?text=Image';
         item.innerHTML = `
           <div class="carousel-item-img">
-            <img src="${prod.img || 'https://placehold.co/400x400/FEF5ED/C28B90?text=Image'}" alt="${escapeHtml(prod.nom)}" loading="lazy" onerror="this.src='https://placehold.co/400x400/FEF5ED/C28B90?text=Image'">
+            <img src="${escapeHtml(imgSrc)}" alt="${escapeHtml(prod.nom)}" loading="lazy" onerror="this.src='https://placehold.co/400x400/FEF5ED/C28B90?text=Image'">
           </div>
           <div class="carousel-item-name">${escapeHtml(prod.nom)}</div>
         `;
