@@ -189,12 +189,72 @@
       .bs-card.right-img .brown-bg { order: 1; }
     }
 
-    /* Autres sections */
+    /* =========== NOUVELLE SECTION "POURQUOI NOS FORMULES" (ANIMÉE) =========== */
     .science-section { background: #FDF4EF; padding: 60px 24px; }
-    .science-flex { display: grid; gap: 32px; max-width: 1000px; margin: 0 auto; }
-    @media (min-width: 700px) { .science-flex { grid-template-columns: repeat(3, 1fr); } }
-    .science-item { text-align: center; background: rgba(255,245,240,0.6); padding: 24px 12px; border-radius: 32px; }
-    .science-icon { font-size: 34px; }
+    .science-flex {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 32px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .science-item {
+      text-align: center;
+      background: rgba(255,245,240,0.6);
+      padding: 32px 20px;
+      border-radius: 32px;
+      transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease, box-shadow 0.3s ease;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.02);
+    }
+    .science-item.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .science-item:hover {
+      transform: translateY(-8px);
+      background: white;
+      box-shadow: 0 20px 30px rgba(94,58,46,0.08);
+      border: 1px solid var(--rose-gold);
+    }
+    .science-icon {
+      font-size: 2.8rem;
+      margin-bottom: 16px;
+      display: inline-block;
+      transition: transform 0.3s ease;
+    }
+    .science-item:hover .science-icon {
+      transform: scale(1.1);
+    }
+    .science-item h4 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      margin-bottom: 12px;
+      color: var(--marron-bois);
+    }
+    .science-item p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* Responsive */
+    @media (max-width: 700px) {
+      .science-item {
+        padding: 24px 16px;
+      }
+      .science-icon {
+        font-size: 2.2rem;
+      }
+      .science-item h4 {
+        font-size: 1.2rem;
+      }
+    }
+
+    /* Autres sections (produits, témoignages, footer) */
     .product-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
     @media (min-width: 640px) { .product-grid { grid-template-columns: repeat(3, 1fr); } }
     @media (min-width: 1024px) { .product-grid { grid-template-columns: repeat(4, 1fr); } }
@@ -276,12 +336,25 @@
   <div class="bestsellers-container" id="bestsellersContainer"></div>
 </section>
 
+<!-- NOUVELLE SECTION POURQUOI NOS FORMULES (ANIMÉE) -->
 <section class="science-section">
   <h2 class="section-title">Pourquoi nos formules ?</h2>
-  <div class="science-flex">
-    <div class="science-item"><div class="science-icon">🔬</div><h4>Normes ISO & GMP</h4><p>Laboratoires certifiés</p></div>
-    <div class="science-item"><div class="science-icon">🌿</div><h4>100% Végan & Halal</h4><p>Ingrédients purs</p></div>
-    <div class="science-item"><div class="science-icon">🛡️</div><h4>Sans hydroquinone</h4><p>Peau respectée</p></div>
+  <div class="science-flex" id="scienceFlex">
+    <div class="science-item animate-on-scroll">
+      <div class="science-icon">✨</div>
+      <h4>Éclat durable</h4>
+      <p>Résultat visible dès 14 jours, sans effet rebond. Un teint lumineux et uniforme.</p>
+    </div>
+    <div class="science-item animate-on-scroll">
+      <div class="science-icon">🧴</div>
+      <h4>Formule clean</h4>
+      <p>Sans parfum artificiel, sans alcool, sans colorant. 100% des ingrédients sont traçables.</p>
+    </div>
+    <div class="science-item animate-on-scroll">
+      <div class="science-icon">🌱</div>
+      <h4>Peau respectée</h4>
+      <p>Testé dermatologiquement sur peaux sensibles. Zéro irritation, zéro inconfort.</p>
+    </div>
   </div>
 </section>
 
@@ -603,6 +676,21 @@
     });
   }
 
+  // Animation au scroll pour la section "Pourquoi nos formules"
+  function observeScienceItems() {
+    const items = document.querySelectorAll('.science-item');
+    if (!items.length) return;
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.2 });
+    items.forEach(item => observer.observe(item));
+  }
+
   function openContactModal() { document.getElementById('contactModal').classList.add('open'); }
   function closeContactModal(e) { if (e.target === document.getElementById('contactModal')) document.getElementById('contactModal').classList.remove('open'); }
   function sendContact() { const nom = document.getElementById('contactName').value.trim(); const tel = document.getElementById('contactPhone').value.trim(); if (!nom || !tel) { showToast("Merci de remplir nom et téléphone"); return; } document.getElementById('contactAck').style.display = 'block'; setTimeout(() => { document.getElementById('contactAck').style.display = 'none'; document.getElementById('contactModal').classList.remove('open'); showToast("Message envoyé !"); }, 1200); }
@@ -612,6 +700,7 @@
     loadCart();
     chargerProduits();
     chargerBestSellers();
+    observeScienceItems();
     document.getElementById('searchInput')?.addEventListener('input', () => filterProducts());
   });
 
