@@ -43,7 +43,7 @@
     .btn-gold { display: inline-block; background: linear-gradient(105deg, #D8A7AB, #C9A87C); color: #2E211B; padding: 14px 42px; font-weight: 700; font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; border-radius: 50px; text-decoration: none; box-shadow: 0 8px 18px rgba(165,106,97,0.25); transition: 0.3s; }
     .btn-gold:hover { transform: translateY(-2px); }
 
-    /* CARROUSEL HORIZONTAL */
+    /* CARROUSEL */
     .carousel-section {
       background: var(--bg-beige);
       padding: 30px 0;
@@ -109,7 +109,8 @@
       flex-direction: column;
       gap: 40px;
     }
-    /* Desktop : >= 769px */
+
+    /* Desktop >= 769px */
     @media (min-width: 769px) {
       .bs-card {
         display: flex;
@@ -166,7 +167,7 @@
       .btn-brown:hover { background: #C9A87C; transform: scale(1.02); }
     }
 
-    /* MOBILE (<= 768px) : paysage avec image et texte de même hauteur */
+    /* MOBILE <= 768px : paysage égal hauteur */
     @media (max-width: 768px) {
       .bs-card {
         display: flex;
@@ -176,14 +177,14 @@
         overflow: hidden;
         border: 1px solid #F0E1D6;
         margin-bottom: 20px;
-        align-items: stretch; /* pour que les enfants aient la même hauteur */
+        align-items: stretch;
       }
       .bs-img {
         width: 120px;
         flex-shrink: 0;
         background-size: cover;
         background-position: center;
-        height: 100%; /* prend toute la hauteur de la carte (définie par le texte) */
+        height: 100%;
       }
       .brown-bg {
         flex: 1;
@@ -217,16 +218,12 @@
         cursor: pointer;
         align-self: flex-start;
       }
-      /* Désactiver l'alternance sur mobile (toujours image à gauche) */
-      .bs-card.right-img .bs-img {
-        order: 0;
-      }
-      .bs-card.right-img .brown-bg {
-        order: 1;
-      }
+      /* Désactiver alternance sur mobile */
+      .bs-card.right-img .bs-img { order: 0; }
+      .bs-card.right-img .brown-bg { order: 1; }
     }
 
-    /* Autres sections (science, produits, témoignages, footer) */
+    /* Autres sections */
     .science-section { background: #FDF4EF; padding: 60px 24px; }
     .science-flex { display: grid; gap: 32px; max-width: 1000px; margin: 0 auto; }
     @media (min-width: 700px) { .science-flex { grid-template-columns: repeat(3, 1fr); } }
@@ -288,7 +285,7 @@
   <div class="sub-nav-inner"><a href="#" class="active">Accueil</a><a href="#catalogue">Boutique</a><a href="#coaching">Coaching skin care</a><a href="#histoire">Notre histoire</a></div>
 </div>
 
-<img class="hero-image" src="https://raw.githubusercontent.com/glowly-officiel/glowly-officiel.github.io/main/21433a69-25ae-46fa-8880-3f693289a165.png" alt="Glowly" onerror="this.src='https://placehold.co/1600x800/FDF4F0/D8A7AB?text=GLOWLY'">
+<img class="hero-image" id="heroImage" src="https://raw.githubusercontent.com/glowly-officiel/glowly-officiel.github.io/main/21433a69-25ae-46fa-8880-3f693289a165.png" alt="Glowly" onerror="this.src='https://placehold.co/1600x800/FDF4F0/D8A7AB?text=GLOWLY'">
 
 <section class="hero-text-section">
   <h1>L'art du soin authentique</h1>
@@ -306,48 +303,11 @@
 
 <div id="coaching" style="scroll-margin-top: 80px;"></div>
 
-<!-- BEST SELLERS (paysage sur desktop et mobile) -->
+<!-- BEST SELLERS DYNAMIQUES (générés par JavaScript) -->
 <section class="section">
   <h2 class="section-title">Nos Best Sellers</h2>
   <p class="section-subtitle">Les produits les plus plébiscités par notre communauté</p>
-  <div class="bestsellers-container">
-    <!-- Carte 1 -->
-    <div class="bs-card left-img">
-      <div class="bs-img" style="background-image: url('https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=800&q=80');"></div>
-      <div class="brown-bg">
-        <h3>Routine Éclat Suprême</h3>
-        <p class="bs-description">Pourquoi ce produit est un best seller ? Cette routine complète associe savon curcuma, toner glycolique, sérum Vitamine C et lait Biosphere. Elle est plébiscitée pour son action éclaircissante progressive, sa capacité à unifier le teint et à atténuer les taches sans irritation. Les clientes adorent son effet "peau de bébé" dès les premières semaines.</p>
-        <button class="btn-brown" onclick="addRoutine('Routine Éclat Suprême', 28500)">AJOUTER — 28 500 FCFA</button>
-      </div>
-    </div>
-    <!-- Carte 2 -->
-    <div class="bs-card right-img">
-      <div class="bs-img" style="background-image: url('https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=800&q=80');"></div>
-      <div class="brown-bg">
-        <h3>Rituel Hammam & Glow</h3>
-        <p class="bs-description">Pourquoi ce rituel est un best seller ? Grâce à son gant Kessa exfoliant, son huile de soin régénérante et son masque au miel de Manuka, ce soin transforme les peaux sèches, ternes ou rugueuses. Il est acclamé pour son effet cocooning, son odeur enveloppante et sa capacité à redonner douceur et éclat en une seule application.</p>
-        <button class="btn-brown" onclick="addRoutine('Rituel Hammam & Glow', 32900)">AJOUTER — 32 900 FCFA</button>
-      </div>
-    </div>
-    <!-- Carte 3 -->
-    <div class="bs-card left-img">
-      <div class="bs-img" style="background-image: url('https://images.unsplash.com/photo-1570194065650-d99fb4d8c631?w=800&q=80');"></div>
-      <div class="brown-bg">
-        <h3>Masque Visage BIO-Collagène</h3>
-        <p class="bs-description">Pourquoi ce masque est un best seller ? Enrichi en collagène marin et en extraits bio, il lisse les rides, repulpe la peau et redonne de l'éclat. Idéal pour les peaux fatiguées ou matures, il est vendu toutes les 30 minutes sur notre site. Les clientes rapportent une peau visiblement plus ferme après seulement 2 applications.</p>
-        <button class="btn-brown" onclick="addRoutine('Masque Visage BIO-Collagène', 18900)">AJOUTER — 18 900 FCFA</button>
-      </div>
-    </div>
-    <!-- Carte 4 -->
-    <div class="bs-card right-img">
-      <div class="bs-img" style="background-image: url('https://images.unsplash.com/photo-1600948836101-f9ffda59d250?w=800&q=80');"></div>
-      <div class="brown-bg">
-        <h3>Gant Kessa Marocain</h3>
-        <p class="bs-description">Pourquoi ce gant est un best seller ? Exfoliant 100% naturel, il élimine les peaux mortes sans agresser, laisse la peau douce comme jamais. Utilisé dans les hammams traditionnels, il est devenu un indispensable de nos clientes pour un teint lumineux et une meilleure absorption des soins. Un best-seller incontournable !</p>
-        <button class="btn-brown" onclick="addRoutine('Gant Kessa Marocain', 5900)">AJOUTER — 5 900 FCFA</button>
-      </div>
-    </div>
-  </div>
+  <div class="bestsellers-container" id="bestsellersContainer"></div>
 </section>
 
 <section class="science-section">
@@ -401,6 +361,7 @@
 
 <script>
   // ======================== CONFIGURATION ========================
+  // ⚠️ REMPLACEZ CETTE URL PAR CELLE DE VOTRE SCRIPT GAS DÉPLOYÉ
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx6NmekfvNMCFqasTCO_QpA4l8mV2HkNgR6_cdH291ci5sa8zaKYJqj05_ZXtjL3KFa/exec';
 
   let allProducts = [];
@@ -419,6 +380,7 @@
     setTimeout(() => t.classList.remove('show'), 2500);
   }
 
+  // ========== BACKEND VIA FETCH ==========
   async function chargerProduits() {
     try {
       const response = await fetch(`${SCRIPT_URL}?action=produits`);
@@ -441,6 +403,42 @@
     renderCategories();
     renderProducts();
     initCarousel();
+  }
+
+  // === BEST SELLERS DYNAMIQUES ===
+  async function chargerBestSellers() {
+    const container = document.getElementById('bestsellersContainer');
+    if (!container) return;
+    container.innerHTML = '<div class="loader">Chargement des best-sellers...</div>';
+    try {
+      const response = await fetch(`${SCRIPT_URL}?action=bestsellers`);
+      const data = await response.json();
+      if (data.ok && data.bestsellers && data.bestsellers.length > 0) {
+        let html = '';
+        data.bestsellers.forEach((prod, index) => {
+          const directionClass = (index % 2 === 0) ? 'left-img' : 'right-img';
+          const imgUrl = prod.img || 'https://placehold.co/800x800/FEF5ED/C28B90?text=Image';
+          const description = prod.desc || `Découvrez ${prod.nom}, un produit plébiscité par notre communauté pour sa qualité exceptionnelle.`;
+          const prix = Number(prod.prix).toLocaleString();
+          html += `
+            <div class="bs-card ${directionClass}">
+              <div class="bs-img" style="background-image: url('${imgUrl}');"></div>
+              <div class="brown-bg">
+                <h3>${escapeHtml(prod.nom)}</h3>
+                <p class="bs-description">Pourquoi ce produit est un best seller ? ${escapeHtml(description)}</p>
+                <button class="btn-brown" onclick="addRoutine('${escapeHtml(prod.nom)}', ${prod.prix})">AJOUTER — ${prix} FCFA</button>
+              </div>
+            </div>
+          `;
+        });
+        container.innerHTML = html;
+      } else {
+        container.innerHTML = '<div class="loader">Aucun best-seller pour le moment.</div>';
+      }
+    } catch (err) {
+      console.error(err);
+      container.innerHTML = '<div class="loader">Erreur chargement best-sellers</div>';
+    }
   }
 
   async function verifierCodePromo(code, productNames) {
@@ -479,6 +477,7 @@
     }
   }
 
+  // ========== CARROUSEL ==========
   let carouselTrack = null;
   function initCarousel() {
     carouselTrack = document.getElementById('carouselTrack');
@@ -529,6 +528,7 @@
     carouselTrack.addEventListener('mouseleave', () => { isAutoScrolling = true; });
   }
 
+  // ========== FONCTIONS UI STANDARD ==========
   function renderCategories() {
     const cats = [...new Set(allProducts.map(p => p.cat).filter(c => c && c.trim() !== ""))];
     const bar = document.getElementById('catBar');
@@ -553,6 +553,7 @@
 
   function escapeHtml(str) { return String(str).replace(/[&<>]/g, function(m){if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
 
+  // Panier
   function saveCart() { localStorage.setItem('glowly_cart', JSON.stringify(cart)); updateCartUI(); }
   function loadCart() { const saved = localStorage.getItem('glowly_cart'); if (saved) cart = JSON.parse(saved); updateCartUI(); }
   function updateCartUI() {
@@ -574,7 +575,7 @@
   function changeQty(id, delta) { const idx = cart.findIndex(i => i.id == id); if (idx !== -1) { cart[idx].qty += delta; if (cart[idx].qty <= 0) cart.splice(idx, 1); saveCart(); } }
   function removeItem(id) { cart = cart.filter(i => i.id != id); saveCart(); }
   function addToCart(product) { const existing = cart.find(i => i.id == product.id); if (existing) existing.qty++; else cart.push({ id: product.id, name: product.nom, price: product.prix, qty: 1 }); saveCart(); showToast(`${product.nom} ajouté au panier`); }
-  function addRoutine(name, price) { const routineId = Date.now(); cart.push({ id: routineId, name: name, price: price, qty: 1 }); saveCart(); showToast(`Routine ${name} ajoutée`); }
+  function addRoutine(name, price) { const routineId = Date.now(); cart.push({ id: routineId, name: name, price: price, qty: 1 }); saveCart(); showToast(`${name} ajouté au panier`); }
 
   function openLightbox(product) { currentLightboxProduct = product; document.getElementById('lbImage').src = product.img || ''; document.getElementById('lbTitle').innerText = product.nom; document.getElementById('lbPrice').innerText = Number(product.prix).toLocaleString() + ' FCFA'; document.getElementById('lbDesc').innerText = product.desc || ''; document.getElementById('lbCat').innerText = product.cat || ''; document.getElementById('lightboxOverlay').classList.add('open'); }
   function closeLightbox(e) { if (e && e.target !== e.currentTarget) return; document.getElementById('lightboxOverlay').classList.remove('open'); }
@@ -640,6 +641,7 @@
   window.addEventListener('load', () => {
     loadCart();
     chargerProduits();
+    chargerBestSellers();
     document.getElementById('searchInput')?.addEventListener('input', () => filterProducts());
   });
 
