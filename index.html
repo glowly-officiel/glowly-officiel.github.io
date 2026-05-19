@@ -43,7 +43,7 @@
     .btn-gold { display: inline-block; background: linear-gradient(105deg, #D8A7AB, #C9A87C); color: #2E211B; padding: 14px 42px; font-weight: 700; font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; border-radius: 50px; text-decoration: none; box-shadow: 0 8px 18px rgba(165,106,97,0.25); transition: 0.3s; }
     .btn-gold:hover { transform: translateY(-2px); }
 
-    /* CARROUSEL */
+    /* CARROUSEL HORIZONTAL */
     .carousel-section {
       background: var(--bg-beige);
       padding: 30px 0;
@@ -99,7 +99,7 @@
       padding: 0 4px;
     }
 
-    /* SECTION BEST SELLERS - DESKTOP (alternance paysage) */
+    /* BEST SELLERS - DESKTOP (alternance paysage) */
     .section { max-width: 1280px; margin: 0 auto; padding: 80px 24px; }
     .section-title { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; text-align: center; color: var(--marron-bois); margin-bottom: 12px; }
     .section-subtitle { text-align: center; color: #9C7A6B; font-style: italic; margin-bottom: 48px; }
@@ -166,58 +166,65 @@
       .btn-brown:hover { background: #C9A87C; transform: scale(1.02); }
     }
 
-    /* MOBILE : <= 768px (image pleine largeur, overlay marron transparent sur moitié basse) */
+    /* MOBILE (<= 768px) : paysage (image à gauche, texte à droite) - sans overlay */
     @media (max-width: 768px) {
       .bs-card {
-        position: relative;
-        background: #000;
-        border-radius: 28px;
+        display: flex;
+        flex-direction: row !important; /* force paysage */
+        background: white;
+        border-radius: 20px;
         overflow: hidden;
+        border: 1px solid #F0E1D6;
         margin-bottom: 20px;
       }
       .bs-img {
-        width: 100%;
-        padding-top: 100%; /* carré */
+        width: 120px;
+        flex-shrink: 0;
         background-size: cover;
         background-position: center;
       }
-      /* Conteneur du texte superposé (overlay) */
       .brown-bg {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        background: rgba(94, 58, 46, 0.85); /* marron transparent */
-        backdrop-filter: blur(2px);
-        padding: 20px 16px;
-        border-radius: 0 0 28px 28px;
-        text-align: center;
-        color: white;
+        flex: 1;
+        background-color: #5E3A2E;
+        padding: 12px;
+        color: #FEF0E3;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
       }
       .brown-bg h3 {
-        font-size: 1.3rem;
-        margin-bottom: 8px;
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1rem;
+        margin-bottom: 6px;
         color: #FDF4EA;
       }
       .bs-description {
-        font-size: 0.8rem;
-        margin-bottom: 12px;
+        font-size: 0.7rem;
+        line-height: 1.3;
+        margin-bottom: 8px;
         color: #F0DBCE;
       }
       .btn-brown {
         background: #D8A7AB;
         color: #2E211B;
         border: none;
-        padding: 8px 16px;
+        padding: 6px 12px;
         border-radius: 40px;
-        font-size: 10px;
-        font-weight: 700;
+        font-size: 9px;
+        font-weight: 600;
         cursor: pointer;
-        display: inline-block;
+        align-self: flex-start;
+      }
+      /* On désactive l'alternance sur mobile (toujours image à gauche) */
+      .bs-card.right-img .bs-img {
+        order: 0;
+      }
+      .bs-card.right-img .brown-bg {
+        order: 1;
       }
     }
 
-    /* Autres sections */
+    /* Autres sections (science, produits, témoignages, footer) */
     .science-section { background: #FDF4EF; padding: 60px 24px; }
     .science-flex { display: grid; gap: 32px; max-width: 1000px; margin: 0 auto; }
     @media (min-width: 700px) { .science-flex { grid-template-columns: repeat(3, 1fr); } }
@@ -297,12 +304,12 @@
 
 <div id="coaching" style="scroll-margin-top: 80px;"></div>
 
-<!-- BEST SELLERS AVEC ALTERNANCE DESKTOP ET OVERLAY MOBILE -->
+<!-- BEST SELLERS (paysage sur desktop et mobile) -->
 <section class="section">
   <h2 class="section-title">Nos Best Sellers</h2>
   <p class="section-subtitle">Les produits les plus plébiscités par notre communauté</p>
   <div class="bestsellers-container">
-    <!-- Carte 1 : image gauche / texte droite -->
+    <!-- Carte 1 -->
     <div class="bs-card left-img">
       <div class="bs-img" style="background-image: url('https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=800&q=80');"></div>
       <div class="brown-bg">
@@ -311,7 +318,7 @@
         <button class="btn-brown" onclick="addRoutine('Routine Éclat Suprême', 28500)">AJOUTER — 28 500 FCFA</button>
       </div>
     </div>
-    <!-- Carte 2 : image droite / texte gauche -->
+    <!-- Carte 2 -->
     <div class="bs-card right-img">
       <div class="bs-img" style="background-image: url('https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=800&q=80');"></div>
       <div class="brown-bg">
@@ -320,7 +327,7 @@
         <button class="btn-brown" onclick="addRoutine('Rituel Hammam & Glow', 32900)">AJOUTER — 32 900 FCFA</button>
       </div>
     </div>
-    <!-- Carte 3 : image gauche / texte droite -->
+    <!-- Carte 3 -->
     <div class="bs-card left-img">
       <div class="bs-img" style="background-image: url('https://images.unsplash.com/photo-1570194065650-d99fb4d8c631?w=800&q=80');"></div>
       <div class="brown-bg">
@@ -329,7 +336,7 @@
         <button class="btn-brown" onclick="addRoutine('Masque Visage BIO-Collagène', 18900)">AJOUTER — 18 900 FCFA</button>
       </div>
     </div>
-    <!-- Carte 4 : image droite / texte gauche -->
+    <!-- Carte 4 -->
     <div class="bs-card right-img">
       <div class="bs-img" style="background-image: url('https://images.unsplash.com/photo-1600948836101-f9ffda59d250?w=800&q=80');"></div>
       <div class="brown-bg">
@@ -379,7 +386,7 @@
   <p style="text-align:center; margin-top:30px; font-size:11px;">© 2026 Glowly — Tous droits réservés.</p>
 </footer>
 
-<!-- MODALS (identiques à votre version) -->
+<!-- MODALS -->
 <div id="lightboxOverlay" class="overlay" onclick="closeLightbox(event)"><div class="lightbox-container" onclick="event.stopPropagation()"><div style="flex:1; padding:30px;"><img id="lbImage" style="max-height:55vh; width:100%; object-fit:contain;"></div><div style="flex:1; padding:30px;"><div id="lbCat" style="font-size:12px; letter-spacing:2px; color:var(--rose-gold-fonce);"></div><h2 id="lbTitle" style="margin:12px 0;"></h2><p id="lbPrice" style="font-size:24px; font-weight:bold;"></p><p id="lbDesc" style="color:#6B5A48;"></p><button class="btn-brown" onclick="addCurrentLightboxToCart()" style="margin-top:20px;">Ajouter au panier</button></div></div></div>
 
 <div id="cartOverlay" class="overlay" onclick="closeCart(event)"><div id="cartPanel" class="cart-panel" onclick="event.stopPropagation()"><div style="padding:24px; border-bottom:1px solid var(--border-beige); display:flex; justify-content:space-between;"><h3>Panier</h3><button onclick="closeCart(null,true)" style="background:none; border:none; font-size:20px;">✕</button></div><div id="cartItems" style="flex:1; overflow:auto; padding:20px;"></div><div id="cartFooter" style="padding:20px; border-top:1px solid var(--border-beige); display:none;"><div style="display:flex; justify-content:space-between;"><span>Total</span><strong id="cartTotal">0 FCFA</strong></div><button class="btn-brown" onclick="openCheckout()" style="width:100%; margin-top:16px;">Commander</button></div></div></div>
