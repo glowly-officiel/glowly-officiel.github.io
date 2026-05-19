@@ -166,22 +166,24 @@
       .btn-brown:hover { background: #C9A87C; transform: scale(1.02); }
     }
 
-    /* MOBILE (<= 768px) : paysage (image à gauche, texte à droite) - sans overlay */
+    /* MOBILE (<= 768px) : paysage avec image et texte de même hauteur */
     @media (max-width: 768px) {
       .bs-card {
         display: flex;
-        flex-direction: row !important; /* force paysage */
+        flex-direction: row !important;
         background: white;
         border-radius: 20px;
         overflow: hidden;
         border: 1px solid #F0E1D6;
         margin-bottom: 20px;
+        align-items: stretch; /* pour que les enfants aient la même hauteur */
       }
       .bs-img {
         width: 120px;
         flex-shrink: 0;
         background-size: cover;
         background-position: center;
+        height: 100%; /* prend toute la hauteur de la carte (définie par le texte) */
       }
       .brown-bg {
         flex: 1;
@@ -215,7 +217,7 @@
         cursor: pointer;
         align-self: flex-start;
       }
-      /* On désactive l'alternance sur mobile (toujours image à gauche) */
+      /* Désactiver l'alternance sur mobile (toujours image à gauche) */
       .bs-card.right-img .bs-img {
         order: 0;
       }
