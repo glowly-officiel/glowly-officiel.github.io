@@ -44,7 +44,7 @@
     .btn-gold { display: inline-block; background: linear-gradient(105deg, #D8A7AB, #C9A87C); color: #2E211B; padding: 14px 42px; font-weight: 700; font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; border-radius: 50px; text-decoration: none; box-shadow: 0 8px 18px rgba(165,106,97,0.25); transition: 0.3s; }
     .btn-gold:hover { transform: translateY(-2px); }
 
-    /* CARROUSEL HORIZONTAL (images + noms) */
+    /* CARROUSEL HORIZONTAL */
     .carousel-section {
       background: var(--bg-beige);
       padding: 30px 0;
@@ -105,7 +105,7 @@
     }
     .carousel-nav { display: none; }
 
-    /* BEST SELLERS - DESKTOP (paysage alterné) */
+    /* BEST SELLERS - DESKTOP : alternance paysage */
     .section { max-width: 1280px; margin: 0 auto; padding: 80px 24px; }
     .section-title { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; text-align: center; color: var(--marron-bois); margin-bottom: 12px; }
     .section-subtitle { text-align: center; color: #9C7A6B; font-style: italic; margin-bottom: 48px; }
@@ -169,16 +169,13 @@
     }
     .btn-brown:hover { background: #C9A87C; transform: scale(1.02); }
 
-    /* MOBILE : image pleine largeur, overlay semi-transparent sur la moitié inférieure */
+    /* MOBILE : image pleine largeur, overlay marron transparent sur la moitié inférieure */
     @media (max-width: 768px) {
       .bs-card.horizontal {
         flex-direction: column !important;
         position: relative;
-        background: none;
-        border: none;
-        border-radius: 28px;
         overflow: hidden;
-        background-color: #000; /* fallback */
+        background: #000;
       }
       .bs-card.horizontal .bs-img {
         position: absolute;
@@ -189,41 +186,30 @@
         min-width: auto;
         z-index: 0;
       }
-      /* On masque l'ancien .brown-bg */
       .bs-card.horizontal .brown-bg {
-        background: none !important;
-        padding: 0;
         position: relative;
         z-index: 2;
-      }
-      /* Création d'un overlay seulement sur la moitié inférieure */
-      .bs-card.horizontal .mobile-overlay {
-        background-color: rgba(94, 58, 46, 0.85); /* marron semi-transparent */
-        padding: 24px 16px;
-        width: 100%;
+        background: rgba(94, 58, 46, 0.85) !important; /* marron transparent */
         margin-top: auto; /* pousse en bas */
+        width: 100%;
+        padding: 20px 16px;
         border-radius: 0 0 28px 28px;
         text-align: center;
       }
-      .mobile-overlay h3 {
+      .brown-bg h3 {
         font-size: 1.3rem;
         margin-bottom: 8px;
-        color: #FDF4EA;
       }
-      .mobile-overlay .bs-description {
+      .bs-description {
         font-size: 0.8rem;
         margin-bottom: 12px;
-        color: #F0DBCE;
       }
-      .mobile-overlay .btn-brown {
-        background: #D8A7AB;
-        color: #2E211B;
+      .btn-brown {
         align-self: center;
         padding: 8px 16px;
         font-size: 10px;
       }
     }
-    /* Fin media */
 
     /* Autres sections */
     .science-section { background: #FDF4EF; padding: 60px 24px; }
@@ -305,53 +291,45 @@
 
 <div id="coaching" style="scroll-margin-top: 80px;"></div>
 
-<!-- BEST SELLERS -->
+<!-- BEST SELLERS AVEC ALTERNANCE (desktop) et overlay mobile -->
 <section class="section">
   <h2 class="section-title">Nos Best Sellers</h2>
   <p class="section-subtitle">Les produits les plus plébiscités par notre communauté</p>
   <div class="bestsellers-container">
-    <!-- Carte 1 -->
+    <!-- Carte 1 : image gauche / texte droite -->
     <div class="bs-card horizontal left-img">
       <div class="bs-img" style="background-image: url('https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=800&q=80');"></div>
       <div class="brown-bg">
-        <div class="mobile-overlay">
-          <h3>Routine Éclat Suprême</h3>
-          <p class="bs-description">Pourquoi ce produit est un best seller ? Cette routine complète associe savon curcuma, toner glycolique, sérum Vitamine C et lait Biosphere. Elle est plébiscitée pour son action éclaircissante progressive, sa capacité à unifier le teint et à atténuer les taches sans irritation. Les clientes adorent son effet "peau de bébé" dès les premières semaines.</p>
-          <button class="btn-brown" onclick="addRoutine('Routine Éclat Suprême', 28500)">AJOUTER — 28 500 FCFA</button>
-        </div>
+        <h3>Routine Éclat Suprême</h3>
+        <p class="bs-description">Pourquoi ce produit est un best seller ? Cette routine complète associe savon curcuma, toner glycolique, sérum Vitamine C et lait Biosphere. Elle est plébiscitée pour son action éclaircissante progressive, sa capacité à unifier le teint et à atténuer les taches sans irritation. Les clientes adorent son effet "peau de bébé" dès les premières semaines.</p>
+        <button class="btn-brown" onclick="addRoutine('Routine Éclat Suprême', 28500)">AJOUTER — 28 500 FCFA</button>
       </div>
     </div>
-    <!-- Carte 2 -->
+    <!-- Carte 2 : image droite / texte gauche -->
     <div class="bs-card horizontal right-img">
       <div class="bs-img" style="background-image: url('https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=800&q=80');"></div>
       <div class="brown-bg">
-        <div class="mobile-overlay">
-          <h3>Rituel Hammam & Glow</h3>
-          <p class="bs-description">Pourquoi ce rituel est un best seller ? Grâce à son gant Kessa exfoliant, son huile de soin régénérante et son masque au miel de Manuka, ce soin transforme les peaux sèches, ternes ou rugueuses. Il est acclamé pour son effet cocooning, son odeur enveloppante et sa capacité à redonner douceur et éclat en une seule application.</p>
-          <button class="btn-brown" onclick="addRoutine('Rituel Hammam & Glow', 32900)">AJOUTER — 32 900 FCFA</button>
-        </div>
+        <h3>Rituel Hammam & Glow</h3>
+        <p class="bs-description">Pourquoi ce rituel est un best seller ? Grâce à son gant Kessa exfoliant, son huile de soin régénérante et son masque au miel de Manuka, ce soin transforme les peaux sèches, ternes ou rugueuses. Il est acclamé pour son effet cocooning, son odeur enveloppante et sa capacité à redonner douceur et éclat en une seule application.</p>
+        <button class="btn-brown" onclick="addRoutine('Rituel Hammam & Glow', 32900)">AJOUTER — 32 900 FCFA</button>
       </div>
     </div>
-    <!-- Carte 3 -->
+    <!-- Carte 3 : image gauche / texte droite -->
     <div class="bs-card horizontal left-img">
       <div class="bs-img" style="background-image: url('https://images.unsplash.com/photo-1570194065650-d99fb4d8c631?w=800&q=80');"></div>
       <div class="brown-bg">
-        <div class="mobile-overlay">
-          <h3>Masque Visage BIO-Collagène</h3>
-          <p class="bs-description">Pourquoi ce masque est un best seller ? Enrichi en collagène marin et en extraits bio, il lisse les rides, repulpe la peau et redonne de l'éclat. Idéal pour les peaux fatiguées ou matures, il est vendu toutes les 30 minutes sur notre site. Les clientes rapportent une peau visiblement plus ferme après seulement 2 applications.</p>
-          <button class="btn-brown" onclick="addRoutine('Masque Visage BIO-Collagène', 18900)">AJOUTER — 18 900 FCFA</button>
-        </div>
+        <h3>Masque Visage BIO-Collagène</h3>
+        <p class="bs-description">Pourquoi ce masque est un best seller ? Enrichi en collagène marin et en extraits bio, il lisse les rides, repulpe la peau et redonne de l'éclat. Idéal pour les peaux fatiguées ou matures, il est vendu toutes les 30 minutes sur notre site. Les clientes rapportent une peau visiblement plus ferme après seulement 2 applications.</p>
+        <button class="btn-brown" onclick="addRoutine('Masque Visage BIO-Collagène', 18900)">AJOUTER — 18 900 FCFA</button>
       </div>
     </div>
-    <!-- Carte 4 -->
+    <!-- Carte 4 : image droite / texte gauche -->
     <div class="bs-card horizontal right-img">
       <div class="bs-img" style="background-image: url('https://images.unsplash.com/photo-1600948836101-f9ffda59d250?w=800&q=80');"></div>
       <div class="brown-bg">
-        <div class="mobile-overlay">
-          <h3>Gant Kessa Marocain</h3>
-          <p class="bs-description">Pourquoi ce gant est un best seller ? Exfoliant 100% naturel, il élimine les peaux mortes sans agresser, laisse la peau douce comme jamais. Utilisé dans les hammams traditionnels, il est devenu un indispensable de nos clientes pour un teint lumineux et une meilleure absorption des soins. Un best-seller incontournable !</p>
-          <button class="btn-brown" onclick="addRoutine('Gant Kessa Marocain', 5900)">AJOUTER — 5 900 FCFA</button>
-        </div>
+        <h3>Gant Kessa Marocain</h3>
+        <p class="bs-description">Pourquoi ce gant est un best seller ? Exfoliant 100% naturel, il élimine les peaux mortes sans agresser, laisse la peau douce comme jamais. Utilisé dans les hammams traditionnels, il est devenu un indispensable de nos clientes pour un teint lumineux et une meilleure absorption des soins. Un best-seller incontournable !</p>
+        <button class="btn-brown" onclick="addRoutine('Gant Kessa Marocain', 5900)">AJOUTER — 5 900 FCFA</button>
       </div>
     </div>
   </div>
