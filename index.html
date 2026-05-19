@@ -17,7 +17,6 @@
       --rose-gold-fonce: #C28B90;
       --gold-dore: #C9A87C;
       --marron-bois: #5E3A2E;
-      --marron-fonce: #3E2920;
     }
     body { font-family: 'Inter', sans-serif; background: var(--bg-beige); color: var(--text-brun); line-height: 1.5; }
     .announcement { background: var(--marron-bois); color: #F9EADB; text-align: center; padding: 12px; font-size: 12px; }
@@ -44,7 +43,7 @@
     .btn-gold { display: inline-block; background: linear-gradient(105deg, #D8A7AB, #C9A87C); color: #2E211B; padding: 14px 42px; font-weight: 700; font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; border-radius: 50px; text-decoration: none; box-shadow: 0 8px 18px rgba(165,106,97,0.25); transition: 0.3s; }
     .btn-gold:hover { transform: translateY(-2px); }
 
-    /* CARROUSEL HORIZONTAL */
+    /* CARROUSEL */
     .carousel-section {
       background: var(--bg-beige);
       padding: 30px 0;
@@ -62,7 +61,6 @@
     .carousel-container {
       width: 100%;
       overflow: hidden;
-      position: relative;
     }
     .carousel-track {
       display: flex;
@@ -82,8 +80,6 @@
       text-align: center;
       cursor: pointer;
       transition: transform 0.2s;
-      background: transparent;
-      border: none;
     }
     .carousel-item:hover { transform: translateY(-4px); }
     .carousel-item-img {
@@ -93,19 +89,17 @@
       border-radius: 12px;
       overflow: hidden;
     }
-    .carousel-item-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .carousel-item-img img { width: 100%; height: 100%; object-fit: cover; }
     .carousel-item-name {
       margin-top: 6px;
       font-size: 0.8rem;
       font-weight: 500;
       color: var(--text-brun);
-      white-space: normal;
       word-break: break-word;
       padding: 0 4px;
     }
-    .carousel-nav { display: none; }
 
-    /* BEST SELLERS - DESKTOP : alternance paysage */
+    /* SECTION BEST SELLERS - DESKTOP (alternance paysage) */
     .section { max-width: 1280px; margin: 0 auto; padding: 80px 24px; }
     .section-title { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; text-align: center; color: var(--marron-bois); margin-bottom: 12px; }
     .section-subtitle { text-align: center; color: #9C7A6B; font-style: italic; margin-bottom: 48px; }
@@ -115,99 +109,111 @@
       flex-direction: column;
       gap: 40px;
     }
-    .bs-card.horizontal {
-      display: flex;
-      flex-direction: row;
-      align-items: stretch;
-      background: white;
-      border-radius: 28px;
-      overflow: hidden;
-      border: 1px solid #F0E1D6;
-      transition: 0.3s;
-    }
-    .bs-card.horizontal:hover { transform: translateY(-6px); box-shadow: 0 20px 35px rgba(94,58,46,0.08); }
-    .bs-card.horizontal.left-img { flex-direction: row; }
-    .bs-card.horizontal.right-img { flex-direction: row-reverse; }
-    .bs-img {
-      flex: 1;
-      min-width: 280px;
-      background-size: cover;
-      background-position: center;
-    }
-    .brown-bg {
-      flex: 1.5;
-      background-color: #5E3A2E;
-      padding: 32px;
-      color: #FEF0E3;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-    .brown-bg h3 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.8rem;
-      margin-bottom: 12px;
-      color: #FDF4EA;
-    }
-    .bs-description {
-      color: #F0DBCE;
-      font-size: 0.95rem;
-      line-height: 1.5;
-      margin-bottom: 20px;
-    }
-    .btn-brown {
-      background: #D8A7AB;
-      color: #2E211B;
-      border: none;
-      padding: 12px 28px;
-      border-radius: 40px;
-      font-size: 11px;
-      font-weight: 700;
-      cursor: pointer;
-      align-self: flex-start;
-      transition: 0.2s;
-    }
-    .btn-brown:hover { background: #C9A87C; transform: scale(1.02); }
-
-    /* MOBILE : image pleine largeur, overlay marron transparent sur la moitié inférieure */
-    @media (max-width: 768px) {
-      .bs-card.horizontal {
-        flex-direction: column !important;
-        position: relative;
+    /* Desktop : >= 769px */
+    @media (min-width: 769px) {
+      .bs-card {
+        display: flex;
+        flex-direction: row;
+        align-items: stretch;
+        background: white;
+        border-radius: 28px;
         overflow: hidden;
-        background: #000;
+        border: 1px solid #F0E1D6;
+        transition: 0.3s;
       }
-      .bs-card.horizontal .bs-img {
+      .bs-card:hover { transform: translateY(-6px); box-shadow: 0 20px 35px rgba(94,58,46,0.08); }
+      .bs-card.left-img { flex-direction: row; }
+      .bs-card.right-img { flex-direction: row-reverse; }
+      .bs-img {
+        flex: 1;
+        min-width: 280px;
+        background-size: cover;
+        background-position: center;
+      }
+      .brown-bg {
+        flex: 1.5;
+        background-color: #5E3A2E;
+        padding: 32px;
+        color: #FEF0E3;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+      .brown-bg h3 {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1.8rem;
+        margin-bottom: 12px;
+        color: #FDF4EA;
+      }
+      .bs-description {
+        color: #F0DBCE;
+        font-size: 0.95rem;
+        line-height: 1.5;
+        margin-bottom: 20px;
+      }
+      .btn-brown {
+        background: #D8A7AB;
+        color: #2E211B;
+        border: none;
+        padding: 12px 28px;
+        border-radius: 40px;
+        font-size: 11px;
+        font-weight: 700;
+        cursor: pointer;
+        align-self: flex-start;
+        transition: 0.2s;
+      }
+      .btn-brown:hover { background: #C9A87C; transform: scale(1.02); }
+    }
+
+    /* MOBILE : <= 768px (image pleine largeur, overlay marron transparent sur moitié basse) */
+    @media (max-width: 768px) {
+      .bs-card {
+        position: relative;
+        background: #000;
+        border-radius: 28px;
+        overflow: hidden;
+        margin-bottom: 20px;
+      }
+      .bs-img {
+        width: 100%;
+        padding-top: 100%; /* carré */
+        background-size: cover;
+        background-position: center;
+      }
+      /* Conteneur du texte superposé (overlay) */
+      .brown-bg {
         position: absolute;
-        top: 0;
+        bottom: 0;
         left: 0;
         width: 100%;
-        height: 100%;
-        min-width: auto;
-        z-index: 0;
-      }
-      .bs-card.horizontal .brown-bg {
-        position: relative;
-        z-index: 2;
-        background: rgba(94, 58, 46, 0.85) !important; /* marron transparent */
-        margin-top: auto; /* pousse en bas */
-        width: 100%;
+        background: rgba(94, 58, 46, 0.85); /* marron transparent */
+        backdrop-filter: blur(2px);
         padding: 20px 16px;
         border-radius: 0 0 28px 28px;
         text-align: center;
+        color: white;
       }
       .brown-bg h3 {
         font-size: 1.3rem;
         margin-bottom: 8px;
+        color: #FDF4EA;
       }
       .bs-description {
         font-size: 0.8rem;
         margin-bottom: 12px;
+        color: #F0DBCE;
       }
       .btn-brown {
-        align-self: center;
+        background: #D8A7AB;
+        color: #2E211B;
+        border: none;
         padding: 8px 16px;
+        border-radius: 40px;
         font-size: 10px;
+        font-weight: 700;
+        cursor: pointer;
+        display: inline-block;
       }
     }
 
@@ -273,7 +279,7 @@
   <div class="sub-nav-inner"><a href="#" class="active">Accueil</a><a href="#catalogue">Boutique</a><a href="#coaching">Coaching skin care</a><a href="#histoire">Notre histoire</a></div>
 </div>
 
-<img class="hero-image" id="heroImage" src="https://raw.githubusercontent.com/glowly-officiel/glowly-officiel.github.io/main/21433a69-25ae-46fa-8880-3f693289a165.png" alt="Glowly" onerror="this.src='https://placehold.co/1600x800/FDF4F0/D8A7AB?text=GLOWLY'">
+<img class="hero-image" src="https://raw.githubusercontent.com/glowly-officiel/glowly-officiel.github.io/main/21433a69-25ae-46fa-8880-3f693289a165.png" alt="Glowly" onerror="this.src='https://placehold.co/1600x800/FDF4F0/D8A7AB?text=GLOWLY'">
 
 <section class="hero-text-section">
   <h1>L'art du soin authentique</h1>
@@ -291,13 +297,13 @@
 
 <div id="coaching" style="scroll-margin-top: 80px;"></div>
 
-<!-- BEST SELLERS AVEC ALTERNANCE (desktop) et overlay mobile -->
+<!-- BEST SELLERS AVEC ALTERNANCE DESKTOP ET OVERLAY MOBILE -->
 <section class="section">
   <h2 class="section-title">Nos Best Sellers</h2>
   <p class="section-subtitle">Les produits les plus plébiscités par notre communauté</p>
   <div class="bestsellers-container">
     <!-- Carte 1 : image gauche / texte droite -->
-    <div class="bs-card horizontal left-img">
+    <div class="bs-card left-img">
       <div class="bs-img" style="background-image: url('https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=800&q=80');"></div>
       <div class="brown-bg">
         <h3>Routine Éclat Suprême</h3>
@@ -306,7 +312,7 @@
       </div>
     </div>
     <!-- Carte 2 : image droite / texte gauche -->
-    <div class="bs-card horizontal right-img">
+    <div class="bs-card right-img">
       <div class="bs-img" style="background-image: url('https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=800&q=80');"></div>
       <div class="brown-bg">
         <h3>Rituel Hammam & Glow</h3>
@@ -315,7 +321,7 @@
       </div>
     </div>
     <!-- Carte 3 : image gauche / texte droite -->
-    <div class="bs-card horizontal left-img">
+    <div class="bs-card left-img">
       <div class="bs-img" style="background-image: url('https://images.unsplash.com/photo-1570194065650-d99fb4d8c631?w=800&q=80');"></div>
       <div class="brown-bg">
         <h3>Masque Visage BIO-Collagène</h3>
@@ -324,7 +330,7 @@
       </div>
     </div>
     <!-- Carte 4 : image droite / texte gauche -->
-    <div class="bs-card horizontal right-img">
+    <div class="bs-card right-img">
       <div class="bs-img" style="background-image: url('https://images.unsplash.com/photo-1600948836101-f9ffda59d250?w=800&q=80');"></div>
       <div class="brown-bg">
         <h3>Gant Kessa Marocain</h3>
@@ -373,7 +379,7 @@
   <p style="text-align:center; margin-top:30px; font-size:11px;">© 2026 Glowly — Tous droits réservés.</p>
 </footer>
 
-<!-- MODALS -->
+<!-- MODALS (identiques à votre version) -->
 <div id="lightboxOverlay" class="overlay" onclick="closeLightbox(event)"><div class="lightbox-container" onclick="event.stopPropagation()"><div style="flex:1; padding:30px;"><img id="lbImage" style="max-height:55vh; width:100%; object-fit:contain;"></div><div style="flex:1; padding:30px;"><div id="lbCat" style="font-size:12px; letter-spacing:2px; color:var(--rose-gold-fonce);"></div><h2 id="lbTitle" style="margin:12px 0;"></h2><p id="lbPrice" style="font-size:24px; font-weight:bold;"></p><p id="lbDesc" style="color:#6B5A48;"></p><button class="btn-brown" onclick="addCurrentLightboxToCart()" style="margin-top:20px;">Ajouter au panier</button></div></div></div>
 
 <div id="cartOverlay" class="overlay" onclick="closeCart(event)"><div id="cartPanel" class="cart-panel" onclick="event.stopPropagation()"><div style="padding:24px; border-bottom:1px solid var(--border-beige); display:flex; justify-content:space-between;"><h3>Panier</h3><button onclick="closeCart(null,true)" style="background:none; border:none; font-size:20px;">✕</button></div><div id="cartItems" style="flex:1; overflow:auto; padding:20px;"></div><div id="cartFooter" style="padding:20px; border-top:1px solid var(--border-beige); display:none;"><div style="display:flex; justify-content:space-between;"><span>Total</span><strong id="cartTotal">0 FCFA</strong></div><button class="btn-brown" onclick="openCheckout()" style="width:100%; margin-top:16px;">Commander</button></div></div></div>
