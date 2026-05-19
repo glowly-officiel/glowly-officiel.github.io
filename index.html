@@ -272,7 +272,7 @@
       font-size: 0.85rem;
     }
 
-    /* Autres sections */
+    /* AUTRES SECTIONS (science, boutique, témoignages, etc.) */
     .science-section { background: #FDF4EF; padding: 60px 24px; }
     .science-flex {
       display: flex;
@@ -407,7 +407,44 @@
   </div>
 </section>
 
-<!-- ========== SECTION COACHING / DIAGNOSTIC BEAUTÉ ========== -->
+<!-- BEST SELLERS DYNAMIQUES -->
+<section class="section">
+  <h2 class="section-title">Nos Best Sellers</h2>
+  <p class="section-subtitle">Les produits les plus plébiscités par notre communauté</p>
+  <div class="bestsellers-container" id="bestsellersContainer"></div>
+</section>
+
+<!-- SECTION POURQUOI NOS FORMULES (ANIMÉE) -->
+<section class="science-section">
+  <h2 class="section-title">Pourquoi nos formules ?</h2>
+  <div class="science-flex" id="scienceFlex">
+    <div class="science-item animate-on-scroll">
+      <div class="science-icon">✨</div>
+      <h4>Éclat durable</h4>
+      <p>Résultat visible dès 14 jours, sans effet rebond. Un teint lumineux et uniforme.</p>
+    </div>
+    <div class="science-item animate-on-scroll">
+      <div class="science-icon">🧴</div>
+      <h4>Formule clean</h4>
+      <p>Sans parfum artificiel, sans alcool, sans colorant. 100% des ingrédients sont traçables.</p>
+    </div>
+    <div class="science-item animate-on-scroll">
+      <div class="science-icon">🌱</div>
+      <h4>Peau respectée</h4>
+      <p>Testé dermatologiquement sur peaux sensibles. Zéro irritation, zéro inconfort.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ========== SECTION BOUTIQUE (anciennement "Notre Collection") ========== -->
+<div class="section" id="catalogue">
+  <h2 class="section-title">Boutique</h2>
+  <div style="max-width: 400px; margin: 0 auto 30px;"><input type="text" id="searchInput" placeholder="🔍 Rechercher un produit..." style="width:100%; padding:12px 20px; border-radius:50px; border:1px solid var(--border-beige);"></div>
+  <div id="catBar" style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-bottom: 30px;"></div>
+  <div id="productGrid" class="product-grid"><div class="loader">Chargement des produits...</div></div>
+</div>
+
+<!-- ========== SECTION COACHING / DIAGNOSTIC BEAUTÉ (placée SOUS la boutique) ========== -->
 <div id="coaching" style="scroll-margin-top: 80px;"></div>
 <section class="coaching-section">
   <h2 class="section-title">Coaching skin care</h2>
@@ -437,43 +474,6 @@
     <div id="recommendations" class="recommendation-results"></div>
   </div>
 </section>
-
-<!-- BEST SELLERS DYNAMIQUES -->
-<section class="section">
-  <h2 class="section-title">Nos Best Sellers</h2>
-  <p class="section-subtitle">Les produits les plus plébiscités par notre communauté</p>
-  <div class="bestsellers-container" id="bestsellersContainer"></div>
-</section>
-
-<!-- NOUVELLE SECTION "POURQUOI NOS FORMULES" (ANIMÉE) -->
-<section class="science-section">
-  <h2 class="section-title">Pourquoi nos formules ?</h2>
-  <div class="science-flex" id="scienceFlex">
-    <div class="science-item animate-on-scroll">
-      <div class="science-icon">✨</div>
-      <h4>Éclat durable</h4>
-      <p>Résultat visible dès 14 jours, sans effet rebond. Un teint lumineux et uniforme.</p>
-    </div>
-    <div class="science-item animate-on-scroll">
-      <div class="science-icon">🧴</div>
-      <h4>Formule clean</h4>
-      <p>Sans parfum artificiel, sans alcool, sans colorant. 100% des ingrédients sont traçables.</p>
-    </div>
-    <div class="science-item animate-on-scroll">
-      <div class="science-icon">🌱</div>
-      <h4>Peau respectée</h4>
-      <p>Testé dermatologiquement sur peaux sensibles. Zéro irritation, zéro inconfort.</p>
-    </div>
-  </div>
-</section>
-
-<!-- ========== SECTION BOUTIQUE ========== -->
-<div class="section" id="catalogue">
-  <h2 class="section-title">Boutique</h2>
-  <div style="max-width: 400px; margin: 0 auto 30px;"><input type="text" id="searchInput" placeholder="🔍 Rechercher un produit..." style="width:100%; padding:12px 20px; border-radius:50px; border:1px solid var(--border-beige);"></div>
-  <div id="catBar" style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-bottom: 30px;"></div>
-  <div id="productGrid" class="product-grid"><div class="loader">Chargement des produits...</div></div>
-</div>
 
 <section class="section testimonials">
   <h2 class="section-title">Ce que nos clientes disent</h2>
@@ -510,7 +510,6 @@
 
 <script>
   // ======================== CONFIGURATION ========================
-  // 🔴 REMPLACEZ CETTE URL PAR CELLE DE VOTRE SCRIPT GAS DÉPLOYÉ
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwWzOpozHnNo6TJQW3dumr4H5zjAP9rClSZURJsfzGc-9wmb0w5bR7jdTo9YHiR11Uf/exec';
 
   let allProducts = [];
@@ -592,10 +591,8 @@
 
   // ========== DIAGNOSTIC BEAUTÉ ==========
   function getRecommendations() {
-    const skinType = document.getElementById('skinType').value;
     const concern = document.getElementById('skinConcern').value;
     let filtered = allProducts.filter(p => {
-      // Filtrage basé sur le problème de peau (mots-clés dans le nom, catégorie ou description)
       const name = p.nom.toLowerCase();
       const desc = (p.desc || '').toLowerCase();
       const cat = (p.cat || '').toLowerCase();
@@ -608,11 +605,10 @@
       } else if (concern === 'rides') {
         return name.includes('collagène') || name.includes('sérum') || name.includes('anti-âge') || desc.includes('rides') || cat.includes('sérums');
       } else if (concern === 'ternite') {
-        return name.includes('vitamine c') || name.includes('gommage') || name.includes('éclat') || desc.includes('éclat') || cat.includes('exfoliants');
+        return name.includes('gommage') || name.includes('éclat') || desc.includes('éclat') || cat.includes('exfoliants');
       }
       return true;
     });
-    // Limiter à 4 produits maximum
     filtered = filtered.slice(0, 4);
     const container = document.getElementById('recommendations');
     if (filtered.length === 0) {
