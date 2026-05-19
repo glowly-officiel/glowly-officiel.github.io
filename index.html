@@ -240,8 +240,6 @@
       color: var(--text-muted);
       line-height: 1.5;
     }
-
-    /* Responsive */
     @media (max-width: 700px) {
       .science-item {
         padding: 24px 16px;
@@ -254,7 +252,7 @@
       }
     }
 
-    /* Autres sections (produits, témoignages, footer) */
+    /* Grille produits / catalogue */
     .product-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
     @media (min-width: 640px) { .product-grid { grid-template-columns: repeat(3, 1fr); } }
     @media (min-width: 1024px) { .product-grid { grid-template-columns: repeat(4, 1fr); } }
@@ -336,7 +334,7 @@
   <div class="bestsellers-container" id="bestsellersContainer"></div>
 </section>
 
-<!-- NOUVELLE SECTION POURQUOI NOS FORMULES (ANIMÉE) -->
+<!-- NOUVELLE SECTION "POURQUOI NOS FORMULES" (ANIMÉE) -->
 <section class="science-section">
   <h2 class="section-title">Pourquoi nos formules ?</h2>
   <div class="science-flex" id="scienceFlex">
@@ -358,8 +356,9 @@
   </div>
 </section>
 
+<!-- ========== SECTION BOUTIQUE (anciennement "Notre Collection") ========== -->
 <div class="section" id="catalogue">
-  <h2 class="section-title">Notre Collection</h2>
+  <h2 class="section-title">Boutique</h2>
   <div style="max-width: 400px; margin: 0 auto 30px;"><input type="text" id="searchInput" placeholder="🔍 Rechercher un produit..." style="width:100%; padding:12px 20px; border-radius:50px; border:1px solid var(--border-beige);"></div>
   <div id="catBar" style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-bottom: 30px;"></div>
   <div id="productGrid" class="product-grid"><div class="loader">Chargement des produits...</div></div>
@@ -449,11 +448,9 @@
     if (!container) return;
     container.innerHTML = '<div class="loader">Chargement des best-sellers...</div>';
     try {
-      console.log("Appel bestsellers à :", `${SCRIPT_URL}?action=bestsellers`);
       const response = await fetch(`${SCRIPT_URL}?action=bestsellers`);
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       const data = await response.json();
-      console.log("Réponse bestsellers :", data);
       if (data.ok && data.bestsellers && data.bestsellers.length > 0) {
         let html = '';
         data.bestsellers.forEach((prod, index) => {
@@ -474,7 +471,6 @@
         });
         container.innerHTML = html;
       } else {
-        console.warn("Aucun best-seller trouvé ou erreur dans la réponse:", data);
         container.innerHTML = '<div class="loader">Aucun best-seller pour le moment.</div>';
       }
     } catch (err) {
