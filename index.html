@@ -444,7 +444,7 @@
   <div id="productGrid" class="product-grid"><div class="loader">Chargement des produits...</div></div>
 </div>
 
-<!-- ========== SECTION COACHING / DIAGNOSTIC BEAUTÉ (placée SOUS la boutique) ========== -->
+<!-- ========== SECTION COACHING / DIAGNOSTIC BEAUTÉ (sous la boutique) ========== -->
 <div id="coaching" style="scroll-margin-top: 80px;"></div>
 <section class="coaching-section">
   <h2 class="section-title">Coaching skin care</h2>
@@ -510,6 +510,7 @@
 
 <script>
   // ======================== CONFIGURATION ========================
+  // 🔴 REMPLACEZ CETTE URL PAR CELLE DE VOTRE SCRIPT GAS DÉPLOYÉ (avec droits "Toute personne")
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwWzOpozHnNo6TJQW3dumr4H5zjAP9rClSZURJsfzGc-9wmb0w5bR7jdTo9YHiR11Uf/exec';
 
   let allProducts = [];
@@ -589,33 +590,83 @@
     }
   }
 
-  // ========== DIAGNOSTIC BEAUTÉ ==========
+  // ========== DIAGNOSTIC BEAUTÉ AMÉLIORÉ (conseils personnalisés) ==========
   function getRecommendations() {
+    const skinType = document.getElementById('skinType').value;
     const concern = document.getElementById('skinConcern').value;
-    let filtered = allProducts.filter(p => {
+    let filtered = [];
+    let advice = "";
+
+    // Conseils généraux selon le type de peau
+    if (skinType === 'seche') {
+      advice = "Pour les peaux sèches, privilégiez les soins hydratants et nourrissants. Évitez les nettoyants agressifs.";
+    } else if (skinType === 'grasse') {
+      advice = "Pour les peaux grasses, misez sur des textures légères, des ingrédients sébo-régulateurs et une bonne hydratation.";
+    } else if (skinType === 'mixte') {
+      advice = "Pour les peaux mixtes, utilisez des produits équilibrants qui agissent sur la zone T sans assécher les joues.";
+    } else if (skinType === 'sensible') {
+      advice = "Pour les peaux sensibles, choisissez des soins hypoallergéniques sans parfum ni alcool.";
+    } else {
+      advice = "Pour les peaux normales, maintenez l'équilibre avec des soins doux et protecteurs.";
+    }
+
+    // Ajouter un conseil spécifique au problème
+    if (concern === 'taches') {
+      advice += " Pour réduire les taches, optez pour des actifs comme la vitamine C, le curcuma ou les acides exfoliants doux.";
+    } else if (concern === 'secheresse') {
+      advice += " Pour lutter contre la sécheresse, utilisez des crèmes riches et des masques hydratants à base de miel ou d'acide hyaluronique.";
+    } else if (concern === 'acne') {
+      advice += " Pour l'acné, privilégiez des nettoyants doux, des toners purifiants et des soins non comédogènes.";
+    } else if (concern === 'rides') {
+      advice += " Pour les rides, recherchez des sérums à base de collagène, de vitamine C et des crèmes anti-âge.";
+    } else if (concern === 'ternite') {
+      advice += " Pour raviver l'éclat du teint, utilisez des exfoliants doux et des soins illuminants.";
+    }
+
+    // Filtrage des produits (plus précis)
+    filtered = allProducts.filter(p => {
       const name = p.nom.toLowerCase();
       const desc = (p.desc || '').toLowerCase();
       const cat = (p.cat || '').toLowerCase();
+
       if (concern === 'taches') {
-        return name.includes('curcuma') || name.includes('vitamine c') || name.includes('éclaircissant') || desc.includes('tache') || cat.includes('traitements visage');
-      } else if (concern === 'secheresse') {
-        return name.includes('miel') || name.includes('manuka') || name.includes('hydratant') || desc.includes('hydratation') || cat.includes('masques');
-      } else if (concern === 'acne') {
-        return name.includes('nettoyant') || name.includes('toner') || name.includes('acide') || desc.includes('acné') || cat.includes('nettoyants');
-      } else if (concern === 'rides') {
-        return name.includes('collagène') || name.includes('sérum') || name.includes('anti-âge') || desc.includes('rides') || cat.includes('sérums');
-      } else if (concern === 'ternite') {
-        return name.includes('gommage') || name.includes('éclat') || desc.includes('éclat') || cat.includes('exfoliants');
+        return (name.includes('curcuma') || name.includes('vitamine c') || name.includes('éclaircissant') || 
+                desc.includes('tache') || desc.includes('pigmentation') || cat === 'traitements visage');
+      }
+      if (concern === 'secheresse') {
+        return (name.includes('miel') || name.includes('manuka') || name.includes('hydratant') || 
+                desc.includes('hydratation') || desc.includes('nourrissant') || cat === 'masques' || cat === 'hydratants');
+      }
+      if (concern === 'acne') {
+        return (name.includes('nettoyant') || name.includes('toner') || name.includes('acide') || 
+                desc.includes('acné') || desc.includes('purifiant') || cat === 'nettoyants' || cat === 'toners');
+      }
+      if (concern === 'rides') {
+        return (name.includes('collagène') || name.includes('sérum') || name.includes('anti-âge') || 
+                desc.includes('rides') || desc.includes('fermeté') || cat === 'sérums' || cat === 'crème visage');
+      }
+      if (concern === 'ternite') {
+        return (name.includes('gommage') || name.includes('éclat') || name.includes('vitamine c') || 
+                desc.includes('éclat') || desc.includes('terne') || cat === 'exfoliants' || cat === 'sérums');
       }
       return true;
     });
+
+    // Limiter à 4 produits maximum
     filtered = filtered.slice(0, 4);
     const container = document.getElementById('recommendations');
+    
     if (filtered.length === 0) {
-      container.innerHTML = '<p style="grid-column:1/-1; text-align:center;">Aucun produit ne correspond à vos critères pour le moment. Contactez-nous pour un conseil personnalisé.</p>';
+      container.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:20px;">
+        <p>${advice}</p>
+        <p>Aucun produit ne correspond exactement à vos critères pour le moment. N’hésitez pas à nous contacter pour un conseil personnalisé.</p>
+      </div>`;
       return;
     }
-    let html = '';
+
+    let html = `<div style="grid-column:1/-1; margin-bottom:20px; text-align:center; background:#FDF4EF; padding:16px; border-radius:20px;">
+      <p style="font-weight:500;">${advice}</p>
+    </div>`;
     filtered.forEach(prod => {
       const imgUrl = prod.img && prod.img.trim() !== '' ? prod.img : 'https://placehold.co/400x400/FEF5ED/C28B90?text=Glowly';
       html += `
