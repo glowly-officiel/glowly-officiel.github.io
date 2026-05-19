@@ -110,7 +110,6 @@
       gap: 40px;
     }
 
-    /* Desktop >= 769px */
     @media (min-width: 769px) {
       .bs-card {
         display: flex;
@@ -130,7 +129,6 @@
         min-width: 280px;
         background-size: cover;
         background-position: center;
-        background-repeat: no-repeat;
       }
       .brown-bg {
         flex: 1.5;
@@ -141,18 +139,8 @@
         flex-direction: column;
         justify-content: center;
       }
-      .brown-bg h3 {
-        font-family: 'Cormorant Garamond', serif;
-        font-size: 1.8rem;
-        margin-bottom: 12px;
-        color: #FDF4EA;
-      }
-      .bs-description {
-        color: #F0DBCE;
-        font-size: 0.95rem;
-        line-height: 1.5;
-        margin-bottom: 20px;
-      }
+      .brown-bg h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; margin-bottom: 12px; color: #FDF4EA; }
+      .bs-description { color: #F0DBCE; font-size: 0.95rem; line-height: 1.5; margin-bottom: 20px; }
       .btn-brown {
         background: #D8A7AB;
         color: #2E211B;
@@ -168,7 +156,6 @@
       .btn-brown:hover { background: #C9A87C; transform: scale(1.02); }
     }
 
-    /* MOBILE <= 768px : paysage avec hauteur égale (background-image) */
     @media (max-width: 768px) {
       .bs-card {
         display: flex;
@@ -179,14 +166,12 @@
         border: 1px solid #F0E1D6;
         margin-bottom: 20px;
         align-items: stretch;
-        min-height: 0; /* évite un débordement */
       }
       .bs-img {
         flex: 1;
         background-size: cover;
         background-position: center;
-        background-repeat: no-repeat;
-        min-height: 100%; /* prend toute la hauteur du parent */
+        min-height: 100%;
       }
       .brown-bg {
         flex: 1;
@@ -197,30 +182,9 @@
         flex-direction: column;
         justify-content: center;
       }
-      .brown-bg h3 {
-        font-family: 'Cormorant Garamond', serif;
-        font-size: 1rem;
-        margin-bottom: 6px;
-        color: #FDF4EA;
-      }
-      .bs-description {
-        font-size: 0.7rem;
-        line-height: 1.3;
-        margin-bottom: 8px;
-        color: #F0DBCE;
-      }
-      .btn-brown {
-        background: #D8A7AB;
-        color: #2E211B;
-        border: none;
-        padding: 6px 12px;
-        border-radius: 40px;
-        font-size: 9px;
-        font-weight: 600;
-        cursor: pointer;
-        align-self: flex-start;
-      }
-      /* Désactiver alternance sur mobile */
+      .brown-bg h3 { font-size: 1rem; margin-bottom: 6px; color: #FDF4EA; }
+      .bs-description { font-size: 0.7rem; line-height: 1.3; margin-bottom: 8px; color: #F0DBCE; }
+      .btn-brown { background: #D8A7AB; color: #2E211B; border: none; padding: 6px 12px; border-radius: 40px; font-size: 9px; font-weight: 600; cursor: pointer; align-self: flex-start; }
       .bs-card.right-img .bs-img { order: 0; }
       .bs-card.right-img .brown-bg { order: 1; }
     }
@@ -363,8 +327,8 @@
 
 <script>
   // ======================== CONFIGURATION ========================
-  // 🔴 REMPLACEZ CETTE URL PAR CELLE DE VOTRE SCRIPT GAS DÉPLOYÉ
-  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx6NmekfvNMCFqasTCO_QpA4l8mV2HkNgR6_cdH291ci5sa8zaKYJqj05_ZXtjL3KFa/exec';
+  // 🔴 REMPLACEZ CETTE URL PAR CELLE DE VOTRE SCRIPT GAS DÉPLOYÉ (avec droits "Toute personne")
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwWzOpozHnNo6TJQW3dumr4H5zjAP9rClSZURJsfzGc-9wmb0w5bR7jdTo9YHiR11Uf/exec';
 
   let allProducts = [];
   let cart = [];
@@ -382,7 +346,7 @@
     setTimeout(() => t.classList.remove('show'), 2500);
   }
 
-  // ========== BACKEND VIA FETCH ==========
+  // ========== BACKEND ==========
   async function chargerProduits() {
     try {
       const response = await fetch(`${SCRIPT_URL}?action=produits`);
@@ -407,14 +371,16 @@
     initCarousel();
   }
 
-  // === BEST SELLERS DYNAMIQUES (avec background-image) ===
   async function chargerBestSellers() {
     const container = document.getElementById('bestsellersContainer');
     if (!container) return;
     container.innerHTML = '<div class="loader">Chargement des best-sellers...</div>';
     try {
+      console.log("Appel bestsellers à :", `${SCRIPT_URL}?action=bestsellers`);
       const response = await fetch(`${SCRIPT_URL}?action=bestsellers`);
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
       const data = await response.json();
+      console.log("Réponse bestsellers :", data);
       if (data.ok && data.bestsellers && data.bestsellers.length > 0) {
         let html = '';
         data.bestsellers.forEach((prod, index) => {
@@ -435,10 +401,11 @@
         });
         container.innerHTML = html;
       } else {
+        console.warn("Aucun best-seller trouvé ou erreur dans la réponse:", data);
         container.innerHTML = '<div class="loader">Aucun best-seller pour le moment.</div>';
       }
     } catch (err) {
-      console.error(err);
+      console.error("Erreur chargement best-sellers:", err);
       container.innerHTML = '<div class="loader">Erreur chargement best-sellers</div>';
     }
   }
@@ -531,7 +498,7 @@
     carouselTrack.addEventListener('mouseleave', () => { isAutoScrolling = true; });
   }
 
-  // ========== FONCTIONS UI STANDARD ==========
+  // ========== FONCTIONS UI ==========
   function renderCategories() {
     const cats = [...new Set(allProducts.map(p => p.cat).filter(c => c && c.trim() !== ""))];
     const bar = document.getElementById('catBar');
