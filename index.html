@@ -189,7 +189,90 @@
       .bs-card.right-img .brown-bg { order: 1; }
     }
 
-    /* =========== NOUVELLE SECTION "POURQUOI NOS FORMULES" (ANIMÉE) =========== */
+    /* SECTION COACHING / DIAGNOSTIC BEAUTÉ */
+    .coaching-section {
+      background: #FDF4EF;
+      padding: 60px 24px;
+    }
+    .diagnostic-container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 32px;
+      padding: 40px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.05);
+      border: 1px solid var(--border-beige);
+    }
+    .diagnostic-question {
+      margin-bottom: 24px;
+    }
+    .diagnostic-question label {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 8px;
+      color: var(--marron-bois);
+    }
+    .diagnostic-question select, 
+    .diagnostic-question input {
+      width: 100%;
+      padding: 12px;
+      border-radius: 40px;
+      border: 1px solid var(--border-beige);
+      font-family: inherit;
+      background: var(--bg-beige);
+    }
+    .diagnostic-btn {
+      background: var(--marron-bois);
+      color: white;
+      border: none;
+      padding: 12px 28px;
+      border-radius: 40px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .diagnostic-btn:hover {
+      background: var(--rose-gold-fonce);
+    }
+    .recommendation-results {
+      margin-top: 40px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 20px;
+    }
+    .rec-card {
+      background: var(--bg-beige);
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid var(--border-beige);
+      transition: 0.2s;
+      cursor: pointer;
+    }
+    .rec-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 20px rgba(0,0,0,0.05);
+    }
+    .rec-img {
+      aspect-ratio: 1;
+      background: #FEF5ED;
+      background-size: cover;
+      background-position: center;
+    }
+    .rec-info {
+      padding: 12px;
+      text-align: center;
+    }
+    .rec-info h4 {
+      font-size: 0.9rem;
+      margin-bottom: 4px;
+    }
+    .rec-price {
+      font-weight: 700;
+      color: var(--rose-gold-fonce);
+      font-size: 0.85rem;
+    }
+
+    /* Autres sections */
     .science-section { background: #FDF4EF; padding: 60px 24px; }
     .science-flex {
       display: flex;
@@ -252,7 +335,6 @@
       }
     }
 
-    /* Grille produits / catalogue */
     .product-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
     @media (min-width: 640px) { .product-grid { grid-template-columns: repeat(3, 1fr); } }
     @media (min-width: 1024px) { .product-grid { grid-template-columns: repeat(4, 1fr); } }
@@ -297,7 +379,7 @@
 <header>
   <div class="header-inner">
     <div class="logo">GLOWLY</div>
-    <div class="nav-links"><a href="#">Accueil</a><a href="#catalogue">Boutique</a><a href="#coaching">Coaching</a><a href="#histoire">Notre histoire</a></div>
+    <div class="nav-links"><a href="#">Accueil</a><a href="#catalogue">Boutique</a><a href="#coaching">Coaching skin care</a><a href="#histoire">Notre histoire</a></div>
     <div class="header-actions">
       <button class="btn-outline" onclick="openContactModal()">Contact</button>
       <button class="cart-btn" onclick="openCart()">Panier <span class="cart-count" id="cartCount">0</span></button>
@@ -325,7 +407,36 @@
   </div>
 </section>
 
+<!-- ========== SECTION COACHING / DIAGNOSTIC BEAUTÉ ========== -->
 <div id="coaching" style="scroll-margin-top: 80px;"></div>
+<section class="coaching-section">
+  <h2 class="section-title">Coaching skin care</h2>
+  <p class="section-subtitle">Répondez à quelques questions et recevez une sélection de produits adaptés à votre peau</p>
+  <div class="diagnostic-container">
+    <div class="diagnostic-question">
+      <label>Quel est votre type de peau ?</label>
+      <select id="skinType">
+        <option value="normale">Normale</option>
+        <option value="seche">Sèche</option>
+        <option value="grasse">Grasse</option>
+        <option value="mixte">Mixte</option>
+        <option value="sensible">Sensible</option>
+      </select>
+    </div>
+    <div class="diagnostic-question">
+      <label>Quel est votre principal problème de peau ?</label>
+      <select id="skinConcern">
+        <option value="taches">Taches / Hyperpigmentation</option>
+        <option value="secheresse">Sécheresse / Desquamation</option>
+        <option value="acne">Acné / Points noirs</option>
+        <option value="rides">Rides / Perte d'élasticité</option>
+        <option value="ternite">Teint terne / Manque d'éclat</option>
+      </select>
+    </div>
+    <button class="diagnostic-btn" id="getRecommendations">Voir mes recommandations</button>
+    <div id="recommendations" class="recommendation-results"></div>
+  </div>
+</section>
 
 <!-- BEST SELLERS DYNAMIQUES -->
 <section class="section">
@@ -356,7 +467,7 @@
   </div>
 </section>
 
-<!-- ========== SECTION BOUTIQUE (anciennement "Notre Collection") ========== -->
+<!-- ========== SECTION BOUTIQUE ========== -->
 <div class="section" id="catalogue">
   <h2 class="section-title">Boutique</h2>
   <div style="max-width: 400px; margin: 0 auto 30px;"><input type="text" id="searchInput" placeholder="🔍 Rechercher un produit..." style="width:100%; padding:12px 20px; border-radius:50px; border:1px solid var(--border-beige);"></div>
@@ -399,7 +510,7 @@
 
 <script>
   // ======================== CONFIGURATION ========================
-  // 🔴 REMPLACEZ CETTE URL PAR CELLE DE VOTRE SCRIPT GAS DÉPLOYÉ (avec droits "Toute personne")
+  // 🔴 REMPLACEZ CETTE URL PAR CELLE DE VOTRE SCRIPT GAS DÉPLOYÉ
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwWzOpozHnNo6TJQW3dumr4H5zjAP9rClSZURJsfzGc-9wmb0w5bR7jdTo9YHiR11Uf/exec';
 
   let allProducts = [];
@@ -432,10 +543,10 @@
       console.error(err);
       showToast("Erreur de chargement des produits. Vérifiez l'URL.");
       allProducts = [
-        { id: 1, nom: "Savon Curcuma", prix: 8500, img: "https://images.unsplash.com/photo-1600857062241-98e5dba7f214?w=400&q=80", cat: "Nettoyants", desc: "" },
-        { id: 2, nom: "Toner Glycolique", prix: 12500, img: "https://images.unsplash.com/photo-1620916566390-22f5e7abca7e?w=400&q=80", cat: "Toners", desc: "" },
-        { id: 3, nom: "Sérum Vitamine C", prix: 22500, img: "https://images.unsplash.com/photo-1631730359585-38a4935dbef4?w=400&q=80", cat: "Sérums", desc: "" },
-        { id: 4, nom: "Masque Miel Manuka", prix: 14800, img: "https://images.unsplash.com/photo-1599305445671-ac291c95f0b2?w=400&q=80", cat: "Masques", desc: "" }
+        { id: 1, nom: "Savon Curcuma", prix: 8500, img: "https://images.unsplash.com/photo-1600857062241-98e5dba7f214?w=400&q=80", cat: "Nettoyants", desc: "", stock: 10 },
+        { id: 2, nom: "Toner Glycolique", prix: 12500, img: "https://images.unsplash.com/photo-1620916566390-22f5e7abca7e?w=400&q=80", cat: "Toners", desc: "", stock: 10 },
+        { id: 3, nom: "Sérum Vitamine C", prix: 22500, img: "https://images.unsplash.com/photo-1631730359585-38a4935dbef4?w=400&q=80", cat: "Sérums", desc: "", stock: 10 },
+        { id: 4, nom: "Masque Miel Manuka", prix: 14800, img: "https://images.unsplash.com/photo-1599305445671-ac291c95f0b2?w=400&q=80", cat: "Masques", desc: "", stock: 10 }
       ];
     }
     renderCategories();
@@ -477,6 +588,51 @@
       console.error("Erreur chargement best-sellers:", err);
       container.innerHTML = '<div class="loader">Erreur chargement best-sellers</div>';
     }
+  }
+
+  // ========== DIAGNOSTIC BEAUTÉ ==========
+  function getRecommendations() {
+    const skinType = document.getElementById('skinType').value;
+    const concern = document.getElementById('skinConcern').value;
+    let filtered = allProducts.filter(p => {
+      // Filtrage basé sur le problème de peau (mots-clés dans le nom, catégorie ou description)
+      const name = p.nom.toLowerCase();
+      const desc = (p.desc || '').toLowerCase();
+      const cat = (p.cat || '').toLowerCase();
+      if (concern === 'taches') {
+        return name.includes('curcuma') || name.includes('vitamine c') || name.includes('éclaircissant') || desc.includes('tache') || cat.includes('traitements visage');
+      } else if (concern === 'secheresse') {
+        return name.includes('miel') || name.includes('manuka') || name.includes('hydratant') || desc.includes('hydratation') || cat.includes('masques');
+      } else if (concern === 'acne') {
+        return name.includes('nettoyant') || name.includes('toner') || name.includes('acide') || desc.includes('acné') || cat.includes('nettoyants');
+      } else if (concern === 'rides') {
+        return name.includes('collagène') || name.includes('sérum') || name.includes('anti-âge') || desc.includes('rides') || cat.includes('sérums');
+      } else if (concern === 'ternite') {
+        return name.includes('vitamine c') || name.includes('gommage') || name.includes('éclat') || desc.includes('éclat') || cat.includes('exfoliants');
+      }
+      return true;
+    });
+    // Limiter à 4 produits maximum
+    filtered = filtered.slice(0, 4);
+    const container = document.getElementById('recommendations');
+    if (filtered.length === 0) {
+      container.innerHTML = '<p style="grid-column:1/-1; text-align:center;">Aucun produit ne correspond à vos critères pour le moment. Contactez-nous pour un conseil personnalisé.</p>';
+      return;
+    }
+    let html = '';
+    filtered.forEach(prod => {
+      const imgUrl = prod.img && prod.img.trim() !== '' ? prod.img : 'https://placehold.co/400x400/FEF5ED/C28B90?text=Glowly';
+      html += `
+        <div class="rec-card" onclick="openLightbox(${JSON.stringify(prod).replace(/'/g, "&#39;")})">
+          <div class="rec-img" style="background-image: url('${escapeHtml(imgUrl)}');"></div>
+          <div class="rec-info">
+            <h4>${escapeHtml(prod.nom)}</h4>
+            <div class="rec-price">${Number(prod.prix).toLocaleString()} FCFA</div>
+          </div>
+        </div>
+      `;
+    });
+    container.innerHTML = html;
   }
 
   async function verifierCodePromo(code, productNames) {
@@ -698,6 +854,7 @@
     chargerBestSellers();
     observeScienceItems();
     document.getElementById('searchInput')?.addEventListener('input', () => filterProducts());
+    document.getElementById('getRecommendations')?.addEventListener('click', getRecommendations);
   });
 
   window.setCategory = setCategory; window.filterProducts = filterProducts; window.changeQty = changeQty; window.removeItem = removeItem; window.addRoutine = addRoutine; window.openLightbox = openLightbox; window.closeLightbox = closeLightbox; window.addCurrentLightboxToCart = addCurrentLightboxToCart; window.openCart = openCart; window.closeCart = closeCart; window.openCheckout = openCheckout; window.closeCheckout = closeCheckout; window.applyPromoCode = applyPromoCode; window.confirmOrder = confirmOrder; window.openContactModal = openContactModal; window.closeContactModal = closeContactModal; window.sendContact = sendContact; window.sendFooterMessage = sendFooterMessage;
