@@ -105,7 +105,7 @@
     }
     .carousel-nav { display: none; }
 
-    /* BEST SELLERS - FORMAT PAYSAGE AVEC ALTERNANCE (HORIZONTAL MÊME SUR MOBILE) */
+    /* BEST SELLERS - FORMAT PAYSAGE AVEC ALTERNANCE, PARTIES ÉGALES */
     .section { max-width: 1280px; margin: 0 auto; padding: 80px 24px; }
     .section-title { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; text-align: center; color: var(--marron-bois); margin-bottom: 12px; }
     .section-subtitle { text-align: center; color: #9C7A6B; font-style: italic; margin-bottom: 48px; }
@@ -130,12 +130,12 @@
     .bs-card.horizontal.right-img { flex-direction: row-reverse; }
     .bs-img {
       flex: 1;
-      min-width: 280px;
+      min-width: 0;  /* important pour que les deux parties aient la même largeur */
       background-size: cover;
       background-position: center;
     }
     .brown-bg {
-      flex: 1.5;
+      flex: 1;
       background-color: #5E3A2E;
       padding: 32px;
       color: #FEF0E3;
@@ -169,29 +169,25 @@
     }
     .btn-brown:hover { background: #C9A87C; transform: scale(1.02); }
 
-    /* Version mobile : on garde l'horizontal, on réduit juste les tailles */
+    /* Version mobile : réduction des tailles mais garde l'égalité */
     @media (max-width: 768px) {
-      .bs-img {
-        min-width: 120px;   /* réduction pour que ça tienne */
-      }
       .brown-bg {
-        padding: 12px;
+        padding: 16px;
       }
       .brown-bg h3 {
-        font-size: 1rem;
-        margin-bottom: 6px;
+        font-size: 1.2rem;
       }
       .bs-description {
-        font-size: 0.7rem;
-        margin-bottom: 10px;
+        font-size: 0.75rem;
+        margin-bottom: 12px;
       }
       .btn-brown {
-        padding: 6px 10px;
-        font-size: 8px;
+        padding: 6px 12px;
+        font-size: 9px;
       }
     }
 
-    /* Autres sections (science, grille produits, témoignages) */
+    /* Autres sections */
     .science-section { background: #FDF4EF; padding: 60px 24px; }
     .science-flex { display: grid; gap: 32px; max-width: 1000px; margin: 0 auto; }
     @media (min-width: 700px) { .science-flex { grid-template-columns: repeat(3, 1fr); } }
@@ -261,7 +257,7 @@
   <a href="#catalogue" class="btn-gold">DÉCOUVRIR LA COLLECTION</a>
 </section>
 
-<!-- ========== CARROUSEL (images + noms) ========== -->
+<!-- CARROUSEL -->
 <section class="carousel-section" id="carouselSection">
   <div class="carousel-title">✨ Les incontournables ✨</div>
   <div class="carousel-container">
@@ -271,12 +267,11 @@
 
 <div id="coaching" style="scroll-margin-top: 80px;"></div>
 
-<!-- ========== BEST SELLERS (4 cartes, alternance, fond marron, horizontal même sur mobile) ========== -->
+<!-- BEST SELLERS avec parties égales -->
 <section class="section">
   <h2 class="section-title">Nos Best Sellers</h2>
   <p class="section-subtitle">Les produits les plus plébiscités par notre communauté</p>
   <div class="bestsellers-container">
-    <!-- Carte 1 : image gauche / texte droite -->
     <div class="bs-card horizontal left-img">
       <div class="bs-img" style="background-image: url('https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=800&q=80');"></div>
       <div class="brown-bg">
@@ -285,7 +280,6 @@
         <button class="btn-brown" onclick="addRoutine('Routine Éclat Suprême', 28500)">AJOUTER — 28 500 FCFA</button>
       </div>
     </div>
-    <!-- Carte 2 : image droite / texte gauche -->
     <div class="bs-card horizontal right-img">
       <div class="bs-img" style="background-image: url('https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=800&q=80');"></div>
       <div class="brown-bg">
@@ -294,7 +288,6 @@
         <button class="btn-brown" onclick="addRoutine('Rituel Hammam & Glow', 32900)">AJOUTER — 32 900 FCFA</button>
       </div>
     </div>
-    <!-- Carte 3 : image gauche / texte droite -->
     <div class="bs-card horizontal left-img">
       <div class="bs-img" style="background-image: url('https://images.unsplash.com/photo-1570194065650-d99fb4d8c631?w=800&q=80');"></div>
       <div class="brown-bg">
@@ -303,7 +296,6 @@
         <button class="btn-brown" onclick="addRoutine('Masque Visage BIO-Collagène', 18900)">AJOUTER — 18 900 FCFA</button>
       </div>
     </div>
-    <!-- Carte 4 : image droite / texte gauche -->
     <div class="bs-card horizontal right-img">
       <div class="bs-img" style="background-image: url('https://images.unsplash.com/photo-1600948836101-f9ffda59d250?w=800&q=80');"></div>
       <div class="brown-bg">
@@ -366,7 +358,6 @@
 
 <script>
   // ======================== CONFIGURATION ========================
-  // 🔴 REMPLACEZ CETTE URL PAR CELLE DE VOTRE SCRIPT GAS DÉPLOYÉ
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx6NmekfvNMCFqasTCO_QpA4l8mV2HkNgR6_cdH291ci5sa8zaKYJqj05_ZXtjL3KFa/exec';
 
   let allProducts = [];
@@ -385,7 +376,6 @@
     setTimeout(() => t.classList.remove('show'), 2500);
   }
 
-  // ========== BACKEND VIA FETCH ==========
   async function chargerProduits() {
     try {
       console.log("Chargement depuis:", SCRIPT_URL);
