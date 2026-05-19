@@ -358,16 +358,193 @@
     .contact-form input, .contact-form textarea { width: 100%; padding: 12px; margin-bottom: 12px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 40px; }
     .contact-form button { background: var(--gold-dore); border: none; padding: 12px; width: 100%; border-radius: 40px; font-weight: 600; color: #2E211B; cursor: pointer; }
 
-    .overlay { position: fixed; inset: 0; background: rgba(62,41,32,0.65); backdrop-filter: blur(5px); z-index: 1000; display: flex; align-items: center; justify-content: center; visibility: hidden; opacity: 0; transition: 0.2s; }
-    .overlay.open { visibility: visible; opacity: 1; }
-    .cart-panel { position: absolute; right: 0; top: 0; bottom: 0; width: 400px; max-width: 90vw; background: white; display: flex; flex-direction: column; transform: translateX(100%); transition: 0.35s; }
+    /* LIGHTBOX RESTYLISÉE */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(8px);
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity 0.3s ease, visibility 0.3s;
+    }
+    .overlay.open {
+      visibility: visible;
+      opacity: 1;
+    }
+    .lightbox-container {
+      background: white;
+      width: 90%;
+      max-width: 1000px;
+      border-radius: 32px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: row;
+      box-shadow: 0 30px 50px rgba(0,0,0,0.3);
+      animation: fadeInUp 0.3s ease;
+    }
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .lightbox-gallery {
+      flex: 1;
+      background: #FEF5ED;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 30px;
+    }
+    .lightbox-gallery img {
+      max-height: 60vh;
+      width: auto;
+      max-width: 100%;
+      object-fit: contain;
+      border-radius: 20px;
+    }
+    .lightbox-info {
+      flex: 1;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 16px;
+      background: white;
+    }
+    .lightbox-cat {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      color: var(--rose-gold-fonce);
+      text-transform: uppercase;
+    }
+    .lightbox-info h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      color: var(--text-brun);
+      margin: 0;
+    }
+    .lightbox-price {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--rose-gold-fonce);
+    }
+    .lightbox-desc {
+      color: var(--text-muted);
+      line-height: 1.6;
+      font-size: 0.95rem;
+    }
+    .lightbox-add-btn {
+      background: var(--marron-bois);
+      color: white;
+      border: none;
+      padding: 14px 24px;
+      border-radius: 60px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      align-self: flex-start;
+    }
+    .lightbox-add-btn:hover {
+      background: var(--rose-gold-fonce);
+      transform: scale(1.02);
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      background: white;
+      border: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      font-size: 20px;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: 0.2s;
+      z-index: 10;
+    }
+    .lightbox-close:hover {
+      background: #f0f0f0;
+      transform: scale(1.05);
+    }
+    @media (max-width: 768px) {
+      .lightbox-container {
+        flex-direction: column;
+        width: 95%;
+      }
+      .lightbox-gallery {
+        padding: 20px;
+      }
+      .lightbox-info {
+        padding: 24px;
+        text-align: center;
+      }
+      .lightbox-add-btn {
+        align-self: center;
+      }
+      .lightbox-info h2 {
+        font-size: 1.6rem;
+      }
+      .lightbox-price {
+        font-size: 1.5rem;
+      }
+    }
+
+    /* Autres overlays (panier, checkout, contact) */
+    .cart-panel {
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: 400px;
+      max-width: 90vw;
+      background: white;
+      display: flex;
+      flex-direction: column;
+      transform: translateX(100%);
+      transition: transform 0.35s ease;
+    }
     .overlay.open .cart-panel { transform: translateX(0); }
-    .modal-card { background: white; border-radius: 32px; max-width: 480px; width: 90%; padding: 32px; max-height: 90vh; overflow-y: auto; }
-    .lightbox-container { background: white; display: flex; flex-wrap: wrap; max-width: 1000px; width: 90%; border-radius: 32px; overflow: hidden; }
+    .modal-card {
+      background: white;
+      border-radius: 32px;
+      max-width: 480px;
+      width: 90%;
+      padding: 32px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
     .field { margin-bottom: 16px; }
     .field label { font-size: 11px; text-transform: uppercase; color: #8B6B5C; display: block; margin-bottom: 4px; }
     .field input, .field select { width: 100%; padding: 12px; border: 1px solid #EDE0D4; border-radius: 40px; }
-    #toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #3E2920; color: #f5e2d6; padding: 12px 28px; border-radius: 60px; font-size: 13px; z-index: 1100; opacity: 0; transition: 0.2s; pointer-events: none; }
+    #toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #3E2920;
+      color: #f5e2d6;
+      padding: 12px 28px;
+      border-radius: 60px;
+      font-size: 13px;
+      z-index: 2100;
+      opacity: 0;
+      transition: opacity 0.2s;
+      pointer-events: none;
+    }
     #toast.show { opacity: 1; }
     .loader { text-align: center; padding: 40px; color: var(--rose-gold-fonce); }
   </style>
@@ -436,7 +613,7 @@
   </div>
 </section>
 
-<!-- ========== SECTION BOUTIQUE (anciennement "Notre Collection") ========== -->
+<!-- ========== SECTION BOUTIQUE ========== -->
 <div class="section" id="catalogue">
   <h2 class="section-title">Boutique</h2>
   <div style="max-width: 400px; margin: 0 auto 30px;"><input type="text" id="searchInput" placeholder="🔍 Rechercher un produit..." style="width:100%; padding:12px 20px; border-radius:50px; border:1px solid var(--border-beige);"></div>
@@ -497,20 +674,66 @@
   <p style="text-align:center; margin-top:30px; font-size:11px;">© 2026 Glowly — Tous droits réservés.</p>
 </footer>
 
-<!-- MODALS -->
-<div id="lightboxOverlay" class="overlay" onclick="closeLightbox(event)"><div class="lightbox-container" onclick="event.stopPropagation()"><div style="flex:1; padding:30px;"><img id="lbImage" style="max-height:55vh; width:100%; object-fit:contain;"></div><div style="flex:1; padding:30px;"><div id="lbCat" style="font-size:12px; letter-spacing:2px; color:var(--rose-gold-fonce);"></div><h2 id="lbTitle" style="margin:12px 0;"></h2><p id="lbPrice" style="font-size:24px; font-weight:bold;"></p><p id="lbDesc" style="color:#6B5A48;"></p><button class="btn-brown" onclick="addCurrentLightboxToCart()" style="margin-top:20px;">Ajouter au panier</button></div></div></div>
+<!-- LIGHTBOX RESTYLISÉE -->
+<div id="lightboxOverlay" class="overlay" onclick="closeLightbox(event)">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <div class="lightbox-container" onclick="event.stopPropagation()">
+    <div class="lightbox-gallery">
+      <img id="lbImage" src="" alt="">
+    </div>
+    <div class="lightbox-info">
+      <div class="lightbox-cat" id="lbCat"></div>
+      <h2 id="lbTitle"></h2>
+      <div class="lightbox-price" id="lbPrice"></div>
+      <p class="lightbox-desc" id="lbDesc"></p>
+      <button class="lightbox-add-btn" onclick="addCurrentLightboxToCart()">+ Ajouter au panier</button>
+    </div>
+  </div>
+</div>
 
-<div id="cartOverlay" class="overlay" onclick="closeCart(event)"><div id="cartPanel" class="cart-panel" onclick="event.stopPropagation()"><div style="padding:24px; border-bottom:1px solid var(--border-beige); display:flex; justify-content:space-between;"><h3>Panier</h3><button onclick="closeCart(null,true)" style="background:none; border:none; font-size:20px;">✕</button></div><div id="cartItems" style="flex:1; overflow:auto; padding:20px;"></div><div id="cartFooter" style="padding:20px; border-top:1px solid var(--border-beige); display:none;"><div style="display:flex; justify-content:space-between;"><span>Total</span><strong id="cartTotal">0 FCFA</strong></div><button class="btn-brown" onclick="openCheckout()" style="width:100%; margin-top:16px;">Commander</button></div></div></div>
+<!-- AUTRES MODALS (panier, checkout, contact) -->
+<div id="cartOverlay" class="overlay" onclick="closeCart(event)">
+  <div id="cartPanel" class="cart-panel" onclick="event.stopPropagation()">
+    <div style="padding:24px; border-bottom:1px solid var(--border-beige); display:flex; justify-content:space-between;"><h3>Panier</h3><button onclick="closeCart(null,true)" style="background:none; border:none; font-size:20px;">✕</button></div>
+    <div id="cartItems" style="flex:1; overflow:auto; padding:20px;"></div>
+    <div id="cartFooter" style="padding:20px; border-top:1px solid var(--border-beige); display:none;">
+      <div style="display:flex; justify-content:space-between;"><span>Total</span><strong id="cartTotal">0 FCFA</strong></div>
+      <button class="btn-brown" onclick="openCheckout()" style="width:100%; margin-top:16px;">Commander</button>
+    </div>
+  </div>
+</div>
 
-<div id="checkoutModal" class="overlay" onclick="closeCheckout(event)"><div class="modal-card" onclick="event.stopPropagation()"><h3>Finaliser la commande</h3><div id="orderSummary" style="background:#F8F2E9; padding:12px; border-radius:20px; margin:16px 0;"></div><div class="field"><label>Nom complet *</label><input type="text" id="checkoutName" placeholder="Fatou Diallo"></div><div class="field"><label>Téléphone *</label><input type="tel" id="checkoutPhone" placeholder="77 123 45 67"></div><div class="field"><label>Région *</label><select id="checkoutRegion"><option>Dakar</option><option>Thiès</option><option>Saint-Louis</option><option>Autre</option></select></div><div class="field"><label>Quartier *</label><input type="text" id="checkoutQuartier" placeholder="Médina, Ouakam..."></div><div class="field"><label>Adresse</label><input type="text" id="checkoutAddress" placeholder="Rue, porte..."></div><div class="field"><label>Paiement</label><select id="checkoutPayment"><option>🐧 Wave</option><option>🟠 Orange Money</option><option>💵 Espèces à la livraison</option></select></div><div class="field"><label>Code promo</label><div style="display:flex; gap:8px;"><input type="text" id="promoCode" placeholder="GLOWLY20"><button onclick="applyPromoCode()" style="background:var(--rose-gold-fonce); border:none; border-radius:40px; padding:0 16px; color:white;">Appliquer</button></div><span id="promoMsg" style="font-size:12px;"></span></div><button class="btn-brown" onclick="confirmOrder()" style="width:100%; margin-top:16px;">Confirmer la commande</button><div id="orderSuccess" style="display:none; text-align:center; margin-top:16px; color:#2E7D32;">✅ Commande envoyée !</div></div></div>
+<div id="checkoutModal" class="overlay" onclick="closeCheckout(event)">
+  <div class="modal-card" onclick="event.stopPropagation()">
+    <h3>Finaliser la commande</h3>
+    <div id="orderSummary" style="background:#F8F2E9; padding:12px; border-radius:20px; margin:16px 0;"></div>
+    <div class="field"><label>Nom complet *</label><input type="text" id="checkoutName" placeholder="Fatou Diallo"></div>
+    <div class="field"><label>Téléphone *</label><input type="tel" id="checkoutPhone" placeholder="77 123 45 67"></div>
+    <div class="field"><label>Région *</label><select id="checkoutRegion"><option>Dakar</option><option>Thiès</option><option>Saint-Louis</option><option>Autre</option></select></div>
+    <div class="field"><label>Quartier *</label><input type="text" id="checkoutQuartier" placeholder="Médina, Ouakam..."></div>
+    <div class="field"><label>Adresse</label><input type="text" id="checkoutAddress" placeholder="Rue, porte..."></div>
+    <div class="field"><label>Paiement</label><select id="checkoutPayment"><option>🐧 Wave</option><option>🟠 Orange Money</option><option>💵 Espèces à la livraison</option></select></div>
+    <div class="field"><label>Code promo</label><div style="display:flex; gap:8px;"><input type="text" id="promoCode" placeholder="GLOWLY20"><button onclick="applyPromoCode()" style="background:var(--rose-gold-fonce); border:none; border-radius:40px; padding:0 16px; color:white;">Appliquer</button></div><span id="promoMsg" style="font-size:12px;"></span></div>
+    <button class="btn-brown" onclick="confirmOrder()" style="width:100%; margin-top:16px;">Confirmer la commande</button>
+    <div id="orderSuccess" style="display:none; text-align:center; margin-top:16px; color:#2E7D32;">✅ Commande envoyée !</div>
+  </div>
+</div>
 
-<div id="contactModal" class="overlay" onclick="closeContactModal(event)"><div class="modal-card" onclick="event.stopPropagation()"><h3>Nous contacter</h3><div class="field"><label>Nom</label><input type="text" id="contactName"></div><div class="field"><label>WhatsApp</label><input type="tel" id="contactPhone"></div><div class="field"><label>Message</label><textarea id="contactMessage" rows="3"></textarea></div><button class="btn-brown" onclick="sendContact()" style="width:100%;">Envoyer</button><div id="contactAck" style="display:none; text-align:center; margin-top:12px;">✅ Message envoyé !</div></div></div>
+<div id="contactModal" class="overlay" onclick="closeContactModal(event)">
+  <div class="modal-card" onclick="event.stopPropagation()">
+    <h3>Nous contacter</h3>
+    <div class="field"><label>Nom</label><input type="text" id="contactName"></div>
+    <div class="field"><label>WhatsApp</label><input type="tel" id="contactPhone"></div>
+    <div class="field"><label>Message</label><textarea id="contactMessage" rows="3"></textarea></div>
+    <button class="btn-brown" onclick="sendContact()" style="width:100%;">Envoyer</button>
+    <div id="contactAck" style="display:none; text-align:center; margin-top:12px;">✅ Message envoyé !</div>
+  </div>
+</div>
 
 <div id="toast"></div>
 
 <script>
   // ======================== CONFIGURATION ========================
-  // 🔴 REMPLACEZ CETTE URL PAR CELLE DE VOTRE SCRIPT GAS DÉPLOYÉ (avec droits "Toute personne")
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwWzOpozHnNo6TJQW3dumr4H5zjAP9rClSZURJsfzGc-9wmb0w5bR7jdTo9YHiR11Uf/exec';
 
   let allProducts = [];
@@ -543,10 +766,10 @@
       console.error(err);
       showToast("Erreur de chargement des produits. Vérifiez l'URL.");
       allProducts = [
-        { id: 1, nom: "Savon Curcuma", prix: 8500, img: "https://images.unsplash.com/photo-1600857062241-98e5dba7f214?w=400&q=80", cat: "Nettoyants", desc: "", stock: 10 },
-        { id: 2, nom: "Toner Glycolique", prix: 12500, img: "https://images.unsplash.com/photo-1620916566390-22f5e7abca7e?w=400&q=80", cat: "Toners", desc: "", stock: 10 },
-        { id: 3, nom: "Sérum Vitamine C", prix: 22500, img: "https://images.unsplash.com/photo-1631730359585-38a4935dbef4?w=400&q=80", cat: "Sérums", desc: "", stock: 10 },
-        { id: 4, nom: "Masque Miel Manuka", prix: 14800, img: "https://images.unsplash.com/photo-1599305445671-ac291c95f0b2?w=400&q=80", cat: "Masques", desc: "", stock: 10 }
+        { id: 1, nom: "Savon Curcuma", prix: 8500, img: "https://images.unsplash.com/photo-1600857062241-98e5dba7f214?w=400&q=80", cat: "Nettoyants", desc: "Purifie et éclaire le teint.", stock: 10 },
+        { id: 2, nom: "Toner Glycolique", prix: 12500, img: "https://images.unsplash.com/photo-1620916566390-22f5e7abca7e?w=400&q=80", cat: "Toners", desc: "Exfoliation douce.", stock: 10 },
+        { id: 3, nom: "Sérum Vitamine C", prix: 22500, img: "https://images.unsplash.com/photo-1631730359585-38a4935dbef4?w=400&q=80", cat: "Sérums", desc: "Antioxydant.", stock: 10 },
+        { id: 4, nom: "Masque Miel Manuka", prix: 14800, img: "https://images.unsplash.com/photo-1599305445671-ac291c95f0b2?w=400&q=80", cat: "Masques", desc: "Hydratation intense.", stock: 10 }
       ];
     }
     renderCategories();
@@ -590,83 +813,41 @@
     }
   }
 
-  // ========== DIAGNOSTIC BEAUTÉ AMÉLIORÉ (conseils personnalisés) ==========
+  // ========== DIAGNOSTIC BEAUTÉ ==========
   function getRecommendations() {
     const skinType = document.getElementById('skinType').value;
     const concern = document.getElementById('skinConcern').value;
-    let filtered = [];
     let advice = "";
+    if (skinType === 'seche') advice = "Pour les peaux sèches, privilégiez les soins hydratants et nourrissants. ";
+    else if (skinType === 'grasse') advice = "Pour les peaux grasses, misez sur des textures légères et des ingrédients sébo-régulateurs. ";
+    else if (skinType === 'mixte') advice = "Pour les peaux mixtes, utilisez des produits équilibrants. ";
+    else if (skinType === 'sensible') advice = "Pour les peaux sensibles, choisissez des soins hypoallergéniques sans parfum. ";
+    else advice = "Pour les peaux normales, maintenez l'équilibre avec des soins doux. ";
 
-    // Conseils généraux selon le type de peau
-    if (skinType === 'seche') {
-      advice = "Pour les peaux sèches, privilégiez les soins hydratants et nourrissants. Évitez les nettoyants agressifs.";
-    } else if (skinType === 'grasse') {
-      advice = "Pour les peaux grasses, misez sur des textures légères, des ingrédients sébo-régulateurs et une bonne hydratation.";
-    } else if (skinType === 'mixte') {
-      advice = "Pour les peaux mixtes, utilisez des produits équilibrants qui agissent sur la zone T sans assécher les joues.";
-    } else if (skinType === 'sensible') {
-      advice = "Pour les peaux sensibles, choisissez des soins hypoallergéniques sans parfum ni alcool.";
-    } else {
-      advice = "Pour les peaux normales, maintenez l'équilibre avec des soins doux et protecteurs.";
-    }
+    if (concern === 'taches') advice += "Pour réduire les taches, optez pour la vitamine C, le curcuma ou des acides doux.";
+    else if (concern === 'secheresse') advice += "Pour la sécheresse, utilisez des crèmes riches et des masques hydratants.";
+    else if (concern === 'acne') advice += "Pour l'acné, privilégiez des nettoyants doux et des soins non comédogènes.";
+    else if (concern === 'rides') advice += "Pour les rides, recherchez des sérums à base de collagène et de vitamine C.";
+    else advice += "Pour raviver l'éclat, utilisez des exfoliants doux et des soins illuminants.";
 
-    // Ajouter un conseil spécifique au problème
-    if (concern === 'taches') {
-      advice += " Pour réduire les taches, optez pour des actifs comme la vitamine C, le curcuma ou les acides exfoliants doux.";
-    } else if (concern === 'secheresse') {
-      advice += " Pour lutter contre la sécheresse, utilisez des crèmes riches et des masques hydratants à base de miel ou d'acide hyaluronique.";
-    } else if (concern === 'acne') {
-      advice += " Pour l'acné, privilégiez des nettoyants doux, des toners purifiants et des soins non comédogènes.";
-    } else if (concern === 'rides') {
-      advice += " Pour les rides, recherchez des sérums à base de collagène, de vitamine C et des crèmes anti-âge.";
-    } else if (concern === 'ternite') {
-      advice += " Pour raviver l'éclat du teint, utilisez des exfoliants doux et des soins illuminants.";
-    }
-
-    // Filtrage des produits (plus précis)
-    filtered = allProducts.filter(p => {
+    let filtered = allProducts.filter(p => {
       const name = p.nom.toLowerCase();
       const desc = (p.desc || '').toLowerCase();
       const cat = (p.cat || '').toLowerCase();
-
-      if (concern === 'taches') {
-        return (name.includes('curcuma') || name.includes('vitamine c') || name.includes('éclaircissant') || 
-                desc.includes('tache') || desc.includes('pigmentation') || cat === 'traitements visage');
-      }
-      if (concern === 'secheresse') {
-        return (name.includes('miel') || name.includes('manuka') || name.includes('hydratant') || 
-                desc.includes('hydratation') || desc.includes('nourrissant') || cat === 'masques' || cat === 'hydratants');
-      }
-      if (concern === 'acne') {
-        return (name.includes('nettoyant') || name.includes('toner') || name.includes('acide') || 
-                desc.includes('acné') || desc.includes('purifiant') || cat === 'nettoyants' || cat === 'toners');
-      }
-      if (concern === 'rides') {
-        return (name.includes('collagène') || name.includes('sérum') || name.includes('anti-âge') || 
-                desc.includes('rides') || desc.includes('fermeté') || cat === 'sérums' || cat === 'crème visage');
-      }
-      if (concern === 'ternite') {
-        return (name.includes('gommage') || name.includes('éclat') || name.includes('vitamine c') || 
-                desc.includes('éclat') || desc.includes('terne') || cat === 'exfoliants' || cat === 'sérums');
-      }
+      if (concern === 'taches') return name.includes('curcuma') || name.includes('vitamine c') || desc.includes('tache') || cat === 'traitements visage';
+      if (concern === 'secheresse') return name.includes('miel') || name.includes('manuka') || desc.includes('hydratation') || cat === 'masques' || cat === 'hydratants';
+      if (concern === 'acne') return name.includes('nettoyant') || name.includes('toner') || desc.includes('acné') || cat === 'nettoyants';
+      if (concern === 'rides') return name.includes('collagène') || name.includes('sérum') || desc.includes('rides') || cat === 'sérums';
+      if (concern === 'ternite') return name.includes('gommage') || name.includes('éclat') || desc.includes('éclat') || cat === 'exfoliants';
       return true;
     });
-
-    // Limiter à 4 produits maximum
     filtered = filtered.slice(0, 4);
     const container = document.getElementById('recommendations');
-    
     if (filtered.length === 0) {
-      container.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:20px;">
-        <p>${advice}</p>
-        <p>Aucun produit ne correspond exactement à vos critères pour le moment. N’hésitez pas à nous contacter pour un conseil personnalisé.</p>
-      </div>`;
+      container.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:20px;"><p>${advice}</p><p>Aucun produit ne correspond pour le moment. Contactez-nous.</p></div>`;
       return;
     }
-
-    let html = `<div style="grid-column:1/-1; margin-bottom:20px; text-align:center; background:#FDF4EF; padding:16px; border-radius:20px;">
-      <p style="font-weight:500;">${advice}</p>
-    </div>`;
+    let html = `<div style="grid-column:1/-1; margin-bottom:20px; text-align:center; background:#FDF4EF; padding:16px; border-radius:20px;"><p style="font-weight:500;">${advice}</p></div>`;
     filtered.forEach(prod => {
       const imgUrl = prod.img && prod.img.trim() !== '' ? prod.img : 'https://placehold.co/400x400/FEF5ED/C28B90?text=Glowly';
       html += `
@@ -819,9 +1000,23 @@
   function addToCart(product) { const existing = cart.find(i => i.id == product.id); if (existing) existing.qty++; else cart.push({ id: product.id, name: product.nom, price: product.prix, qty: 1 }); saveCart(); showToast(`${product.nom} ajouté au panier`); }
   function addRoutine(name, price) { const routineId = Date.now(); cart.push({ id: routineId, name: name, price: price, qty: 1 }); saveCart(); showToast(`${name} ajouté au panier`); }
 
-  function openLightbox(product) { currentLightboxProduct = product; document.getElementById('lbImage').src = product.img || ''; document.getElementById('lbTitle').innerText = product.nom; document.getElementById('lbPrice').innerText = Number(product.prix).toLocaleString() + ' FCFA'; document.getElementById('lbDesc').innerText = product.desc || ''; document.getElementById('lbCat').innerText = product.cat || ''; document.getElementById('lightboxOverlay').classList.add('open'); }
-  function closeLightbox(e) { if (e && e.target !== e.currentTarget) return; document.getElementById('lightboxOverlay').classList.remove('open'); }
-  function addCurrentLightboxToCart() { if (currentLightboxProduct) addToCart(currentLightboxProduct); closeLightbox(); }
+  function openLightbox(product) {
+    currentLightboxProduct = product;
+    document.getElementById('lbImage').src = product.img || 'https://placehold.co/600x600/FEF5ED/C28B90?text=Image';
+    document.getElementById('lbTitle').innerText = product.nom;
+    document.getElementById('lbPrice').innerText = Number(product.prix).toLocaleString() + ' FCFA';
+    document.getElementById('lbDesc').innerText = product.desc || 'Découvrez ce produit exceptionnel.';
+    document.getElementById('lbCat').innerText = product.cat || 'Produit';
+    document.getElementById('lightboxOverlay').classList.add('open');
+  }
+  function closeLightbox(e) {
+    if (e && e.target !== e.currentTarget) return;
+    document.getElementById('lightboxOverlay').classList.remove('open');
+  }
+  function addCurrentLightboxToCart() {
+    if (currentLightboxProduct) addToCart(currentLightboxProduct);
+    closeLightbox();
+  }
 
   function openCart() { document.getElementById('cartOverlay').classList.add('open'); }
   function closeCart(e, force) { if (force || (e && e.target === document.getElementById('cartOverlay'))) document.getElementById('cartOverlay').classList.remove('open'); }
@@ -875,7 +1070,6 @@
     });
   }
 
-  // Animation au scroll pour la section "Pourquoi nos formules"
   function observeScienceItems() {
     const items = document.querySelectorAll('.science-item');
     if (!items.length) return;
