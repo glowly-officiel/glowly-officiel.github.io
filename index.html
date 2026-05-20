@@ -273,7 +273,7 @@
       font-size: 0.85rem;
     }
 
-    /* SECTION NOTRE HISTOIRE */
+    /* SECTION NOTRE HISTOIRE (TEXTE SIMPLIFIÉ) */
     .histoire-section {
       background: var(--bg-beige);
       padding: 80px 24px;
@@ -709,7 +709,7 @@
   </div>
 </section>
 
-<!-- ========== SECTION NOTRE HISTOIRE ========== -->
+<!-- ========== SECTION NOTRE HISTOIRE (TEXTE SIMPLIFIÉ) ========== -->
 <div id="histoire" style="scroll-margin-top: 80px;"></div>
 <section class="histoire-section">
   <div class="histoire-container">
@@ -805,8 +805,7 @@
 <script>
   // ======================== CONFIGURATION ========================
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw0cAUs_PtYJ37kJ0enMU_jEIxwV1NxI4-htAgNNVdSdHQzCmxdiw3uZPdbIN8anug/exec';
-  const CORS_PROXY = 'https://api.allorigins.win/raw?url='; // for GET only
-  const POST_PROXY = 'https://corsproxy.io/'; // supports POST
+  const CORS_PROXY = 'https://api.allorigins.win/raw?url=';
 
   let allProducts = [];
   let cart = [];
@@ -826,7 +825,7 @@
     setTimeout(() => t.classList.remove('show'), 2500);
   }
 
-  // ========== BACKEND ==========
+  // ========== BACKEND (GET via proxy) ==========
   async function chargerProduits() {
     try {
       const proxyUrl = CORS_PROXY + encodeURIComponent(SCRIPT_URL + '?action=produits');
@@ -889,56 +888,6 @@
     }
   }
 
-  // ========== DIAGNOSTIC ==========
-  function getRecommendations() {
-    const skinType = document.getElementById('skinType').value;
-    const concern = document.getElementById('skinConcern').value;
-    let advice = "";
-    if (skinType === 'seche') advice = "Pour les peaux sèches, privilégiez les soins hydratants et nourrissants. ";
-    else if (skinType === 'grasse') advice = "Pour les peaux grasses, misez sur des textures légères et des ingrédients sébo-régulateurs. ";
-    else if (skinType === 'mixte') advice = "Pour les peaux mixtes, utilisez des produits équilibrants. ";
-    else if (skinType === 'sensible') advice = "Pour les peaux sensibles, choisissez des soins hypoallergéniques sans parfum. ";
-    else advice = "Pour les peaux normales, maintenez l'équilibre avec des soins doux. ";
-
-    if (concern === 'taches') advice += "Pour réduire les taches, optez pour la vitamine C, le curcuma ou des acides doux.";
-    else if (concern === 'secheresse') advice += "Pour la sécheresse, utilisez des crèmes riches et des masques hydratants.";
-    else if (concern === 'acne') advice += "Pour l'acné, privilégiez des nettoyants doux et des soins non comédogènes.";
-    else if (concern === 'rides') advice += "Pour les rides, recherchez des sérums à base de collagène et de vitamine C.";
-    else advice += "Pour raviver l'éclat, utilisez des exfoliants doux et des soins illuminants.";
-
-    let filtered = allProducts.filter(p => {
-      const name = p.nom.toLowerCase();
-      const desc = (p.desc || '').toLowerCase();
-      const cat = (p.cat || '').toLowerCase();
-      if (concern === 'taches') return name.includes('curcuma') || name.includes('vitamine c') || desc.includes('tache') || cat === 'traitements visage';
-      if (concern === 'secheresse') return name.includes('miel') || name.includes('manuka') || desc.includes('hydratation') || cat === 'masques' || cat === 'hydratants';
-      if (concern === 'acne') return name.includes('nettoyant') || name.includes('toner') || desc.includes('acné') || cat === 'nettoyants';
-      if (concern === 'rides') return name.includes('collagène') || name.includes('sérum') || desc.includes('rides') || cat === 'sérums';
-      if (concern === 'ternite') return name.includes('gommage') || name.includes('éclat') || desc.includes('éclat') || cat === 'exfoliants';
-      return true;
-    });
-    filtered = filtered.slice(0, 4);
-    const container = document.getElementById('recommendations');
-    if (filtered.length === 0) {
-      container.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:20px;"><p>${advice}</p><p>Aucun produit ne correspond pour le moment. Contactez-nous.</p></div>`;
-      return;
-    }
-    let html = `<div style="grid-column:1/-1; margin-bottom:20px; text-align:center; background:#FDF4EF; padding:16px; border-radius:20px;"><p style="font-weight:500;">${advice}</p></div>`;
-    filtered.forEach(prod => {
-      const imgUrl = prod.img && prod.img.trim() !== '' ? prod.img : 'https://placehold.co/400x400/FEF5ED/C28B90?text=Glowly';
-      html += `
-        <div class="rec-card" onclick="openLightbox(${JSON.stringify(prod).replace(/'/g, "&#39;")})">
-          <div class="rec-img" style="background-image: url('${escapeHtml(imgUrl)}');"></div>
-          <div class="rec-info">
-            <h4>${escapeHtml(prod.nom)}</h4>
-            <div class="rec-price">${Number(prod.prix).toLocaleString()} FCFA</div>
-          </div>
-        </div>
-      `;
-    });
-    container.innerHTML = html;
-  }
-
   async function verifierCodePromo(code, productNames) {
     try {
       const url = `${SCRIPT_URL}?action=verifierPromo&code=${encodeURIComponent(code)}&produits=${encodeURIComponent(productNames.join(','))}`;
@@ -959,15 +908,12 @@
     }
   }
 
-  // ========== ENVOI CONTACT (avec proxy POST) ==========
+  // ========== ENVOI CONTACT (GET via proxy) ==========
   async function envoyerContactBackend(nom, telephone, message) {
     try {
-      const proxyUrl = POST_PROXY + encodeURIComponent(SCRIPT_URL);
-      const response = await fetch(proxyUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: "envoyerContact", nom, telephone, message })
-      });
+      const url = `${SCRIPT_URL}?action=envoyerContact&nom=${encodeURIComponent(nom)}&telephone=${encodeURIComponent(telephone)}&message=${encodeURIComponent(message)}`;
+      const proxyUrl = CORS_PROXY + encodeURIComponent(url);
+      const response = await fetch(proxyUrl);
       const data = await response.json();
       return data.ok === true;
     } catch (err) {
@@ -976,12 +922,11 @@
     }
   }
 
-  // ========== ENVOI COMMANDE (avec proxy POST) ==========
   async function envoyerCommande(lignes) {
     try {
-      const proxyUrl = POST_PROXY + encodeURIComponent(SCRIPT_URL);
-      await fetch(proxyUrl, {
+      await fetch(SCRIPT_URL, {
         method: 'POST',
+        mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(lignes)
       });
@@ -1095,7 +1040,7 @@
   function addToCart(product) { const existing = cart.find(i => i.id == product.id); if (existing) existing.qty++; else cart.push({ id: product.id, name: product.nom, price: product.prix, qty: 1 }); saveCart(); showToast(`${product.nom} ajouté au panier`); }
   function addRoutine(name, price) { const routineId = Date.now(); cart.push({ id: routineId, name: name, price: price, qty: 1 }); saveCart(); showToast(`${name} ajouté au panier`); }
 
-  // ========== LIGHTBOX AVEC 3 IMAGES ==========
+  // ========== LIGHTBOX ==========
   function openLightbox(product) {
     currentLightboxProduct = product;
     currentLightboxImages = [
@@ -1156,7 +1101,7 @@
   function closeCheckout(e) { if (e.target === document.getElementById('checkoutModal')) document.getElementById('checkoutModal').classList.remove('open'); }
   function generateIdVente() { return "GLW-" + Date.now() + "-" + Math.floor(Math.random() * 10000); }
 
-  async function confirmOrder() {
+  function confirmOrder() {
     const name = document.getElementById('checkoutName').value.trim();
     const phone = document.getElementById('checkoutPhone').value.trim();
     const region = document.getElementById('checkoutRegion').value;
@@ -1175,8 +1120,7 @@
       paiement: paiement,
       mentionPromo: promoReduction > 0 ? `Promo -${promoReduction} FCFA` : ""
     }));
-    const ok = await envoyerCommande(lignes);
-    if (ok) {
+    envoyerCommande(lignes).then(() => {
       document.getElementById('orderSuccess').style.display = 'block';
       cart = [];
       promoReduction = 0;
@@ -1186,9 +1130,7 @@
         document.getElementById('orderSuccess').style.display = 'none';
         showToast("Commande confirmée ! Nous vous contacterons.");
       }, 2000);
-    } else {
-      showToast("Erreur lors de l'envoi, mais nous avons bien reçu votre commande (vérifiez vos notifications)");
-    }
+    });
   }
 
   function observeScienceItems() {
@@ -1262,7 +1204,12 @@
     document.getElementById('sendContactBtn')?.addEventListener('click', sendContact);
   });
 
-  window.setCategory = setCategory; window.filterProducts = filterProducts; window.changeQty = changeQty; window.removeItem = removeItem; window.addRoutine = addRoutine; window.openLightbox = openLightbox; window.closeLightbox = closeLightbox; window.addCurrentLightboxToCart = addCurrentLightboxToCart; window.openCart = openCart; window.closeCart = closeCart; window.openCheckout = openCheckout; window.closeCheckout = closeCheckout; window.applyPromoCode = applyPromoCode; window.confirmOrder = confirmOrder; window.openContactModal = openContactModal; window.closeContactModal = closeContactModal; window.sendContact = sendContact; window.sendFooterMessage = sendFooterMessage;
+  window.setCategory = setCategory; window.filterProducts = filterProducts; window.changeQty = changeQty; window.removeItem = removeItem;
+  window.addRoutine = addRoutine; window.openLightbox = openLightbox; window.closeLightbox = closeLightbox;
+  window.addCurrentLightboxToCart = addCurrentLightboxToCart; window.openCart = openCart; window.closeCart = closeCart;
+  window.openCheckout = openCheckout; window.closeCheckout = closeCheckout; window.applyPromoCode = applyPromoCode;
+  window.confirmOrder = confirmOrder; window.openContactModal = openContactModal; window.closeContactModal = closeContactModal;
+  window.sendContact = sendContact; window.sendFooterMessage = sendFooterMessage;
 </script>
 </body>
 </html>
