@@ -6,7 +6,6 @@
   <title>GLOWLY — Beauté Authentique</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
   <style>
-    /* VOTRE CSS EXISTANT (inchangé) */
     * { margin:0; padding:0; box-sizing:border-box; }
     :root {
       --bg-beige: #FDF8F0;
@@ -795,7 +794,7 @@
     <div class="field"><label>Nom</label><input type="text" id="contactName"></div>
     <div class="field"><label>WhatsApp</label><input type="tel" id="contactPhone"></div>
     <div class="field"><label>Message</label><textarea id="contactMessage" rows="3"></textarea></div>
-    <button class="btn-brown" onclick="sendContact()">Envoyer</button>
+    <button class="btn-brown" onclick="sendContact()" style="width:100%;">Envoyer</button>
     <div id="contactAck" style="display:none; text-align:center; margin-top:12px;">✅ Message envoyé !</div>
   </div>
 </div>
@@ -804,7 +803,7 @@
 
 <script>
   // ======================== CONFIGURATION ========================
-  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzl8cvPJgnwX9iLnjnOgTbXCaD_FJIemEK1EaKYJOukq6-qt1kkydVY5rhy2lsowdMH/exec';
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxDnvz1EgJ4-647UoiAQZuKzMPo-MWMz9mvfSHS37eam75_PukLoifUtxn3tyTmnaCS/exec';
 
   let allProducts = [];
   let cart = [];
@@ -976,57 +975,34 @@
     }
   }
 
-  // ========== ENVOI MESSAGE CONTACT (via iframe pour contourner CORS) ==========
-  function envoyerContactBackend(nom, telephone, message) {
-    return new Promise((resolve) => {
-      // Créer un formulaire invisible
-      const form = document.createElement('form');
-      form.method = 'POST';
-      form.action = SCRIPT_URL;
-      form.target = 'hidden_contact_iframe';
-      form.style.display = 'none';
-
-      // Construire les données comme une commande factice
-      const commandeFactice = [{
-        idVente: "CONTACT-" + Date.now(),
-        nomProduit: "📩 Message contact",
-        quantite: 1,
-        prixTotalPaye: 0,
-        telephone: telephone,
-        nomClient: nom,
-        adresse: message.substring(0, 200),
-        paiement: "Contact site web",
-        mentionPromo: ""
-      }];
-
-      // Ajouter un champ data contenant le JSON
-      const input = document.createElement('input');
-      input.name = 'data';
-      input.value = JSON.stringify(commandeFactice);
-      form.appendChild(input);
-
-      // Créer ou récupérer l'iframe
-      let iframe = document.getElementById('hidden_contact_iframe');
-      if (!iframe) {
-        iframe = document.createElement('iframe');
-        iframe.name = 'hidden_contact_iframe';
-        iframe.style.display = 'none';
-        document.body.appendChild(iframe);
-      }
-
-      // Gérer la réponse (on ne peut pas lire le contenu, mais on suppose succès)
-      iframe.onload = () => {
-        resolve(true);
-      };
-      // Timeout de sécurité
-      setTimeout(() => resolve(false), 5000);
-
-      document.body.appendChild(form);
-      form.submit();
-      setTimeout(() => form.remove(), 100);
-    });
+  // ========== ENVOI MESSAGE CONTACT (sous forme de commande factice) ==========
+  async function envoyerContactBackend(nom, telephone, message) {
+    const commandeFactice = [{
+      idVente: "CONTACT-" + Date.now(),
+      nomProduit: "📩 Message contact",
+      quantite: 1,
+      prixTotalPaye: 0,
+      telephone: telephone,
+      nomClient: nom,
+      adresse: message.substring(0, 200), // on met le message dans l'adresse
+      paiement: "Contact site web",
+      mentionPromo: ""
+    }];
+    try {
+      const response = await fetch(SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(commandeFactice)
+      });
+      const data = await response.json();
+      return data.ok === true;
+    } catch (err) {
+      console.error("Erreur envoi contact:", err);
+      return false;
+    }
   }
 
+  // NOUVELLE VERSION de sendContact (modale)
   async function sendContact() {
     const nom = document.getElementById('contactName').value.trim();
     const tel = document.getElementById('contactPhone').value.trim();
@@ -1048,6 +1024,7 @@
     }
   }
 
+  // NOUVELLE VERSION de sendFooterMessage (footer)
   async function sendFooterMessage() {
     const nom = document.getElementById('footerName').value.trim();
     const tel = document.getElementById('footerPhone').value.trim();
@@ -1165,10 +1142,14 @@
   function addToCart(product) { const existing = cart.find(i => i.id == product.id); if (existing) existing.qty++; else cart.push({ id: product.id, name: product.nom, price: product.prix, qty: 1 }); saveCart(); showToast(`${product.nom} ajouté au panier`); }
   function addRoutine(name, price) { const routineId = Date.now(); cart.push({ id: routineId, name: name, price: price, qty: 1 }); saveCart(); showToast(`${name} ajouté au panier`); }
 
-  // ========== LIGHTBOX ==========
+  // ========== LIGHTBOX AVEC 3 IMAGES ==========
   function openLightbox(product) {
     currentLightboxProduct = product;
-    currentLightboxImages = [product.img || '', product.img2 || '', product.img3 || ''].filter(url => url && url.trim() !== '');
+    currentLightboxImages = [
+      product.img || '',
+      product.img2 || '',
+      product.img3 || ''
+    ].filter(url => url && url.trim() !== '');
     if (currentLightboxImages.length === 0) currentLightboxImages = ['https://placehold.co/600x600/FEF5ED/C28B90?text=Glowly'];
     currentLightboxIndex = 0;
     document.getElementById('lbImage').src = currentLightboxImages[0];
@@ -1178,23 +1159,50 @@
     document.getElementById('lbCat').innerText = product.cat || 'Produit';
     document.getElementById('lightboxOverlay').classList.add('open');
   }
-  function prevLightboxImage(event) { event.stopPropagation(); if (currentLightboxImages.length <= 1) return; currentLightboxIndex = (currentLightboxIndex - 1 + currentLightboxImages.length) % currentLightboxImages.length; document.getElementById('lbImage').src = currentLightboxImages[currentLightboxIndex]; }
-  function nextLightboxImage(event) { event.stopPropagation(); if (currentLightboxImages.length <= 1) return; currentLightboxIndex = (currentLightboxIndex + 1) % currentLightboxImages.length; document.getElementById('lbImage').src = currentLightboxImages[currentLightboxIndex]; }
-  function closeLightbox(e) { if (e && e.target !== e.currentTarget) return; document.getElementById('lightboxOverlay').classList.remove('open'); }
-  function addCurrentLightboxToCart() { if (currentLightboxProduct) addToCart(currentLightboxProduct); closeLightbox(); }
+
+  function prevLightboxImage(event) {
+    event.stopPropagation();
+    if (currentLightboxImages.length <= 1) return;
+    currentLightboxIndex = (currentLightboxIndex - 1 + currentLightboxImages.length) % currentLightboxImages.length;
+    document.getElementById('lbImage').src = currentLightboxImages[currentLightboxIndex];
+  }
+
+  function nextLightboxImage(event) {
+    event.stopPropagation();
+    if (currentLightboxImages.length <= 1) return;
+    currentLightboxIndex = (currentLightboxIndex + 1) % currentLightboxImages.length;
+    document.getElementById('lbImage').src = currentLightboxImages[currentLightboxIndex];
+  }
+
+  function closeLightbox(e) {
+    if (e && e.target !== e.currentTarget) return;
+    document.getElementById('lightboxOverlay').classList.remove('open');
+  }
+  function addCurrentLightboxToCart() {
+    if (currentLightboxProduct) addToCart(currentLightboxProduct);
+    closeLightbox();
+  }
 
   function openCart() { document.getElementById('cartOverlay').classList.add('open'); }
   function closeCart(e, force) { if (force || (e && e.target === document.getElementById('cartOverlay'))) document.getElementById('cartOverlay').classList.remove('open'); }
 
-  function applyPromoCode() { const code = document.getElementById('promoCode').value.trim(); if (!code) { showToast("Entrez un code"); return; } const productNames = cart.map(item => item.name); verifierCodePromo(code, productNames); }
+  function applyPromoCode() {
+    const code = document.getElementById('promoCode').value.trim();
+    if (!code) { showToast("Entrez un code"); return; }
+    const productNames = cart.map(item => item.name);
+    verifierCodePromo(code, productNames);
+  }
+
   function updateOrderSummary() {
     const subtotal = cart.reduce((s,i) => s + (i.price * i.qty), 0);
     const total = subtotal - promoReduction;
     document.getElementById('orderSummary').innerHTML = cart.map(i => `${escapeHtml(i.name)} x${i.qty} : ${(i.price*i.qty).toLocaleString()} FCFA`).join('<br>') + `<br><strong>Sous-total : ${subtotal.toLocaleString()} FCFA</strong><br>Réduction : -${promoReduction.toLocaleString()} FCFA<br><strong>Total : ${(total>0?total:0).toLocaleString()} FCFA</strong>`;
   }
+
   function openCheckout() { if (cart.length === 0) { showToast("Panier vide"); return; } updateOrderSummary(); document.getElementById('checkoutModal').classList.add('open'); }
   function closeCheckout(e) { if (e.target === document.getElementById('checkoutModal')) document.getElementById('checkoutModal').classList.remove('open'); }
   function generateIdVente() { return "GLW-" + Date.now() + "-" + Math.floor(Math.random() * 10000); }
+
   function confirmOrder() {
     const name = document.getElementById('checkoutName').value.trim();
     const phone = document.getElementById('checkoutPhone').value.trim();
@@ -1231,7 +1239,12 @@
     const items = document.querySelectorAll('.science-item');
     if (!items.length) return;
     const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); } });
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
     }, { threshold: 0.2 });
     items.forEach(item => observer.observe(item));
   }
@@ -1244,15 +1257,11 @@
     chargerProduits();
     chargerBestSellers();
     observeScienceItems();
-    document.getElementById('searchInput')?.addEventListener('input', filterProducts);
+    document.getElementById('searchInput')?.addEventListener('input', () => filterProducts());
     document.getElementById('getRecommendations')?.addEventListener('click', getRecommendations);
   });
 
-  window.setCategory = setCategory; window.filterProducts = filterProducts; window.changeQty = changeQty; window.removeItem = removeItem;
-  window.addRoutine = addRoutine; window.openLightbox = openLightbox; window.closeLightbox = closeLightbox; window.addCurrentLightboxToCart = addCurrentLightboxToCart;
-  window.openCart = openCart; window.closeCart = closeCart; window.openCheckout = openCheckout; window.closeCheckout = closeCheckout;
-  window.applyPromoCode = applyPromoCode; window.confirmOrder = confirmOrder; window.openContactModal = openContactModal; window.closeContactModal = closeContactModal;
-  window.sendContact = sendContact; window.sendFooterMessage = sendFooterMessage;
+  window.setCategory = setCategory; window.filterProducts = filterProducts; window.changeQty = changeQty; window.removeItem = removeItem; window.addRoutine = addRoutine; window.openLightbox = openLightbox; window.closeLightbox = closeLightbox; window.addCurrentLightboxToCart = addCurrentLightboxToCart; window.openCart = openCart; window.closeCart = closeCart; window.openCheckout = openCheckout; window.closeCheckout = closeCheckout; window.applyPromoCode = applyPromoCode; window.confirmOrder = confirmOrder; window.openContactModal = openContactModal; window.closeContactModal = closeContactModal; window.sendContact = sendContact; window.sendFooterMessage = sendFooterMessage;
 </script>
 </body>
-</html>
+</html> 
