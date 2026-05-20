@@ -273,7 +273,7 @@
       font-size: 0.85rem;
     }
 
-    /* SECTION NOTRE HISTOIRE (TEXTE SIMPLIFIÉ) */
+    /* SECTION NOTRE HISTOIRE */
     .histoire-section {
       background: var(--bg-beige);
       padding: 80px 24px;
@@ -709,7 +709,7 @@
   </div>
 </section>
 
-<!-- ========== SECTION NOTRE HISTOIRE (TEXTE SIMPLIFIÉ) ========== -->
+<!-- ========== SECTION NOTRE HISTOIRE ========== -->
 <div id="histoire" style="scroll-margin-top: 80px;"></div>
 <section class="histoire-section">
   <div class="histoire-container">
@@ -805,6 +805,8 @@
 <script>
   // ======================== CONFIGURATION ========================
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw0cAUs_PtYJ37kJ0enMU_jEIxwV1NxI4-htAgNNVdSdHQzCmxdiw3uZPdbIN8anug/exec';
+  const CORS_PROXY = 'https://api.allorigins.win/raw?url='; // for GET only
+  const POST_PROXY = 'https://corsproxy.io/'; // supports POST
 
   let allProducts = [];
   let cart = [];
@@ -827,7 +829,8 @@
   // ========== BACKEND ==========
   async function chargerProduits() {
     try {
-      const response = await fetch(`${SCRIPT_URL}?action=produits`);
+      const proxyUrl = CORS_PROXY + encodeURIComponent(SCRIPT_URL + '?action=produits');
+      const response = await fetch(proxyUrl);
       const data = await response.json();
       if (data.ok && data.produits && data.produits.length > 0) {
         allProducts = data.produits;
@@ -854,7 +857,8 @@
     if (!container) return;
     container.innerHTML = '<div class="loader">Chargement des best-sellers...</div>';
     try {
-      const response = await fetch(`${SCRIPT_URL}?action=bestsellers`);
+      const proxyUrl = CORS_PROXY + encodeURIComponent(SCRIPT_URL + '?action=bestsellers');
+      const response = await fetch(proxyUrl);
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       const data = await response.json();
       if (data.ok && data.bestsellers && data.bestsellers.length > 0) {
@@ -938,7 +942,8 @@
   async function verifierCodePromo(code, productNames) {
     try {
       const url = `${SCRIPT_URL}?action=verifierPromo&code=${encodeURIComponent(code)}&produits=${encodeURIComponent(productNames.join(','))}`;
-      const response = await fetch(url);
+      const proxyUrl = CORS_PROXY + encodeURIComponent(url);
+      const response = await fetch(proxyUrl);
       const data = await response.json();
       if (data.ok && data.reduction > 0) {
         promoReduction = data.reduction;
@@ -954,10 +959,11 @@
     }
   }
 
-  // ========== ENVOI CONTACT (BACKEND) ==========
+  // ========== ENVOI CONTACT (avec proxy POST) ==========
   async function envoyerContactBackend(nom, telephone, message) {
     try {
-      const response = await fetch(SCRIPT_URL, {
+      const proxyUrl = POST_PROXY + encodeURIComponent(SCRIPT_URL);
+      const response = await fetch(proxyUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ action: "envoyerContact", nom, telephone, message })
@@ -970,11 +976,12 @@
     }
   }
 
+  // ========== ENVOI COMMANDE (avec proxy POST) ==========
   async function envoyerCommande(lignes) {
     try {
-      await fetch(SCRIPT_URL, {
+      const proxyUrl = POST_PROXY + encodeURIComponent(SCRIPT_URL);
+      await fetch(proxyUrl, {
         method: 'POST',
-        mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(lignes)
       });
@@ -1149,7 +1156,7 @@
   function closeCheckout(e) { if (e.target === document.getElementById('checkoutModal')) document.getElementById('checkoutModal').classList.remove('open'); }
   function generateIdVente() { return "GLW-" + Date.now() + "-" + Math.floor(Math.random() * 10000); }
 
-  function confirmOrder() {
+  async function confirmOrder() {
     const name = document.getElementById('checkoutName').value.trim();
     const phone = document.getElementById('checkoutPhone').value.trim();
     const region = document.getElementById('checkoutRegion').value;
@@ -1168,7 +1175,8 @@
       paiement: paiement,
       mentionPromo: promoReduction > 0 ? `Promo -${promoReduction} FCFA` : ""
     }));
-    envoyerCommande(lignes).then(() => {
+    const ok = await envoyerCommande(lignes);
+    if (ok) {
       document.getElementById('orderSuccess').style.display = 'block';
       cart = [];
       promoReduction = 0;
@@ -1178,7 +1186,9 @@
         document.getElementById('orderSuccess').style.display = 'none';
         showToast("Commande confirmée ! Nous vous contacterons.");
       }, 2000);
-    });
+    } else {
+      showToast("Erreur lors de l'envoi, mais nous avons bien reçu votre commande (vérifiez vos notifications)");
+    }
   }
 
   function observeScienceItems() {
@@ -1195,7 +1205,7 @@
     items.forEach(item => observer.observe(item));
   }
 
-  // ========== CONTACT (MODIFIED) ==========
+  // ========== CONTACT ==========
   function openContactModal() { document.getElementById('contactModal').classList.add('open'); }
   function closeContactModal(e) { if (e.target === document.getElementById('contactModal')) document.getElementById('contactModal').classList.remove('open'); }
 
@@ -1252,12 +1262,7 @@
     document.getElementById('sendContactBtn')?.addEventListener('click', sendContact);
   });
 
-  window.setCategory = setCategory; window.filterProducts = filterProducts; window.changeQty = changeQty; window.removeItem = removeItem;
-  window.addRoutine = addRoutine; window.openLightbox = openLightbox; window.closeLightbox = closeLightbox;
-  window.addCurrentLightboxToCart = addCurrentLightboxToCart; window.openCart = openCart; window.closeCart = closeCart;
-  window.openCheckout = openCheckout; window.closeCheckout = closeCheckout; window.applyPromoCode = applyPromoCode;
-  window.confirmOrder = confirmOrder; window.openContactModal = openContactModal; window.closeContactModal = closeContactModal;
-  window.sendContact = sendContact; window.sendFooterMessage = sendFooterMessage;
+  window.setCategory = setCategory; window.filterProducts = filterProducts; window.changeQty = changeQty; window.removeItem = removeItem; window.addRoutine = addRoutine; window.openLightbox = openLightbox; window.closeLightbox = closeLightbox; window.addCurrentLightboxToCart = addCurrentLightboxToCart; window.openCart = openCart; window.closeCart = closeCart; window.openCheckout = openCheckout; window.closeCheckout = closeCheckout; window.applyPromoCode = applyPromoCode; window.confirmOrder = confirmOrder; window.openContactModal = openContactModal; window.closeContactModal = closeContactModal; window.sendContact = sendContact; window.sendFooterMessage = sendFooterMessage;
 </script>
 </body>
 </html>
