@@ -829,8 +829,7 @@
   // ========== BACKEND (GET avec proxy, POST sans attente de réponse) ==========
   async function chargerProduits() {
     try {
-      const proxyUrl = CORS_PROXY + encodeURIComponent(SCRIPT_URL + '?action=produits');
-      const response = await fetch(proxyUrl);
+      const response = await fetch(SCRIPT_URL + '?action=produits');
       const data = await response.json();
       if (data.ok && data.produits) {
         allProducts = data.produits;
