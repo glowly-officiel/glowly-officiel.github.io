@@ -272,6 +272,34 @@
       font-size: 0.85rem;
     }
 
+    /* SECTION NOTRE HISTOIRE */
+    .histoire-section {
+      background: var(--bg-beige);
+      padding: 80px 24px;
+      text-align: center;
+    }
+    .histoire-container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .histoire-container p {
+      font-size: 1.1rem;
+      line-height: 1.7;
+      color: var(--text-brun);
+      margin-bottom: 24px;
+    }
+    .histoire-container p:first-of-type {
+      font-size: 1.2rem;
+      font-weight: 500;
+    }
+    .histoire-signature {
+      margin-top: 30px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      color: var(--rose-gold-fonce);
+      font-style: italic;
+    }
+
     /* AUTRES SECTIONS (science, boutique, témoignages, etc.) */
     .science-section { background: #FDF4EF; padding: 60px 24px; }
     .science-flex {
@@ -649,7 +677,7 @@
   <div id="productGrid" class="product-grid"><div class="loader">Chargement des produits...</div></div>
 </div>
 
-<!-- ========== SECTION COACHING / DIAGNOSTIC BEAUTÉ (sous la boutique) ========== -->
+<!-- ========== SECTION COACHING / DIAGNOSTIC BEAUTÉ ========== -->
 <div id="coaching" style="scroll-margin-top: 80px;"></div>
 <section class="coaching-section">
   <h2 class="section-title">Coaching skin care</h2>
@@ -680,6 +708,19 @@
   </div>
 </section>
 
+<!-- ========== SECTION NOTRE HISTOIRE ========== -->
+<div id="histoire" style="scroll-margin-top: 80px;"></div>
+<section class="histoire-section">
+  <div class="histoire-container">
+    <h2 class="section-title">Notre histoire</h2>
+    <p>Glowly est née d'une conviction : la beauté n'a pas besoin de compromis. Chaque femme mérite des soins qui subliment sa peau sans l'agresser, avec des ingrédients purs et une efficacité prouvée.</p>
+    <p>Fondée à Dakar, notre maison de beauté puise son inspiration dans les rituels ancestraux et les dernières avancées scientifiques. Nous avons parcouru le monde pour sélectionner les meilleurs actifs naturels – curcuma, miel de Manuka, collagène marin – et les associer à des formulations certifiées ISO et GMP.</p>
+    <p>Notre engagement : zéro hydroquinone, zéro cruauté, zéro compromis. Chaque produit est testé avec amour, pour révéler l'éclat unique de votre peau.</p>
+    <p>Chez Glowly, nous croyons que le soin est un art, une routine qui devient un moment de bien-être. Rejoignez notre communauté et laissez votre peau rayonner, en toute authenticité.</p>
+    <div class="histoire-signature">✨ L'équipe Glowly ✨</div>
+  </div>
+</section>
+
 <section class="section testimonials">
   <h2 class="section-title">Ce que nos clientes disent</h2>
   <div class="testimonial-grid">
@@ -687,8 +728,6 @@
     <div class="testimonial"><div class="stars">★★★★★</div><p>"Le masque au miel de Manuka est un miracle. Mes mains sont douces, gerçures disparues."</p><div class="author">— Fatima S., Thiès</div></div>
   </div>
 </section>
-
-<div id="histoire" style="scroll-margin-top: 80px;"></div>
 
 <footer>
   <div style="text-align:center; margin-bottom:40px;"><div style="font-family:'Cormorant Garamond'; font-size:32px; color:white;">GLOWLY</div><p style="color:#C5B8AD;">Beauté Naturelle · Dakar, Sénégal</p></div>
@@ -1035,13 +1074,11 @@
   // ========== LIGHTBOX AVEC 3 IMAGES ==========
   function openLightbox(product) {
     currentLightboxProduct = product;
-    // Récupérer les trois images (img, img2, img3) et filtrer les vides
     currentLightboxImages = [
       product.img || '',
       product.img2 || '',
       product.img3 || ''
     ].filter(url => url && url.trim() !== '');
-    // Si aucune image, mettre une image par défaut
     if (currentLightboxImages.length === 0) currentLightboxImages = ['https://placehold.co/600x600/FEF5ED/C28B90?text=Glowly'];
     currentLightboxIndex = 0;
     document.getElementById('lbImage').src = currentLightboxImages[0];
