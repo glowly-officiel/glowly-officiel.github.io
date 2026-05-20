@@ -6,7 +6,6 @@
   <title>GLOWLY — Beauté Authentique</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
   <style>
-    /* ========== TON CSS EXISTANT (inchangé) ========== */
     * { margin:0; padding:0; box-sizing:border-box; }
     :root {
       --bg-beige: #FDF8F0;
@@ -795,7 +794,7 @@
     <div class="field"><label>Nom</label><input type="text" id="contactName"></div>
     <div class="field"><label>WhatsApp</label><input type="tel" id="contactPhone"></div>
     <div class="field"><label>Message</label><textarea id="contactMessage" rows="3"></textarea></div>
-    <button class="btn-brown" id="sendContactBtn">Envoyer</button>
+    <button class="btn-brown" onclick="sendContact()" style="width:100%;">Envoyer</button>
     <div id="contactAck" style="display:none; text-align:center; margin-top:12px;">✅ Message envoyé !</div>
   </div>
 </div>
@@ -804,8 +803,7 @@
 
 <script>
   // ======================== CONFIGURATION ========================
-  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzyxSvRvBSRS8xJ5I1m6KN0D4yQ0dX_1e-U0eQblqnpDmcQnM2NBrb6LuqC_wMO18so/exec';
-  const CORS_PROXY = 'https://api.allorigins.win/raw?url=';
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwWzOpozHnNo6TJQW3dumr4H5zjAP9rClSZURJsfzGc-9wmb0w5bR7jdTo9YHiR11Uf/exec';
 
   let allProducts = [];
   let cart = [];
@@ -825,11 +823,10 @@
     setTimeout(() => t.classList.remove('show'), 2500);
   }
 
-  // ========== BACKEND (GET via proxy) ==========
+  // ========== BACKEND ==========
   async function chargerProduits() {
     try {
-      const proxyUrl = CORS_PROXY + encodeURIComponent(SCRIPT_URL + '?action=produits');
-      const response = await fetch(proxyUrl);
+      const response = await fetch(`${SCRIPT_URL}?action=produits`);
       const data = await response.json();
       if (data.ok && data.produits && data.produits.length > 0) {
         allProducts = data.produits;
@@ -856,8 +853,7 @@
     if (!container) return;
     container.innerHTML = '<div class="loader">Chargement des best-sellers...</div>';
     try {
-      const proxyUrl = CORS_PROXY + encodeURIComponent(SCRIPT_URL + '?action=bestsellers');
-      const response = await fetch(proxyUrl);
+      const response = await fetch(`${SCRIPT_URL}?action=bestsellers`);
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       const data = await response.json();
       if (data.ok && data.bestsellers && data.bestsellers.length > 0) {
@@ -888,11 +884,60 @@
     }
   }
 
+  // ========== DIAGNOSTIC ==========
+  function getRecommendations() {
+    const skinType = document.getElementById('skinType').value;
+    const concern = document.getElementById('skinConcern').value;
+    let advice = "";
+    if (skinType === 'seche') advice = "Pour les peaux sèches, privilégiez les soins hydratants et nourrissants. ";
+    else if (skinType === 'grasse') advice = "Pour les peaux grasses, misez sur des textures légères et des ingrédients sébo-régulateurs. ";
+    else if (skinType === 'mixte') advice = "Pour les peaux mixtes, utilisez des produits équilibrants. ";
+    else if (skinType === 'sensible') advice = "Pour les peaux sensibles, choisissez des soins hypoallergéniques sans parfum. ";
+    else advice = "Pour les peaux normales, maintenez l'équilibre avec des soins doux. ";
+
+    if (concern === 'taches') advice += "Pour réduire les taches, optez pour la vitamine C, le curcuma ou des acides doux.";
+    else if (concern === 'secheresse') advice += "Pour la sécheresse, utilisez des crèmes riches et des masques hydratants.";
+    else if (concern === 'acne') advice += "Pour l'acné, privilégiez des nettoyants doux et des soins non comédogènes.";
+    else if (concern === 'rides') advice += "Pour les rides, recherchez des sérums à base de collagène et de vitamine C.";
+    else advice += "Pour raviver l'éclat, utilisez des exfoliants doux et des soins illuminants.";
+
+    let filtered = allProducts.filter(p => {
+      const name = p.nom.toLowerCase();
+      const desc = (p.desc || '').toLowerCase();
+      const cat = (p.cat || '').toLowerCase();
+      if (concern === 'taches') return name.includes('curcuma') || name.includes('vitamine c') || desc.includes('tache') || cat === 'traitements visage';
+      if (concern === 'secheresse') return name.includes('miel') || name.includes('manuka') || desc.includes('hydratation') || cat === 'masques' || cat === 'hydratants';
+      if (concern === 'acne') return name.includes('nettoyant') || name.includes('toner') || desc.includes('acné') || cat === 'nettoyants';
+      if (concern === 'rides') return name.includes('collagène') || name.includes('sérum') || desc.includes('rides') || cat === 'sérums';
+      if (concern === 'ternite') return name.includes('gommage') || name.includes('éclat') || desc.includes('éclat') || cat === 'exfoliants';
+      return true;
+    });
+    filtered = filtered.slice(0, 4);
+    const container = document.getElementById('recommendations');
+    if (filtered.length === 0) {
+      container.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:20px;"><p>${advice}</p><p>Aucun produit ne correspond pour le moment. Contactez-nous.</p></div>`;
+      return;
+    }
+    let html = `<div style="grid-column:1/-1; margin-bottom:20px; text-align:center; background:#FDF4EF; padding:16px; border-radius:20px;"><p style="font-weight:500;">${advice}</p></div>`;
+    filtered.forEach(prod => {
+      const imgUrl = prod.img && prod.img.trim() !== '' ? prod.img : 'https://placehold.co/400x400/FEF5ED/C28B90?text=Glowly';
+      html += `
+        <div class="rec-card" onclick="openLightbox(${JSON.stringify(prod).replace(/'/g, "&#39;")})">
+          <div class="rec-img" style="background-image: url('${escapeHtml(imgUrl)}');"></div>
+          <div class="rec-info">
+            <h4>${escapeHtml(prod.nom)}</h4>
+            <div class="rec-price">${Number(prod.prix).toLocaleString()} FCFA</div>
+          </div>
+        </div>
+      `;
+    });
+    container.innerHTML = html;
+  }
+
   async function verifierCodePromo(code, productNames) {
     try {
       const url = `${SCRIPT_URL}?action=verifierPromo&code=${encodeURIComponent(code)}&produits=${encodeURIComponent(productNames.join(','))}`;
-      const proxyUrl = CORS_PROXY + encodeURIComponent(url);
-      const response = await fetch(proxyUrl);
+      const response = await fetch(url);
       const data = await response.json();
       if (data.ok && data.reduction > 0) {
         promoReduction = data.reduction;
@@ -905,20 +950,6 @@
     } catch (err) {
       console.error(err);
       showToast("Erreur lors de la vérification du code promo");
-    }
-  }
-
-  // ========== ENVOI CONTACT (GET via proxy) ==========
-  async function envoyerContactBackend(nom, telephone, message) {
-    try {
-      const url = `${SCRIPT_URL}?action=envoyerContact&nom=${encodeURIComponent(nom)}&telephone=${encodeURIComponent(telephone)}&message=${encodeURIComponent(message)}`;
-      const proxyUrl = CORS_PROXY + encodeURIComponent(url);
-      const response = await fetch(proxyUrl);
-      const data = await response.json();
-      return data.ok === true;
-    } catch (err) {
-      console.error("Erreur envoi contact:", err);
-      return false;
     }
   }
 
@@ -1040,7 +1071,7 @@
   function addToCart(product) { const existing = cart.find(i => i.id == product.id); if (existing) existing.qty++; else cart.push({ id: product.id, name: product.nom, price: product.prix, qty: 1 }); saveCart(); showToast(`${product.nom} ajouté au panier`); }
   function addRoutine(name, price) { const routineId = Date.now(); cart.push({ id: routineId, name: name, price: price, qty: 1 }); saveCart(); showToast(`${name} ajouté au panier`); }
 
-  // ========== LIGHTBOX ==========
+  // ========== LIGHTBOX AVEC 3 IMAGES ==========
   function openLightbox(product) {
     currentLightboxProduct = product;
     currentLightboxImages = [
@@ -1147,52 +1178,10 @@
     items.forEach(item => observer.observe(item));
   }
 
-  // ========== CONTACT ==========
   function openContactModal() { document.getElementById('contactModal').classList.add('open'); }
   function closeContactModal(e) { if (e.target === document.getElementById('contactModal')) document.getElementById('contactModal').classList.remove('open'); }
-
-  async function sendContact() {
-    const nom = document.getElementById('contactName').value.trim();
-    const tel = document.getElementById('contactPhone').value.trim();
-    const msg = document.getElementById('contactMessage').value.trim();
-    if (!nom || !tel) {
-      showToast("Merci de remplir nom et téléphone");
-      return;
-    }
-    const success = await envoyerContactBackend(nom, tel, msg);
-    if (success) {
-      document.getElementById('contactAck').style.display = 'block';
-      setTimeout(() => {
-        document.getElementById('contactAck').style.display = 'none';
-        document.getElementById('contactModal').classList.remove('open');
-        document.getElementById('contactName').value = '';
-        document.getElementById('contactPhone').value = '';
-        document.getElementById('contactMessage').value = '';
-        showToast("Message envoyé !");
-      }, 1200);
-    } else {
-      showToast("Erreur lors de l'envoi. Veuillez réessayer.");
-    }
-  }
-
-  async function sendFooterMessage() {
-    const nom = document.getElementById('footerName').value.trim();
-    const tel = document.getElementById('footerPhone').value.trim();
-    const msg = document.getElementById('footerMsg').value.trim();
-    if (!nom || !tel) {
-      showToast("Merci nom et WhatsApp");
-      return;
-    }
-    const success = await envoyerContactBackend(nom, tel, msg);
-    if (success) {
-      showToast(`Merci ${nom}, nous vous répondons.`);
-      document.getElementById('footerName').value = '';
-      document.getElementById('footerPhone').value = '';
-      document.getElementById('footerMsg').value = '';
-    } else {
-      showToast("Erreur, veuillez réessayer.");
-    }
-  }
+  function sendContact() { const nom = document.getElementById('contactName').value.trim(); const tel = document.getElementById('contactPhone').value.trim(); if (!nom || !tel) { showToast("Merci de remplir nom et téléphone"); return; } document.getElementById('contactAck').style.display = 'block'; setTimeout(() => { document.getElementById('contactAck').style.display = 'none'; document.getElementById('contactModal').classList.remove('open'); showToast("Message envoyé !"); }, 1200); }
+  function sendFooterMessage() { const nom = document.getElementById('footerName').value.trim(); const tel = document.getElementById('footerPhone').value.trim(); if (!nom || !tel) { showToast("Merci nom et WhatsApp"); return; } showToast(`Merci ${nom}, nous vous répondons.`); document.getElementById('footerName').value = ''; document.getElementById('footerPhone').value = ''; document.getElementById('footerMsg').value = ''; }
 
   window.addEventListener('load', () => {
     loadCart();
@@ -1201,15 +1190,9 @@
     observeScienceItems();
     document.getElementById('searchInput')?.addEventListener('input', () => filterProducts());
     document.getElementById('getRecommendations')?.addEventListener('click', getRecommendations);
-    document.getElementById('sendContactBtn')?.addEventListener('click', sendContact);
   });
 
-  window.setCategory = setCategory; window.filterProducts = filterProducts; window.changeQty = changeQty; window.removeItem = removeItem;
-  window.addRoutine = addRoutine; window.openLightbox = openLightbox; window.closeLightbox = closeLightbox;
-  window.addCurrentLightboxToCart = addCurrentLightboxToCart; window.openCart = openCart; window.closeCart = closeCart;
-  window.openCheckout = openCheckout; window.closeCheckout = closeCheckout; window.applyPromoCode = applyPromoCode;
-  window.confirmOrder = confirmOrder; window.openContactModal = openContactModal; window.closeContactModal = closeContactModal;
-  window.sendContact = sendContact; window.sendFooterMessage = sendFooterMessage;
+  window.setCategory = setCategory; window.filterProducts = filterProducts; window.changeQty = changeQty; window.removeItem = removeItem; window.addRoutine = addRoutine; window.openLightbox = openLightbox; window.closeLightbox = closeLightbox; window.addCurrentLightboxToCart = addCurrentLightboxToCart; window.openCart = openCart; window.closeCart = closeCart; window.openCheckout = openCheckout; window.closeCheckout = closeCheckout; window.applyPromoCode = applyPromoCode; window.confirmOrder = confirmOrder; window.openContactModal = openContactModal; window.closeContactModal = closeContactModal; window.sendContact = sendContact; window.sendFooterMessage = sendFooterMessage;
 </script>
 </body>
 </html>
