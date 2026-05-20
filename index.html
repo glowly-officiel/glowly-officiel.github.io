@@ -805,8 +805,8 @@
 <script>
   // ======================== CONFIGURATION ========================
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxQo5WozbPgaCtKOU2H_khAMuF2qb5aFe3bxdL_UZWU9pyyojfG2CHSsJ2S3yGnwYr7/exec';
-  // Proxy CORS pour les requêtes GET (évite les blocages)
-  const CORS_PROXY = 'https://api.allorigins.win/raw?url=';
+  // Proxy CORS fiable
+  const CORS_PROXY = 'https://corsproxy.io/?';
 
   let allProducts = [];
   let cart = [];
@@ -959,21 +959,17 @@
     }
   }
 
-  // ========== ENVOI MESSAGE CONTACT (POST direct, mais on ignore l'erreur de lecture) ==========
+  // ========== ENVOI MESSAGE CONTACT (POST en mode no-cors pour ignorer la réponse) ==========
   async function envoyerContactBackend(nom, telephone, message) {
     try {
-      const response = await fetch(SCRIPT_URL, {
+      // On utilise no-cors pour que le navigateur n'attende pas de réponse exploitable
+      await fetch(SCRIPT_URL, {
         method: 'POST',
+        mode: 'no-cors',
         body: JSON.stringify({ action: "envoyerContact", nom, telephone, message })
       });
-      // Essayer de lire la réponse, mais si échec (CORS), on considère que l'envoi a réussi
-      try {
-        const data = await response.json();
-        return data.ok === true;
-      } catch (e) {
-        console.warn("Impossible de lire la réponse, mais la requête a été envoyée");
-        return true; // On suppose que ça a marché car Telegram reçoit
-      }
+      // Avec no-cors, on ne peut pas lire la réponse, mais on suppose que c'est réussi (Telegram reçoit)
+      return true;
     } catch (err) {
       console.error("Fetch error:", err);
       return false;
@@ -982,20 +978,14 @@
 
   async function envoyerCommande(lignes) {
     try {
-      const response = await fetch(SCRIPT_URL, {
+      await fetch(SCRIPT_URL, {
         method: 'POST',
+        mode: 'no-cors',
         body: JSON.stringify(lignes)
       });
-      try {
-        const data = await response.json();
-        return data.ok === true;
-      } catch (e) {
-        console.warn("Impossible de lire la réponse, commande probablement envoyée");
-        return true;
-      }
+      return true;
     } catch (err) {
       console.error(err);
-      showToast("Erreur lors de l'envoi de la commande");
       return false;
     }
   }
