@@ -804,8 +804,9 @@
 
 <script>
   // ======================== CONFIGURATION ========================
-  // 🔴 URL de votre script GAS (à mettre à jour après déploiement)
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxQo5WozbPgaCtKOU2H_khAMuF2qb5aFe3bxdL_UZWU9pyyojfG2CHSsJ2S3yGnwYr7/exec';
+  // Proxy CORS pour les requêtes GET (évite les blocages)
+  const CORS_PROXY = 'https://api.allorigins.win/raw?url=';
 
   let allProducts = [];
   let cart = [];
@@ -828,7 +829,8 @@
   // ========== BACKEND ==========
   async function chargerProduits() {
     try {
-      const response = await fetch(`${SCRIPT_URL}?action=produits`);
+      const proxyUrl = CORS_PROXY + encodeURIComponent(SCRIPT_URL + '?action=produits');
+      const response = await fetch(proxyUrl);
       const data = await response.json();
       if (data.ok && data.produits && data.produits.length > 0) {
         allProducts = data.produits;
@@ -855,7 +857,8 @@
     if (!container) return;
     container.innerHTML = '<div class="loader">Chargement des best-sellers...</div>';
     try {
-      const response = await fetch(`${SCRIPT_URL}?action=bestsellers`);
+      const proxyUrl = CORS_PROXY + encodeURIComponent(SCRIPT_URL + '?action=bestsellers');
+      const response = await fetch(proxyUrl);
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       const data = await response.json();
       if (data.ok && data.bestsellers && data.bestsellers.length > 0) {
@@ -939,7 +942,8 @@
   async function verifierCodePromo(code, productNames) {
     try {
       const url = `${SCRIPT_URL}?action=verifierPromo&code=${encodeURIComponent(code)}&produits=${encodeURIComponent(productNames.join(','))}`;
-      const response = await fetch(url);
+      const proxyUrl = CORS_PROXY + encodeURIComponent(url);
+      const response = await fetch(proxyUrl);
       const data = await response.json();
       if (data.ok && data.reduction > 0) {
         promoReduction = data.reduction;
@@ -955,12 +959,11 @@
     }
   }
 
-  // ========== ENVOI MESSAGE CONTACT (SANS Content-Type pour éviter le preflight) ==========
+  // ========== ENVOI MESSAGE CONTACT (POST direct, pas de proxy) ==========
   async function envoyerContactBackend(nom, telephone, message) {
     try {
       const response = await fetch(SCRIPT_URL, {
         method: 'POST',
-        // On supprime l'en-tête Content-Type pour que la requête soit "simple" et ne déclenche pas de preflight CORS
         body: JSON.stringify({ action: "envoyerContact", nom, telephone, message })
       });
       const data = await response.json();
@@ -976,7 +979,6 @@
     try {
       await fetch(SCRIPT_URL, {
         method: 'POST',
-        // Même suppression de l'en-tête Content-Type
         body: JSON.stringify(lignes)
       });
       showToast("Commande envoyée avec succès !");
