@@ -44,6 +44,7 @@
     .btn-gold { display: inline-block; background: linear-gradient(105deg, #D8A7AB, #C9A87C); color: #2E211B; padding: 14px 42px; font-weight: 700; font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; border-radius: 50px; text-decoration: none; box-shadow: 0 8px 18px rgba(165,106,97,0.25); transition: 0.3s; }
     .btn-gold:hover { transform: translateY(-2px); }
 
+    /* CARROUSEL */
     .carousel-section {
       background: var(--bg-beige);
       padding: 30px 0;
@@ -99,6 +100,7 @@
       padding: 0 4px;
     }
 
+    /* BEST SELLERS - DESKTOP */
     .section { max-width: 1280px; margin: 0 auto; padding: 80px 24px; }
     .section-title { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; text-align: center; color: var(--marron-bois); margin-bottom: 12px; }
     .section-subtitle { text-align: center; color: #9C7A6B; font-style: italic; margin-bottom: 48px; }
@@ -188,6 +190,7 @@
       .bs-card.right-img .brown-bg { order: 1; }
     }
 
+    /* SECTION COACHING / DIAGNOSTIC BEAUTÉ */
     .coaching-section {
       background: #FDF4EF;
       padding: 60px 24px;
@@ -270,6 +273,7 @@
       font-size: 0.85rem;
     }
 
+    /* SECTION NOTRE HISTOIRE */
     .histoire-section {
       background: var(--bg-beige);
       padding: 80px 24px;
@@ -297,6 +301,7 @@
       font-style: italic;
     }
 
+    /* AUTRES SECTIONS (science, boutique, témoignages, etc.) */
     .science-section { background: #FDF4EF; padding: 60px 24px; }
     .science-flex {
       display: flex;
@@ -382,6 +387,7 @@
     .contact-form input, .contact-form textarea { width: 100%; padding: 12px; margin-bottom: 12px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 40px; }
     .contact-form button { background: var(--gold-dore); border: none; padding: 12px; width: 100%; border-radius: 40px; font-weight: 600; color: #2E211B; cursor: pointer; }
 
+    /* LIGHTBOX AVEC CARROUSEL (3 IMAGES) */
     .overlay {
       position: fixed;
       inset: 0;
@@ -554,6 +560,7 @@
       }
     }
 
+    /* Autres overlays (panier, checkout, contact) */
     .cart-panel {
       position: absolute;
       right: 0;
@@ -797,7 +804,7 @@
 
 <script>
   // ======================== CONFIGURATION ========================
-  // 🔴 URL de votre script GAS (à garder telle quelle)
+  // 🔴 URL de votre script GAS (à garder telle quelle - elle fonctionne)
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzOd7QWiVBS9pg7cAToisBS-atNxqBu_mZ-XKvcN4eBFC7zxjakNfiURbrEvqvwuztr/exec';
 
   let allProducts = [];
@@ -879,6 +886,7 @@
     }
   }
 
+  // ========== DIAGNOSTIC ==========
   function getRecommendations() {
     const skinType = document.getElementById('skinType').value;
     const concern = document.getElementById('skinConcern').value;
@@ -947,31 +955,19 @@
     }
   }
 
-  // ========== ENVOI MESSAGE CONTACT (version corrigée avec logs) ==========
+  // ========== ENVOI MESSAGE CONTACT (version simplifiée et robuste) ==========
   async function envoyerContactBackend(nom, telephone, message) {
     try {
-      const payload = { action: "envoyerContact", nom, telephone, message };
-      console.log("📤 Envoi vers:", SCRIPT_URL);
-      console.log("📦 Payload:", payload);
       const response = await fetch(SCRIPT_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        body: JSON.stringify({ action: "envoyerContact", nom, telephone, message })
       });
-      console.log("📡 Status HTTP:", response.status);
-      const responseText = await response.text();
-      console.log("📄 Réponse brute:", responseText);
-      let data;
-      try {
-        data = JSON.parse(responseText);
-      } catch(e) {
-        console.error("❌ Réponse non JSON", e);
-        return false;
-      }
-      console.log("✅ Réponse parsée:", data);
+      const data = await response.json();
+      console.log("Contact response:", data);
       return data.ok === true;
     } catch (err) {
-      console.error("❌ Erreur fetch:", err);
+      console.error("Fetch error:", err);
       return false;
     }
   }
