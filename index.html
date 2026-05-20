@@ -272,7 +272,7 @@
       font-size: 0.85rem;
     }
 
-    /* SECTION NOTRE HISTOIRE */
+    /* SECTION NOTRE HISTOIRE (TEXTE SIMPLIFIÉ) */
     .histoire-section {
       background: var(--bg-beige);
       padding: 80px 24px;
@@ -708,7 +708,7 @@
   </div>
 </section>
 
-<!-- ========== SECTION NOTRE HISTOIRE ========== -->
+<!-- ========== SECTION NOTRE HISTOIRE (TEXTE SIMPLIFIÉ) ========== -->
 <div id="histoire" style="scroll-margin-top: 80px;"></div>
 <section class="histoire-section">
   <div class="histoire-container">
@@ -794,7 +794,7 @@
     <div class="field"><label>Nom</label><input type="text" id="contactName"></div>
     <div class="field"><label>WhatsApp</label><input type="tel" id="contactPhone"></div>
     <div class="field"><label>Message</label><textarea id="contactMessage" rows="3"></textarea></div>
-    <button class="btn-brown" id="sendContactBtn">Envoyer</button>
+    <button class="btn-brown" onclick="sendContact()" style="width:100%;">Envoyer</button>
     <div id="contactAck" style="display:none; text-align:center; margin-top:12px;">✅ Message envoyé !</div>
   </div>
 </div>
@@ -803,7 +803,6 @@
 
 <script>
   // ======================== CONFIGURATION ========================
-  // 🔴 REMPLACEZ CETTE URL PAR CELLE DE VOTRE SCRIPT GAS DÉPLOYÉ
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbylonjZ0Dl4wVZlvp0DilgWeEXNkNmNG1TVPBgQWYnSrjW99QMNyMFz1RsNjjejD5V_/exec';
 
   let allProducts = [];
@@ -951,29 +950,6 @@
     } catch (err) {
       console.error(err);
       showToast("Erreur lors de la vérification du code promo");
-    }
-  }
-
-  // ========== ENVOI MESSAGE CONTACT VIA TELEGRAM (doPost) ==========
-  async function envoyerContactBackend(nom, telephone, message) {
-    try {
-      const payload = {
-        action: "envoyerContact",
-        nom: nom,
-        telephone: telephone,
-        message: message
-      };
-      const response = await fetch(SCRIPT_URL, {
-        method: 'POST',
-        mode: 'cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-      const data = await response.json();
-      return data.ok === true;
-    } catch (err) {
-      console.error("Erreur envoi contact:", err);
-      return false;
     }
   }
 
@@ -1202,44 +1178,10 @@
     items.forEach(item => observer.observe(item));
   }
 
-  // ========== CONTACT ==========
   function openContactModal() { document.getElementById('contactModal').classList.add('open'); }
   function closeContactModal(e) { if (e.target === document.getElementById('contactModal')) document.getElementById('contactModal').classList.remove('open'); }
-  async function sendContact() {
-    const nom = document.getElementById('contactName').value.trim();
-    const tel = document.getElementById('contactPhone').value.trim();
-    const msg = document.getElementById('contactMessage').value.trim();
-    if (!nom || !tel) { showToast("Merci de remplir nom et téléphone"); return; }
-    const success = await envoyerContactBackend(nom, tel, msg);
-    if (success) {
-      document.getElementById('contactAck').style.display = 'block';
-      setTimeout(() => {
-        document.getElementById('contactAck').style.display = 'none';
-        document.getElementById('contactModal').classList.remove('open');
-        document.getElementById('contactName').value = '';
-        document.getElementById('contactPhone').value = '';
-        document.getElementById('contactMessage').value = '';
-        showToast("Message envoyé !");
-      }, 1200);
-    } else {
-      showToast("Erreur lors de l'envoi. Veuillez réessayer.");
-    }
-  }
-  async function sendFooterMessage() {
-    const nom = document.getElementById('footerName').value.trim();
-    const tel = document.getElementById('footerPhone').value.trim();
-    const msg = document.getElementById('footerMsg').value.trim();
-    if (!nom || !tel) { showToast("Merci nom et WhatsApp"); return; }
-    const success = await envoyerContactBackend(nom, tel, msg);
-    if (success) {
-      showToast(`Merci ${nom}, nous vous répondons.`);
-      document.getElementById('footerName').value = '';
-      document.getElementById('footerPhone').value = '';
-      document.getElementById('footerMsg').value = '';
-    } else {
-      showToast("Erreur, veuillez réessayer.");
-    }
-  }
+  function sendContact() { const nom = document.getElementById('contactName').value.trim(); const tel = document.getElementById('contactPhone').value.trim(); if (!nom || !tel) { showToast("Merci de remplir nom et téléphone"); return; } document.getElementById('contactAck').style.display = 'block'; setTimeout(() => { document.getElementById('contactAck').style.display = 'none'; document.getElementById('contactModal').classList.remove('open'); showToast("Message envoyé !"); }, 1200); }
+  function sendFooterMessage() { const nom = document.getElementById('footerName').value.trim(); const tel = document.getElementById('footerPhone').value.trim(); if (!nom || !tel) { showToast("Merci nom et WhatsApp"); return; } showToast(`Merci ${nom}, nous vous répondons.`); document.getElementById('footerName').value = ''; document.getElementById('footerPhone').value = ''; document.getElementById('footerMsg').value = ''; }
 
   window.addEventListener('load', () => {
     loadCart();
@@ -1248,7 +1190,6 @@
     observeScienceItems();
     document.getElementById('searchInput')?.addEventListener('input', () => filterProducts());
     document.getElementById('getRecommendations')?.addEventListener('click', getRecommendations);
-    document.getElementById('sendContactBtn')?.addEventListener('click', sendContact);
   });
 
   window.setCategory = setCategory; window.filterProducts = filterProducts; window.changeQty = changeQty; window.removeItem = removeItem; window.addRoutine = addRoutine; window.openLightbox = openLightbox; window.closeLightbox = closeLightbox; window.addCurrentLightboxToCart = addCurrentLightboxToCart; window.openCart = openCart; window.closeCart = closeCart; window.openCheckout = openCheckout; window.closeCheckout = closeCheckout; window.applyPromoCode = applyPromoCode; window.confirmOrder = confirmOrder; window.openContactModal = openContactModal; window.closeContactModal = closeContactModal; window.sendContact = sendContact; window.sendFooterMessage = sendFooterMessage;
