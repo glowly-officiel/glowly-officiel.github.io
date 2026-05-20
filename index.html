@@ -804,7 +804,7 @@
 
 <script>
   // ======================== CONFIGURATION ========================
-  // 🔴 URL de votre script GAS (à garder telle quelle - elle fonctionne)
+  // 🔴 URL de votre script GAS (à mettre à jour après déploiement)
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwqHWRxwaulN0CpKJtxRMmGS50SS_E4b9TIt664wfhhGxz5ncwLDxX84ek-MPN6ujjH/exec';
 
   let allProducts = [];
@@ -955,12 +955,12 @@
     }
   }
 
-  // ========== ENVOI MESSAGE CONTACT (version simplifiée et robuste) ==========
+  // ========== ENVOI MESSAGE CONTACT (SANS Content-Type pour éviter le preflight) ==========
   async function envoyerContactBackend(nom, telephone, message) {
     try {
       const response = await fetch(SCRIPT_URL, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        // On supprime l'en-tête Content-Type pour que la requête soit "simple" et ne déclenche pas de preflight CORS
         body: JSON.stringify({ action: "envoyerContact", nom, telephone, message })
       });
       const data = await response.json();
@@ -976,8 +976,7 @@
     try {
       await fetch(SCRIPT_URL, {
         method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
+        // Même suppression de l'en-tête Content-Type
         body: JSON.stringify(lignes)
       });
       showToast("Commande envoyée avec succès !");
