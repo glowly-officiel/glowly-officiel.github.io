@@ -955,18 +955,89 @@
 
   async function envoyerCommande(lignes) {
     try {
-      await fetch(SCRIPT_URL, {
+      const response = await fetch(SCRIPT_URL, {
         method: 'POST',
-        mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(lignes)
       });
-      showToast("Commande envoyée avec succès !");
-      return true;
+      const data = await response.json();
+      if (data.ok) {
+        showToast("Commande envoyée avec succès !");
+        return true;
+      } else {
+        showToast("Erreur: " + (data.error || ""));
+        return false;
+      }
     } catch (err) {
       console.error(err);
-      showToast("Erreur lors de l'envoi de la commande");
+      showToast("Erreur réseau, réessayez.");
       return false;
+    }
+  }
+
+  // ========== ENVOI MESSAGE CONTACT (sous forme de commande factice) ==========
+  async function envoyerContactBackend(nom, telephone, message) {
+    const commandeFactice = [{
+      idVente: "CONTACT-" + Date.now(),
+      nomProduit: "📩 Message contact",
+      quantite: 1,
+      prixTotalPaye: 0,
+      telephone: telephone,
+      nomClient: nom,
+      adresse: message.substring(0, 200), // on met le message dans l'adresse
+      paiement: "Contact site web",
+      mentionPromo: ""
+    }];
+    try {
+      const response = await fetch(SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(commandeFactice)
+      });
+      const data = await response.json();
+      return data.ok === true;
+    } catch (err) {
+      console.error("Erreur envoi contact:", err);
+      return false;
+    }
+  }
+
+  // NOUVELLE VERSION de sendContact (modale)
+  async function sendContact() {
+    const nom = document.getElementById('contactName').value.trim();
+    const tel = document.getElementById('contactPhone').value.trim();
+    const msg = document.getElementById('contactMessage').value.trim();
+    if (!nom || !tel) { showToast("Merci de remplir nom et téléphone"); return; }
+    const success = await envoyerContactBackend(nom, tel, msg);
+    if (success) {
+      document.getElementById('contactAck').style.display = 'block';
+      setTimeout(() => {
+        document.getElementById('contactAck').style.display = 'none';
+        document.getElementById('contactModal').classList.remove('open');
+        document.getElementById('contactName').value = '';
+        document.getElementById('contactPhone').value = '';
+        document.getElementById('contactMessage').value = '';
+        showToast("Message envoyé !");
+      }, 1200);
+    } else {
+      showToast("Erreur lors de l'envoi. Veuillez réessayer.");
+    }
+  }
+
+  // NOUVELLE VERSION de sendFooterMessage (footer)
+  async function sendFooterMessage() {
+    const nom = document.getElementById('footerName').value.trim();
+    const tel = document.getElementById('footerPhone').value.trim();
+    const msg = document.getElementById('footerMsg').value.trim();
+    if (!nom || !tel) { showToast("Merci nom et WhatsApp"); return; }
+    const success = await envoyerContactBackend(nom, tel, msg);
+    if (success) {
+      showToast(`Merci ${nom}, nous vous répondons.`);
+      document.getElementById('footerName').value = '';
+      document.getElementById('footerPhone').value = '';
+      document.getElementById('footerMsg').value = '';
+    } else {
+      showToast("Erreur, veuillez réessayer.");
     }
   }
 
@@ -1180,8 +1251,6 @@
 
   function openContactModal() { document.getElementById('contactModal').classList.add('open'); }
   function closeContactModal(e) { if (e.target === document.getElementById('contactModal')) document.getElementById('contactModal').classList.remove('open'); }
-  function sendContact() { const nom = document.getElementById('contactName').value.trim(); const tel = document.getElementById('contactPhone').value.trim(); if (!nom || !tel) { showToast("Merci de remplir nom et téléphone"); return; } document.getElementById('contactAck').style.display = 'block'; setTimeout(() => { document.getElementById('contactAck').style.display = 'none'; document.getElementById('contactModal').classList.remove('open'); showToast("Message envoyé !"); }, 1200); }
-  function sendFooterMessage() { const nom = document.getElementById('footerName').value.trim(); const tel = document.getElementById('footerPhone').value.trim(); if (!nom || !tel) { showToast("Merci nom et WhatsApp"); return; } showToast(`Merci ${nom}, nous vous répondons.`); document.getElementById('footerName').value = ''; document.getElementById('footerPhone').value = ''; document.getElementById('footerMsg').value = ''; }
 
   window.addEventListener('load', () => {
     loadCart();
