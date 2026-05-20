@@ -6,7 +6,7 @@
   <title>GLOWLY — Beauté Authentique</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
   <style>
-    /* ========== TON CSS EXISTANT (inchangé) ========== */
+    /* ========== TON CSS EXISTANT ========== */
     * { margin:0; padding:0; box-sizing:border-box; }
     :root {
       --bg-beige: #FDF8F0;
@@ -804,9 +804,11 @@
 
 <script>
   // ======================== CONFIGURATION ========================
-  // Dernière URL de ton script (avec CORS corrigé)
+  // L'URL de ton script GAS
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz5KqCzRi_U-SO-eHpvkoK1sG-bpVFS4NaZsejj-K2N0y98mCUL9Irb_ko5uFqleJVE/exec';
-  // PLUS AUCUN PROXY
+  
+  // Proxy CORS fiable pour les requêtes GET
+  const PROXY_URL = 'https://api.allorigins.win/raw?url=';
 
   let allProducts = [];
   let cart = [];
@@ -826,10 +828,12 @@
     setTimeout(() => t.classList.remove('show'), 2500);
   }
 
-  // ========== BACKEND : APPELS DIRECTS (plus de proxy) ==========
+  // ========== BACKEND (GET avec proxy, POST direct) ==========
   async function chargerProduits() {
     try {
-      const response = await fetch(SCRIPT_URL + '?action=produits');
+      // Utilisation du proxy pour contourner le CORS
+      const proxyUrl = PROXY_URL + encodeURIComponent(SCRIPT_URL + '?action=produits');
+      const response = await fetch(proxyUrl);
       const data = await response.json();
       if (data.ok && data.produits) {
         allProducts = data.produits;
@@ -854,8 +858,8 @@
     if (!container) return;
     container.innerHTML = '<div class="loader">Chargement...</div>';
     try {
-      // Appel direct sans proxy
-      const response = await fetch(SCRIPT_URL + '?action=bestsellers');
+      const proxyUrl = PROXY_URL + encodeURIComponent(SCRIPT_URL + '?action=bestsellers');
+      const response = await fetch(proxyUrl);
       const data = await response.json();
       if (data.ok && data.bestsellers && data.bestsellers.length) {
         let html = '';
@@ -885,8 +889,8 @@
   async function verifierCodePromo(code, productNames) {
     try {
       const url = `${SCRIPT_URL}?action=verifierPromo&code=${encodeURIComponent(code)}&produits=${encodeURIComponent(productNames.join(','))}`;
-      // Appel direct sans proxy
-      const response = await fetch(url);
+      const proxyUrl = PROXY_URL + encodeURIComponent(url);
+      const response = await fetch(proxyUrl);
       const data = await response.json();
       if (data.ok && data.reduction) {
         promoReduction = data.reduction;
@@ -902,10 +906,9 @@
     }
   }
 
-  // ========== ENVOI CONTACT / COMMANDE (POST) ==========
+  // ========== ENVOI CONTACT / COMMANDE (POST sans en-tête) ==========
   async function envoyerContactBackend(nom, telephone, message) {
     try {
-      // Pas de mode: 'no-cors' car les en-têtes CORS sont maintenant actifs
       const response = await fetch(SCRIPT_URL, {
         method: 'POST',
         body: JSON.stringify({ action: "envoyerContact", nom, telephone, message })
