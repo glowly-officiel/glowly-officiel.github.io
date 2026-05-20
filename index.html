@@ -6,7 +6,6 @@
   <title>GLOWLY — Beauté Authentique</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
   <style>
-    /* ========== TON CSS EXISTANT (inchangé) ========== */
     * { margin:0; padding:0; box-sizing:border-box; }
     :root {
       --bg-beige: #FDF8F0;
@@ -804,10 +803,8 @@
 
 <script>
   // ======================== CONFIGURATION ========================
-  // NE CHANGE PAS CETTE URL - elle est correcte et fonctionne
-  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxQo5WozbPgaCtKOU2H_khAMuF2qb5aFe3bxdL_UZWU9pyyojfG2CHSsJ2S3yGnwYr7/exec';
-  // Proxy CORS plus fiable pour les requêtes GET
-  const CORS_PROXY = 'https://api.allorigins.win/raw?url=';
+  // 🔴 REMPLACEZ CETTE URL PAR CELLE DE VOTRE SCRIPT GAS DÉPLOYÉ
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbylonjZ0Dl4wVZlvp0DilgWeEXNkNmNG1TVPBgQWYnSrjW99QMNyMFz1RsNjjejD5V_/exec';
 
   let allProducts = [];
   let cart = [];
@@ -827,11 +824,10 @@
     setTimeout(() => t.classList.remove('show'), 2500);
   }
 
-  // ========== BACKEND (GET avec proxy, POST sans attente de réponse) ==========
+  // ========== BACKEND ==========
   async function chargerProduits() {
     try {
-      const proxyUrl = CORS_PROXY + encodeURIComponent(SCRIPT_URL + '?action=produits');
-      const response = await fetch(proxyUrl);
+      const response = await fetch(`${SCRIPT_URL}?action=produits`);
       const data = await response.json();
       if (data.ok && data.produits && data.produits.length > 0) {
         allProducts = data.produits;
@@ -840,12 +836,12 @@
       }
     } catch (err) {
       console.error(err);
-      showToast("Erreur chargement produits, affichage par défaut");
+      showToast("Erreur de chargement des produits. Vérifiez l'URL.");
       allProducts = [
-        { id: 1, nom: "Savon Curcuma", prix: 8500, img: "https://images.unsplash.com/photo-1600857062241-98e5dba7f214?w=400&q=80", cat: "Nettoyants", desc: "Purifie et éclaire le teint." },
-        { id: 2, nom: "Toner Glycolique", prix: 12500, img: "https://images.unsplash.com/photo-1620916566390-22f5e7abca7e?w=400&q=80", cat: "Toners", desc: "Exfoliation douce." },
-        { id: 3, nom: "Sérum Vitamine C", prix: 22500, img: "https://images.unsplash.com/photo-1631730359585-38a4935dbef4?w=400&q=80", cat: "Sérums", desc: "Antioxydant." },
-        { id: 4, nom: "Masque Miel Manuka", prix: 14800, img: "https://images.unsplash.com/photo-1599305445671-ac291c95f0b2?w=400&q=80", cat: "Masques", desc: "Hydratation intense." }
+        { id: 1, nom: "Savon Curcuma", prix: 8500, img: "https://images.unsplash.com/photo-1600857062241-98e5dba7f214?w=400&q=80", img2: "", img3: "", cat: "Nettoyants", desc: "Purifie et éclaire le teint.", stock: 10 },
+        { id: 2, nom: "Toner Glycolique", prix: 12500, img: "https://images.unsplash.com/photo-1620916566390-22f5e7abca7e?w=400&q=80", img2: "", img3: "", cat: "Toners", desc: "Exfoliation douce.", stock: 10 },
+        { id: 3, nom: "Sérum Vitamine C", prix: 22500, img: "https://images.unsplash.com/photo-1631730359585-38a4935dbef4?w=400&q=80", img2: "", img3: "", cat: "Sérums", desc: "Antioxydant.", stock: 10 },
+        { id: 4, nom: "Masque Miel Manuka", prix: 14800, img: "https://images.unsplash.com/photo-1599305445671-ac291c95f0b2?w=400&q=80", img2: "", img3: "", cat: "Masques", desc: "Hydratation intense.", stock: 10 }
       ];
     }
     renderCategories();
@@ -856,67 +852,127 @@
   async function chargerBestSellers() {
     const container = document.getElementById('bestsellersContainer');
     if (!container) return;
-    container.innerHTML = '<div class="loader">Chargement...</div>';
+    container.innerHTML = '<div class="loader">Chargement des best-sellers...</div>';
     try {
-      const proxyUrl = CORS_PROXY + encodeURIComponent(SCRIPT_URL + '?action=bestsellers');
-      const response = await fetch(proxyUrl);
+      const response = await fetch(`${SCRIPT_URL}?action=bestsellers`);
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
       const data = await response.json();
-      if (data.ok && data.bestsellers && data.bestsellers.length) {
+      if (data.ok && data.bestsellers && data.bestsellers.length > 0) {
         let html = '';
-        data.bestsellers.forEach((prod, idx) => {
-          const direction = idx % 2 === 0 ? 'left-img' : 'right-img';
-          const imgUrl = prod.img || 'https://placehold.co/800x800/FEF5ED/C28B90?text=Glowly';
+        data.bestsellers.forEach((prod, index) => {
+          const directionClass = (index % 2 === 0) ? 'left-img' : 'right-img';
+          const imgUrl = prod.img && prod.img.trim() !== '' ? prod.img : 'https://placehold.co/800x800/FEF5ED/C28B90?text=Glowly';
+          const description = prod.desc || `Découvrez ${prod.nom}, un produit plébiscité par notre communauté pour sa qualité exceptionnelle.`;
+          const prix = Number(prod.prix).toLocaleString();
           html += `
-            <div class="bs-card ${direction}">
-              <div class="bs-img" style="background-image: url('${imgUrl}');"></div>
+            <div class="bs-card ${directionClass}">
+              <div class="bs-img" style="background-image: url('${escapeHtml(imgUrl)}');"></div>
               <div class="brown-bg">
-                <h3>${prod.nom}</h3>
-                <p class="bs-description">${prod.desc || 'Produit star'}</p>
-                <button class="btn-brown" onclick="addRoutine('${prod.nom}', ${prod.prix})">AJOUTER — ${Number(prod.prix).toLocaleString()} FCFA</button>
+                <h3>${escapeHtml(prod.nom)}</h3>
+                <p class="bs-description">Pourquoi ce produit est un best seller ? ${escapeHtml(description)}</p>
+                <button class="btn-brown" onclick="addRoutine('${escapeHtml(prod.nom)}', ${prod.prix})">AJOUTER — ${prix} FCFA</button>
               </div>
-            </div>`;
+            </div>
+          `;
         });
         container.innerHTML = html;
       } else {
-        container.innerHTML = '<div class="loader">Aucun best-seller</div>';
+        container.innerHTML = '<div class="loader">Aucun best-seller pour le moment.</div>';
       }
-    } catch(e) {
-      console.error(e);
+    } catch (err) {
+      console.error("Erreur chargement best-sellers:", err);
       container.innerHTML = '<div class="loader">Erreur chargement best-sellers</div>';
     }
+  }
+
+  // ========== DIAGNOSTIC ==========
+  function getRecommendations() {
+    const skinType = document.getElementById('skinType').value;
+    const concern = document.getElementById('skinConcern').value;
+    let advice = "";
+    if (skinType === 'seche') advice = "Pour les peaux sèches, privilégiez les soins hydratants et nourrissants. ";
+    else if (skinType === 'grasse') advice = "Pour les peaux grasses, misez sur des textures légères et des ingrédients sébo-régulateurs. ";
+    else if (skinType === 'mixte') advice = "Pour les peaux mixtes, utilisez des produits équilibrants. ";
+    else if (skinType === 'sensible') advice = "Pour les peaux sensibles, choisissez des soins hypoallergéniques sans parfum. ";
+    else advice = "Pour les peaux normales, maintenez l'équilibre avec des soins doux. ";
+
+    if (concern === 'taches') advice += "Pour réduire les taches, optez pour la vitamine C, le curcuma ou des acides doux.";
+    else if (concern === 'secheresse') advice += "Pour la sécheresse, utilisez des crèmes riches et des masques hydratants.";
+    else if (concern === 'acne') advice += "Pour l'acné, privilégiez des nettoyants doux et des soins non comédogènes.";
+    else if (concern === 'rides') advice += "Pour les rides, recherchez des sérums à base de collagène et de vitamine C.";
+    else advice += "Pour raviver l'éclat, utilisez des exfoliants doux et des soins illuminants.";
+
+    let filtered = allProducts.filter(p => {
+      const name = p.nom.toLowerCase();
+      const desc = (p.desc || '').toLowerCase();
+      const cat = (p.cat || '').toLowerCase();
+      if (concern === 'taches') return name.includes('curcuma') || name.includes('vitamine c') || desc.includes('tache') || cat === 'traitements visage';
+      if (concern === 'secheresse') return name.includes('miel') || name.includes('manuka') || desc.includes('hydratation') || cat === 'masques' || cat === 'hydratants';
+      if (concern === 'acne') return name.includes('nettoyant') || name.includes('toner') || desc.includes('acné') || cat === 'nettoyants';
+      if (concern === 'rides') return name.includes('collagène') || name.includes('sérum') || desc.includes('rides') || cat === 'sérums';
+      if (concern === 'ternite') return name.includes('gommage') || name.includes('éclat') || desc.includes('éclat') || cat === 'exfoliants';
+      return true;
+    });
+    filtered = filtered.slice(0, 4);
+    const container = document.getElementById('recommendations');
+    if (filtered.length === 0) {
+      container.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:20px;"><p>${advice}</p><p>Aucun produit ne correspond pour le moment. Contactez-nous.</p></div>`;
+      return;
+    }
+    let html = `<div style="grid-column:1/-1; margin-bottom:20px; text-align:center; background:#FDF4EF; padding:16px; border-radius:20px;"><p style="font-weight:500;">${advice}</p></div>`;
+    filtered.forEach(prod => {
+      const imgUrl = prod.img && prod.img.trim() !== '' ? prod.img : 'https://placehold.co/400x400/FEF5ED/C28B90?text=Glowly';
+      html += `
+        <div class="rec-card" onclick="openLightbox(${JSON.stringify(prod).replace(/'/g, "&#39;")})">
+          <div class="rec-img" style="background-image: url('${escapeHtml(imgUrl)}');"></div>
+          <div class="rec-info">
+            <h4>${escapeHtml(prod.nom)}</h4>
+            <div class="rec-price">${Number(prod.prix).toLocaleString()} FCFA</div>
+          </div>
+        </div>
+      `;
+    });
+    container.innerHTML = html;
   }
 
   async function verifierCodePromo(code, productNames) {
     try {
       const url = `${SCRIPT_URL}?action=verifierPromo&code=${encodeURIComponent(code)}&produits=${encodeURIComponent(productNames.join(','))}`;
-      const proxyUrl = CORS_PROXY + encodeURIComponent(url);
-      const response = await fetch(proxyUrl);
+      const response = await fetch(url);
       const data = await response.json();
-      if (data.ok && data.reduction) {
+      if (data.ok && data.reduction > 0) {
         promoReduction = data.reduction;
-        document.getElementById('promoMsg').innerText = `✅ Réduction ${promoReduction} FCFA`;
+        document.getElementById('promoMsg').innerText = `✅ Réduction ${promoReduction} FCFA appliquée !`;
       } else {
         promoReduction = 0;
-        document.getElementById('promoMsg').innerText = "❌ Code invalide";
+        document.getElementById('promoMsg').innerText = "❌ Code invalide ou non applicable";
       }
       updateOrderSummary();
-    } catch(e) {
-      console.error(e);
-      showToast("Erreur vérification code");
+    } catch (err) {
+      console.error(err);
+      showToast("Erreur lors de la vérification du code promo");
     }
   }
 
-  // ========== ENVOI CONTACT / COMMANDE : ON ENVOIE ET ON AFFICHE SUCCÈS SANS ATTENDRE LA RÉPONSE ==========
+  // ========== ENVOI MESSAGE CONTACT VIA TELEGRAM (doPost) ==========
   async function envoyerContactBackend(nom, telephone, message) {
     try {
-      await fetch(SCRIPT_URL, {
+      const payload = {
+        action: "envoyerContact",
+        nom: nom,
+        telephone: telephone,
+        message: message
+      };
+      const response = await fetch(SCRIPT_URL, {
         method: 'POST',
-        mode: 'no-cors',
-        body: JSON.stringify({ action: "envoyerContact", nom, telephone, message })
+        mode: 'cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
       });
-      return true;
+      const data = await response.json();
+      return data.ok === true;
     } catch (err) {
-      console.error("Erreur réseau contact:", err);
+      console.error("Erreur envoi contact:", err);
       return false;
     }
   }
@@ -926,24 +982,77 @@
       await fetch(SCRIPT_URL, {
         method: 'POST',
         mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(lignes)
       });
+      showToast("Commande envoyée avec succès !");
       return true;
     } catch (err) {
-      console.error("Erreur réseau commande:", err);
+      console.error(err);
+      showToast("Erreur lors de l'envoi de la commande");
       return false;
     }
   }
 
-  // ========== FONCTIONS UI (inchangées) ==========
+  // ========== CARROUSEL ==========
+  let carouselTrack = null;
+  function initCarousel() {
+    carouselTrack = document.getElementById('carouselTrack');
+    if (!carouselTrack) return;
+    if (allProducts.length === 0) {
+      carouselTrack.innerHTML = '<div style="padding:20px; text-align:center;">Aucun produit disponible</div>';
+      return;
+    }
+    carouselTrack.innerHTML = '';
+    const duplicates = 3;
+    for (let d = 0; d < duplicates; d++) {
+      allProducts.forEach(prod => {
+        const item = document.createElement('div');
+        item.className = 'carousel-item';
+        item.onclick = () => openLightbox(prod);
+        const imgSrc = prod.img || 'https://placehold.co/400x400/FEF5ED/C28B90?text=Image';
+        item.innerHTML = `
+          <div class="carousel-item-img">
+            <img src="${escapeHtml(imgSrc)}" alt="${escapeHtml(prod.nom)}" loading="lazy" onerror="this.src='https://placehold.co/400x400/FEF5ED/C28B90?text=Image'">
+          </div>
+          <div class="carousel-item-name">${escapeHtml(prod.nom)}</div>
+        `;
+        carouselTrack.appendChild(item);
+      });
+    }
+    startAutoScroll();
+    attachCarouselHover();
+  }
+
+  function startAutoScroll() {
+    if (autoScrollInterval) clearInterval(autoScrollInterval);
+    autoScrollInterval = setInterval(() => {
+      if (!isAutoScrolling) return;
+      if (carouselTrack) {
+        const itemWidth = 130;
+        carouselTrack.scrollBy({ left: itemWidth, behavior: 'smooth' });
+        setTimeout(() => {
+          if (carouselTrack.scrollLeft + carouselTrack.clientWidth >= carouselTrack.scrollWidth - itemWidth * 2) {
+            carouselTrack.scrollTo({ left: 20, behavior: 'auto' });
+          }
+        }, 300);
+      }
+    }, 3000);
+  }
+
+  function attachCarouselHover() {
+    if (!carouselTrack) return;
+    carouselTrack.addEventListener('mouseenter', () => { isAutoScrolling = false; });
+    carouselTrack.addEventListener('mouseleave', () => { isAutoScrolling = true; });
+  }
+
+  // ========== FONCTIONS UI ==========
   function renderCategories() {
     const cats = [...new Set(allProducts.map(p => p.cat).filter(c => c && c.trim() !== ""))];
     const bar = document.getElementById('catBar');
     if (!bar) return;
     let html = `<button class="btn-outline" onclick="setCategory('')" style="background:${currentCategory === '' ? 'var(--rose-gold-fonce)' : 'transparent'}; color:${currentCategory === '' ? 'white' : 'var(--marron-bois)'}">Tous</button>`;
-    cats.forEach(cat => {
-      html += `<button class="btn-outline" onclick="setCategory('${cat.replace(/'/g, "\\'")}')" style="background:${currentCategory === cat ? 'var(--rose-gold-fonce)' : 'transparent'}; color:${currentCategory === cat ? 'white' : 'var(--marron-bois)'}">${cat}</button>`;
-    });
+    cats.forEach(cat => { html += `<button class="btn-outline" onclick="setCategory('${cat.replace(/'/g, "\\'")}')" style="background:${currentCategory === cat ? 'var(--rose-gold-fonce)' : 'transparent'}; color:${currentCategory === cat ? 'white' : 'var(--marron-bois)'}">${cat}</button>`; });
     bar.innerHTML = html;
   }
 
@@ -955,92 +1064,105 @@
     if (!grid) return;
     let filtered = allProducts;
     if (currentCategory) filtered = filtered.filter(p => p.cat === currentCategory);
-    if (currentSearch) filtered = filtered.filter(p => p.nom.toLowerCase().includes(currentSearch));
-    if (!filtered.length) { grid.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:40px;">Aucun produit</div>'; return; }
-    grid.innerHTML = filtered.map(p => `
-      <div class="card" onclick='openLightbox(${JSON.stringify(p).replace(/'/g, "&#39;")})'>
-        <div class="card-img"><img src="${p.img || 'https://placehold.co/400x400/FEF5ED/C28B90?text=Glowly'}" loading="lazy" onerror="this.src='https://placehold.co/400x400/FEF5ED/C28B90?text=Image'"></div>
-        <div class="card-body"><h3>${p.nom}</h3><div class="price">${Number(p.prix).toLocaleString()} FCFA</div></div>
-      </div>`).join('');
+    if (currentSearch) filtered = filtered.filter(p => p.nom.toLowerCase().includes(currentSearch) || (p.cat && p.cat.toLowerCase().includes(currentSearch)));
+    if (filtered.length === 0) { grid.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:40px;">Aucun produit trouvé</div>'; return; }
+    grid.innerHTML = filtered.map(p => `<div class="card" onclick='openLightbox(${JSON.stringify(p).replace(/'/g, "&#39;")})'><div class="card-img"><img src="${p.img || 'https://placehold.co/400x400/FEF5ED/C28B90?text=Glowly'}" alt="${escapeHtml(p.nom)}" loading="lazy" onerror="this.src='https://placehold.co/400x400/FEF5ED/C28B90?text=Image'"></div><div class="card-body"><h3>${escapeHtml(p.nom)}</h3><div class="price">${Number(p.prix).toLocaleString()} FCFA</div></div></div>`).join('');
   }
 
-  function escapeHtml(str) { return String(str).replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'})[m]); }
+  function escapeHtml(str) { return String(str).replace(/[&<>]/g, function(m){if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
 
   // Panier
   function saveCart() { localStorage.setItem('glowly_cart', JSON.stringify(cart)); updateCartUI(); }
   function loadCart() { const saved = localStorage.getItem('glowly_cart'); if (saved) cart = JSON.parse(saved); updateCartUI(); }
   function updateCartUI() {
-    document.getElementById('cartCount').innerText = cart.reduce((s,i) => s + i.qty, 0);
+    const countSpan = document.getElementById('cartCount');
+    const totalItems = cart.reduce((s,i) => s + i.qty, 0);
+    if (countSpan) countSpan.innerText = totalItems;
     const container = document.getElementById('cartItems');
     const footer = document.getElementById('cartFooter');
     if (!container) return;
-    if (!cart.length) {
-      container.innerHTML = '<div style="text-align:center; padding:30px;">Panier vide</div>';
-      footer.style.display = 'none';
-    } else {
-      container.innerHTML = cart.map(item => `
-        <div style="display:flex; justify-content:space-between; margin-bottom:16px;">
-          <div><strong>${item.name}</strong><br>${Number(item.price).toLocaleString()} FCFA x ${item.qty}</div>
-          <div><button onclick="changeQty(${item.id}, -1)">-</button> ${item.qty} <button onclick="changeQty(${item.id}, 1)">+</button> <button onclick="removeItem(${item.id})">🗑️</button></div>
-        </div>`).join('');
+    if (cart.length === 0) { container.innerHTML = '<div style="text-align:center; padding:30px;">Panier vide</div>'; footer.style.display = 'none'; }
+    else {
+      container.innerHTML = cart.map(item => `<div style="display:flex; justify-content:space-between; margin-bottom:16px; border-bottom:1px solid #eee; padding-bottom:8px;"><div><strong>${escapeHtml(item.name)}</strong><br>${Number(item.price).toLocaleString()} FCFA x ${item.qty}</div><div><button onclick="changeQty(${item.id}, -1)" style="background:#eee; border:none; width:28px; border-radius:20px;">-</button><span style="margin:0 6px;">${item.qty}</span><button onclick="changeQty(${item.id}, 1)" style="background:#eee; border:none; width:28px; border-radius:20px;">+</button><button onclick="removeItem(${item.id})" style="background:none; border:none; color:#b00;">🗑️</button></div></div>`).join('');
       footer.style.display = 'block';
-      const total = cart.reduce((s,i) => s + i.price * i.qty, 0) - promoReduction;
+      const subtotal = cart.reduce((s,i) => s + (i.price * i.qty), 0);
+      const total = subtotal - promoReduction;
       document.getElementById('cartTotal').innerText = (total > 0 ? total : 0).toLocaleString() + ' FCFA';
     }
   }
-  function changeQty(id, delta) {
-    const idx = cart.findIndex(i => i.id == id);
-    if (idx !== -1) {
-      cart[idx].qty += delta;
-      if (cart[idx].qty <= 0) cart.splice(idx, 1);
-      saveCart();
-    }
-  }
+  function changeQty(id, delta) { const idx = cart.findIndex(i => i.id == id); if (idx !== -1) { cart[idx].qty += delta; if (cart[idx].qty <= 0) cart.splice(idx, 1); saveCart(); } }
   function removeItem(id) { cart = cart.filter(i => i.id != id); saveCart(); }
-  function addToCart(product) {
-    const existing = cart.find(i => i.id == product.id);
-    if (existing) existing.qty++;
-    else cart.push({ id: product.id, name: product.nom, price: product.prix, qty: 1 });
-    saveCart();
-    showToast(`${product.nom} ajouté`);
-  }
-  function addRoutine(name, price) { cart.push({ id: Date.now(), name, price, qty: 1 }); saveCart(); showToast(`${name} ajouté`); }
+  function addToCart(product) { const existing = cart.find(i => i.id == product.id); if (existing) existing.qty++; else cart.push({ id: product.id, name: product.nom, price: product.prix, qty: 1 }); saveCart(); showToast(`${product.nom} ajouté au panier`); }
+  function addRoutine(name, price) { const routineId = Date.now(); cart.push({ id: routineId, name: name, price: price, qty: 1 }); saveCart(); showToast(`${name} ajouté au panier`); }
 
-  // Lightbox
+  // ========== LIGHTBOX AVEC 3 IMAGES ==========
   function openLightbox(product) {
     currentLightboxProduct = product;
-    currentLightboxImages = [product.img, product.img2, product.img3].filter(u => u);
-    if (!currentLightboxImages.length) currentLightboxImages = ['https://placehold.co/600x600/FEF5ED/C28B90?text=Glowly'];
+    currentLightboxImages = [
+      product.img || '',
+      product.img2 || '',
+      product.img3 || ''
+    ].filter(url => url && url.trim() !== '');
+    if (currentLightboxImages.length === 0) currentLightboxImages = ['https://placehold.co/600x600/FEF5ED/C28B90?text=Glowly'];
     currentLightboxIndex = 0;
     document.getElementById('lbImage').src = currentLightboxImages[0];
     document.getElementById('lbTitle').innerText = product.nom;
     document.getElementById('lbPrice').innerText = Number(product.prix).toLocaleString() + ' FCFA';
-    document.getElementById('lbDesc').innerText = product.desc || '';
+    document.getElementById('lbDesc').innerText = product.desc || 'Découvrez ce produit exceptionnel.';
     document.getElementById('lbCat').innerText = product.cat || 'Produit';
     document.getElementById('lightboxOverlay').classList.add('open');
   }
-  function prevLightboxImage(e) { e.stopPropagation(); if (currentLightboxImages.length > 1) { currentLightboxIndex = (currentLightboxIndex - 1 + currentLightboxImages.length) % currentLightboxImages.length; document.getElementById('lbImage').src = currentLightboxImages[currentLightboxIndex]; } }
-  function nextLightboxImage(e) { e.stopPropagation(); if (currentLightboxImages.length > 1) { currentLightboxIndex = (currentLightboxIndex + 1) % currentLightboxImages.length; document.getElementById('lbImage').src = currentLightboxImages[currentLightboxIndex]; } }
-  function closeLightbox(e) { if (e && e.target !== e.currentTarget) return; document.getElementById('lightboxOverlay').classList.remove('open'); }
-  function addCurrentLightboxToCart() { if (currentLightboxProduct) addToCart(currentLightboxProduct); closeLightbox(); }
+
+  function prevLightboxImage(event) {
+    event.stopPropagation();
+    if (currentLightboxImages.length <= 1) return;
+    currentLightboxIndex = (currentLightboxIndex - 1 + currentLightboxImages.length) % currentLightboxImages.length;
+    document.getElementById('lbImage').src = currentLightboxImages[currentLightboxIndex];
+  }
+
+  function nextLightboxImage(event) {
+    event.stopPropagation();
+    if (currentLightboxImages.length <= 1) return;
+    currentLightboxIndex = (currentLightboxIndex + 1) % currentLightboxImages.length;
+    document.getElementById('lbImage').src = currentLightboxImages[currentLightboxIndex];
+  }
+
+  function closeLightbox(e) {
+    if (e && e.target !== e.currentTarget) return;
+    document.getElementById('lightboxOverlay').classList.remove('open');
+  }
+  function addCurrentLightboxToCart() {
+    if (currentLightboxProduct) addToCart(currentLightboxProduct);
+    closeLightbox();
+  }
 
   function openCart() { document.getElementById('cartOverlay').classList.add('open'); }
   function closeCart(e, force) { if (force || (e && e.target === document.getElementById('cartOverlay'))) document.getElementById('cartOverlay').classList.remove('open'); }
-  function applyPromoCode() { const code = document.getElementById('promoCode').value.trim(); if (!code) return; verifierCodePromo(code, cart.map(i => i.name)); }
-  function updateOrderSummary() {
-    const subtotal = cart.reduce((s,i) => s + i.price * i.qty, 0);
-    const total = subtotal - promoReduction;
-    document.getElementById('orderSummary').innerHTML = cart.map(i => `${i.name} x${i.qty} : ${(i.price*i.qty).toLocaleString()} FCFA`).join('<br>') + `<br><strong>Sous-total : ${subtotal.toLocaleString()} FCFA</strong><br>Réduction : -${promoReduction.toLocaleString()} FCFA<br><strong>Total : ${total > 0 ? total.toLocaleString() : 0} FCFA</strong>`;
+
+  function applyPromoCode() {
+    const code = document.getElementById('promoCode').value.trim();
+    if (!code) { showToast("Entrez un code"); return; }
+    const productNames = cart.map(item => item.name);
+    verifierCodePromo(code, productNames);
   }
-  function openCheckout() { if (!cart.length) { showToast("Panier vide"); return; } updateOrderSummary(); document.getElementById('checkoutModal').classList.add('open'); }
+
+  function updateOrderSummary() {
+    const subtotal = cart.reduce((s,i) => s + (i.price * i.qty), 0);
+    const total = subtotal - promoReduction;
+    document.getElementById('orderSummary').innerHTML = cart.map(i => `${escapeHtml(i.name)} x${i.qty} : ${(i.price*i.qty).toLocaleString()} FCFA`).join('<br>') + `<br><strong>Sous-total : ${subtotal.toLocaleString()} FCFA</strong><br>Réduction : -${promoReduction.toLocaleString()} FCFA<br><strong>Total : ${(total>0?total:0).toLocaleString()} FCFA</strong>`;
+  }
+
+  function openCheckout() { if (cart.length === 0) { showToast("Panier vide"); return; } updateOrderSummary(); document.getElementById('checkoutModal').classList.add('open'); }
   function closeCheckout(e) { if (e.target === document.getElementById('checkoutModal')) document.getElementById('checkoutModal').classList.remove('open'); }
   function generateIdVente() { return "GLW-" + Date.now() + "-" + Math.floor(Math.random() * 10000); }
-  async function confirmOrder() {
+
+  function confirmOrder() {
     const name = document.getElementById('checkoutName').value.trim();
     const phone = document.getElementById('checkoutPhone').value.trim();
+    const region = document.getElementById('checkoutRegion').value;
     const quartier = document.getElementById('checkoutQuartier').value.trim();
     if (!name || !phone || !quartier) { showToast("Veuillez remplir tous les champs obligatoires (*)"); return; }
-    const adresseComplete = `${quartier}, ${document.getElementById('checkoutAddress').value.trim()}, ${document.getElementById('checkoutRegion').value}`;
+    const adresseComplete = `${quartier}, ${document.getElementById('checkoutAddress').value.trim()}, ${region}`;
     const paiement = document.getElementById('checkoutPayment').value;
     const lignes = cart.map(item => ({
       idVente: generateIdVente(),
@@ -1053,8 +1175,7 @@
       paiement: paiement,
       mentionPromo: promoReduction > 0 ? `Promo -${promoReduction} FCFA` : ""
     }));
-    const ok = await envoyerCommande(lignes);
-    if (ok) {
+    envoyerCommande(lignes).then(() => {
       document.getElementById('orderSuccess').style.display = 'block';
       cart = [];
       promoReduction = 0;
@@ -1062,24 +1183,26 @@
       setTimeout(() => {
         document.getElementById('checkoutModal').classList.remove('open');
         document.getElementById('orderSuccess').style.display = 'none';
-        showToast("Commande confirmée !");
+        showToast("Commande confirmée ! Nous vous contacterons.");
       }, 2000);
-    } else {
-      showToast("Erreur lors de l'envoi, mais nous avons bien reçu votre commande (vérifiez vos notifications)");
-    }
+    });
   }
 
   function observeScienceItems() {
     const items = document.querySelectorAll('.science-item');
-    if (items.length) {
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
-      }, { threshold: 0.2 });
-      items.forEach(i => observer.observe(i));
-    }
+    if (!items.length) return;
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.2 });
+    items.forEach(item => observer.observe(item));
   }
 
-  // Contact
+  // ========== CONTACT ==========
   function openContactModal() { document.getElementById('contactModal').classList.add('open'); }
   function closeContactModal(e) { if (e.target === document.getElementById('contactModal')) document.getElementById('contactModal').classList.remove('open'); }
   async function sendContact() {
@@ -1099,7 +1222,7 @@
         showToast("Message envoyé !");
       }, 1200);
     } else {
-      showToast("Erreur d'envoi, mais votre message a probablement été reçu (vérifiez Telegram)");
+      showToast("Erreur lors de l'envoi. Veuillez réessayer.");
     }
   }
   async function sendFooterMessage() {
@@ -1108,48 +1231,14 @@
     const msg = document.getElementById('footerMsg').value.trim();
     if (!nom || !tel) { showToast("Merci nom et WhatsApp"); return; }
     const success = await envoyerContactBackend(nom, tel, msg);
-    if (success) showToast(`Merci ${nom}, nous vous répondons.`);
-    else showToast("Erreur, mais nous avons bien reçu votre message");
-    document.getElementById('footerName').value = '';
-    document.getElementById('footerPhone').value = '';
-    document.getElementById('footerMsg').value = '';
-  }
-
-  // Carrousel
-  let carouselTrack = null;
-  function initCarousel() {
-    carouselTrack = document.getElementById('carouselTrack');
-    if (!carouselTrack) return;
-    if (!allProducts.length) { carouselTrack.innerHTML = '<div style="padding:20px;">Aucun produit</div>'; return; }
-    carouselTrack.innerHTML = '';
-    for (let d = 0; d < 3; d++) {
-      allProducts.forEach(prod => {
-        const div = document.createElement('div');
-        div.className = 'carousel-item';
-        div.onclick = () => openLightbox(prod);
-        div.innerHTML = `<div class="carousel-item-img"><img src="${prod.img || 'https://placehold.co/400x400/FEF5ED/C28B90?text=Image'}" loading="lazy"></div><div class="carousel-item-name">${prod.nom}</div>`;
-        carouselTrack.appendChild(div);
-      });
+    if (success) {
+      showToast(`Merci ${nom}, nous vous répondons.`);
+      document.getElementById('footerName').value = '';
+      document.getElementById('footerPhone').value = '';
+      document.getElementById('footerMsg').value = '';
+    } else {
+      showToast("Erreur, veuillez réessayer.");
     }
-    startAutoScroll();
-    carouselTrack.addEventListener('mouseenter', () => isAutoScrolling = false);
-    carouselTrack.addEventListener('mouseleave', () => isAutoScrolling = true);
-  }
-  function startAutoScroll() {
-    if (autoScrollInterval) clearInterval(autoScrollInterval);
-    autoScrollInterval = setInterval(() => {
-      if (!isAutoScrolling || !carouselTrack) return;
-      carouselTrack.scrollBy({ left: 130, behavior: 'smooth' });
-      setTimeout(() => {
-        if (carouselTrack.scrollLeft + carouselTrack.clientWidth >= carouselTrack.scrollWidth - 260)
-          carouselTrack.scrollTo({ left: 20, behavior: 'auto' });
-      }, 300);
-    }, 3000);
-  }
-
-  function getRecommendations() {
-    // Version simplifiée pour diagnostic (tu peux garder ta logique)
-    showToast("Fonctionnalité recommandation à compléter");
   }
 
   window.addEventListener('load', () => {
@@ -1157,18 +1246,12 @@
     chargerProduits();
     chargerBestSellers();
     observeScienceItems();
-    document.getElementById('searchInput')?.addEventListener('input', filterProducts);
+    document.getElementById('searchInput')?.addEventListener('input', () => filterProducts());
     document.getElementById('getRecommendations')?.addEventListener('click', getRecommendations);
     document.getElementById('sendContactBtn')?.addEventListener('click', sendContact);
   });
 
-  // Exposer les fonctions globales
-  window.setCategory = setCategory; window.filterProducts = filterProducts; window.changeQty = changeQty; window.removeItem = removeItem;
-  window.addRoutine = addRoutine; window.openLightbox = openLightbox; window.closeLightbox = closeLightbox;
-  window.addCurrentLightboxToCart = addCurrentLightboxToCart; window.openCart = openCart; window.closeCart = closeCart;
-  window.openCheckout = openCheckout; window.closeCheckout = closeCheckout; window.applyPromoCode = applyPromoCode;
-  window.confirmOrder = confirmOrder; window.openContactModal = openContactModal; window.closeContactModal = closeContactModal;
-  window.sendContact = sendContact; window.sendFooterMessage = sendFooterMessage;
+  window.setCategory = setCategory; window.filterProducts = filterProducts; window.changeQty = changeQty; window.removeItem = removeItem; window.addRoutine = addRoutine; window.openLightbox = openLightbox; window.closeLightbox = closeLightbox; window.addCurrentLightboxToCart = addCurrentLightboxToCart; window.openCart = openCart; window.closeCart = closeCart; window.openCheckout = openCheckout; window.closeCheckout = closeCheckout; window.applyPromoCode = applyPromoCode; window.confirmOrder = confirmOrder; window.openContactModal = openContactModal; window.closeContactModal = closeContactModal; window.sendContact = sendContact; window.sendFooterMessage = sendFooterMessage;
 </script>
 </body>
 </html>
