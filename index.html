@@ -663,7 +663,7 @@
     } else {
       let html = '';
       for (const item of cart) {
-        // Trouver le produit correspondant dans allProducts pour connaître le stock max
+        // Trouver le produit correspondant dans allProducts
         const product = allProducts.find(p => p.id == item.id || p.nom === item.name);
         const maxStock = product ? product.stock : 9999;
         html += `
@@ -673,10 +673,10 @@
               ${Number(item.price).toLocaleString()} FCFA
             </div>
             <div style="display:flex; align-items:center; gap:8px;">
-              <button onclick="changeQty(${item.id}, -1)" style="background:#eee; border:none; width:28px; border-radius:20px; cursor:pointer;">-</button>
-              <input type="number" id="qty-${item.id}" value="${item.qty}" min="1" max="${maxStock}" style="width:60px; text-align:center; border:1px solid #ddd; border-radius:8px; padding:4px;" onchange="updateQuantityFromInput(${item.id}, this.value)">
-              <button onclick="changeQty(${item.id}, 1)" style="background:#eee; border:none; width:28px; border-radius:20px; cursor:pointer;">+</button>
-              <button onclick="removeItem(${item.id})" style="background:none; border:none; color:#b00; cursor:pointer;">🗑️</button>
+              <button onclick="changeQty('${item.id}', -1)" style="background:#eee; border:none; width:28px; border-radius:20px; cursor:pointer;">-</button>
+              <input type="number" id="qty-${item.id.toString().replace(/[^a-zA-Z0-9]/g, '_')}" value="${item.qty}" min="1" max="${maxStock}" style="width:60px; text-align:center; border:1px solid #ddd; border-radius:8px; padding:4px;" onchange="updateQuantityFromInput('${item.id}', this.value)">
+              <button onclick="changeQty('${item.id}', 1)" style="background:#eee; border:none; width:28px; border-radius:20px; cursor:pointer;">+</button>
+              <button onclick="removeItem('${item.id}')" style="background:none; border:none; color:#b00; cursor:pointer;">🗑️</button>
             </div>
           </div>
         `;
@@ -698,7 +698,7 @@
     const maxStock = product ? product.stock : 9999;
     if (newQty > maxStock) {
       showToast(`❌ Stock insuffisant. Maximum disponible : ${maxStock}`);
-      document.getElementById(`qty-${id}`).value = item.qty;
+      document.getElementById(`qty-${id.toString().replace(/[^a-zA-Z0-9]/g, '_')}`).value = item.qty;
       return;
     }
     if (newQty < 1) newQty = 1;
@@ -745,8 +745,7 @@
 
   function addRoutine(name, price) {
     const routineId = Date.now();
-    // Pour les routines, on n'a pas de stock, on autorise
-    cart.push({ id: routineId, name: name, price: price, qty: 1 });
+    cart.push({ id: routineId.toString(), name: name, price: price, qty: 1 });
     saveCart();
     showToast(`${name} ajouté au panier`);
   }
