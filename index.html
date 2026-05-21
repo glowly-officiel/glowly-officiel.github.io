@@ -826,46 +826,50 @@
     const region = document.getElementById('checkoutRegion').value;
     const quartier = document.getElementById('checkoutQuartier').value.trim();
     if (!name || !phone || !quartier) {
-      showToast("Veuillez remplir tous les champs obligatoires (*)");
-      return;
+        showToast("Veuillez remplir tous les champs obligatoires (*)");
+        return;
     }
     const adresseComplete = `${quartier}, ${document.getElementById('checkoutAddress').value.trim()}, ${region}`;
     const paiement = document.getElementById('checkoutPayment').value;
+    
+    // ⭐ Générer un SEUL idVente pour toute la commande
+    const idVente = generateIdVente();
+    
     const lignes = cart.map(item => ({
-      idVente: generateIdVente(),
-      nomProduit: item.name,
-      quantite: item.qty,
-      prixTotalPaye: Math.round(item.price * item.qty),
-      telephone: phone,
-      nomClient: name,
-      adresse: adresseComplete,
-      paiement: paiement,
-      mentionPromo: promoReduction > 0 ? `Promo -${promoReduction} FCFA` : ""
+        idVente: idVente,  // même ID pour tous les produits
+        nomProduit: item.name,
+        quantite: item.qty,
+        prixTotalPaye: Math.round(item.price * item.qty),
+        telephone: phone,
+        nomClient: name,
+        adresse: adresseComplete,
+        paiement: paiement,
+        mentionPromo: promoReduction > 0 ? `Promo -${promoReduction} FCFA` : ""
     }));
-    // Convertir en GET avec paramètre data
+    
     const commandeJson = JSON.stringify(lignes);
     const url = `${SCRIPT_URL}?action=enregistrerCommande&data=${encodeURIComponent(commandeJson)}`;
     try {
-      const response = await fetch(url);
-      const data = await response.json();
-      if (data.ok) {
-        document.getElementById('orderSuccess').style.display = 'block';
-        cart = [];
-        promoReduction = 0;
-        saveCart();
-        setTimeout(() => {
-          document.getElementById('checkoutModal').classList.remove('open');
-          document.getElementById('orderSuccess').style.display = 'none';
-          showToast("✅ Commande confirmée ! Nous vous contacterons.");
-        }, 2000);
-      } else {
-        showToast("❌ Erreur : " + (data.error || "Réessayez"));
-      }
+        const response = await fetch(url);
+        const data = await response.json();
+        if (data.ok) {
+            document.getElementById('orderSuccess').style.display = 'block';
+            cart = [];
+            promoReduction = 0;
+            saveCart();
+            setTimeout(() => {
+                document.getElementById('checkoutModal').classList.remove('open');
+                document.getElementById('orderSuccess').style.display = 'none';
+                showToast("✅ Commande confirmée ! Nous vous contacterons.");
+            }, 2000);
+        } else {
+            showToast("❌ Erreur : " + (data.error || "Réessayez"));
+        }
     } catch (err) {
-      console.error("Erreur commande:", err);
-      showToast("❌ Erreur de connexion");
+        console.error("Erreur commande:", err);
+        showToast("❌ Erreur de connexion");
     }
-  }
+}
 
   // ========== CONTACT (en GET) ==========
   function openContactModal() {
