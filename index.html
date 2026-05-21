@@ -6,7 +6,7 @@
   <title>GLOWLY — Beauté Authentique</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
   <style>
-    /* ========== STYLES RACCOURCIS (conservés) ========== */
+    /* ========== STYLES ========== */
     * { margin:0; padding:0; box-sizing:border-box; }
     :root {
       --bg-beige: #FDF8F0; --surface: #FFFFFF; --border-beige: #EDE0D4;
@@ -111,6 +111,10 @@
     .card-body { padding: 16px; text-align: center; }
     .card-body h3 { font-size: 0.9rem; font-weight: 500; }
     .price { font-weight: 700; color: #C28B90; }
+    /* Badges de stock */
+    .badge-stock { margin-top: 8px; font-size: 0.75rem; font-weight: 500; }
+    .badge-stock.in-stock { color: #2E7D32; }
+    .badge-stock.out-stock { color: #D32F2F; font-weight: 600; }
     .testimonial-grid { display: grid; gap: 24px; max-width: 800px; margin: 0 auto; }
     @media (min-width: 640px) { .testimonial-grid { grid-template-columns: repeat(2, 1fr); } }
     .testimonial { background: white; padding: 28px; border-radius: 28px; border: 1px solid #F2E0D4; }
@@ -426,7 +430,7 @@
 <script>
   // ==================== CONFIGURATION ====================
   // ⚠️ REMPLACEZ CETTE URL PAR VOTRE URL APPS SCRIPT DÉPLOYÉE
-  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyIj1UMFWXpb3BW--Cmu3rH0n-BdV0gv8tRvD5ZqQvocEmewm25WTgKU15nf9oZR3DN/exec';
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzcp6FGLo3gg07Qh_FD3aSNMRckypC-tDqMKnK_RLb-3vtdwEpZ0j4MAo0xqStHaRQ/exec';
   
   let allProducts = [];
   let cart = [];
@@ -624,6 +628,7 @@
     renderProducts();
   }
 
+  // Modification cruciale : affichage du badge En stock / Rupture
   function renderProducts() {
     const grid = document.getElementById('productGrid');
     if (!grid) return;
@@ -634,17 +639,24 @@
       grid.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:40px;">Aucun produit trouvé</div>';
       return;
     }
-    grid.innerHTML = filtered.map(p => `
-      <div class="card" onclick='openLightbox(${JSON.stringify(p).replace(/'/g, "&#39;")})'>
-        <div class="card-img">
-          <img src="${p.img || 'https://placehold.co/400x400/FEF5ED/C28B90?text=Glowly'}" alt="${escapeHtml(p.nom)}" loading="lazy">
+    grid.innerHTML = filtered.map(p => {
+      const stockDispo = p.stock || 0;
+      const inStock = stockDispo > 0;
+      const badgeText = inStock ? '✓ En stock' : '⚠️ Rupture';
+      const badgeClass = inStock ? 'in-stock' : 'out-stock';
+      return `
+        <div class="card" onclick='openLightbox(${JSON.stringify(p).replace(/'/g, "&#39;")})'>
+          <div class="card-img">
+            <img src="${p.img || 'https://placehold.co/400x400/FEF5ED/C28B90?text=Glowly'}" alt="${escapeHtml(p.nom)}" loading="lazy">
+          </div>
+          <div class="card-body">
+            <h3>${escapeHtml(p.nom)}</h3>
+            <div class="price">${Number(p.prix).toLocaleString()} FCFA</div>
+            <div class="badge-stock ${badgeClass}">${badgeText}</div>
+          </div>
         </div>
-        <div class="card-body">
-          <h3>${escapeHtml(p.nom)}</h3>
-          <div class="price">${Number(p.prix).toLocaleString()} FCFA</div>
-        </div>
-      </div>
-    `).join('');
+      `;
+    }).join('');
   }
 
   // ========== PANIER AVEC VÉRIFICATION STOCK ==========
