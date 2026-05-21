@@ -6,7 +6,7 @@
   <title>GLOWLY — Beauté Authentique</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
   <style>
-    /* ========== TON CSS EXISTANT ========== */
+    /* ========== TON CSS EXISTANT (inchangé) ========== */
     * { margin:0; padding:0; box-sizing:border-box; }
     :root {
       --bg-beige: #FDF8F0;
@@ -301,7 +301,7 @@
       font-style: italic;
     }
 
-    /* AUTRES SECTIONS (science, boutique, témoignages, etc.) */
+    /* AUTRES SECTIONS */
     .science-section { background: #FDF4EF; padding: 60px 24px; }
     .science-flex {
       display: flex;
@@ -387,7 +387,7 @@
     .contact-form input, .contact-form textarea { width: 100%; padding: 12px; margin-bottom: 12px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 40px; }
     .contact-form button { background: var(--gold-dore); border: none; padding: 12px; width: 100%; border-radius: 40px; font-weight: 600; color: #2E211B; cursor: pointer; }
 
-    /* LIGHTBOX AVEC CARROUSEL (3 IMAGES) */
+    /* LIGHTBOX AVEC CARROUSEL */
     .overlay {
       position: fixed;
       inset: 0;
@@ -560,9 +560,9 @@
       }
     }
 
-    /* Autres overlays (panier, checkout, contact) */
+    /* Autres overlays */
     .cart-panel {
-      position: absolute;
+      position: fixed;
       right: 0;
       top: 0;
       bottom: 0;
@@ -573,8 +573,11 @@
       flex-direction: column;
       transform: translateX(100%);
       transition: transform 0.35s ease;
+      z-index: 2001;
     }
-    .overlay.open .cart-panel { transform: translateX(0); }
+    .cart-panel.open {
+      transform: translateX(0);
+    }
     .modal-card {
       background: white;
       border-radius: 32px;
@@ -648,7 +651,7 @@
   <div class="bestsellers-container" id="bestsellersContainer"></div>
 </section>
 
-<!-- SECTION POURQUOI NOS FORMULES (ANIMÉE) -->
+<!-- SECTION POURQUOI NOS FORMULES -->
 <section class="science-section">
   <h2 class="section-title">Pourquoi nos formules ?</h2>
   <div class="science-flex" id="scienceFlex">
@@ -670,7 +673,7 @@
   </div>
 </section>
 
-<!-- ========== SECTION BOUTIQUE ========== -->
+<!-- SECTION BOUTIQUE -->
 <div class="section" id="catalogue">
   <h2 class="section-title">Boutique</h2>
   <div style="max-width: 400px; margin: 0 auto 30px;"><input type="text" id="searchInput" placeholder="🔍 Rechercher un produit..." style="width:100%; padding:12px 20px; border-radius:50px; border:1px solid var(--border-beige);"></div>
@@ -678,7 +681,7 @@
   <div id="productGrid" class="product-grid"><div class="loader">Chargement des produits...</div></div>
 </div>
 
-<!-- ========== SECTION COACHING / DIAGNOSTIC BEAUTÉ ========== -->
+<!-- SECTION COACHING / DIAGNOSTIC BEAUTÉ -->
 <div id="coaching" style="scroll-margin-top: 80px;"></div>
 <section class="coaching-section">
   <h2 class="section-title">Coaching skin care</h2>
@@ -709,7 +712,7 @@
   </div>
 </section>
 
-<!-- ========== SECTION NOTRE HISTOIRE ========== -->
+<!-- SECTION NOTRE HISTOIRE -->
 <div id="histoire" style="scroll-margin-top: 80px;"></div>
 <section class="histoire-section">
   <div class="histoire-container">
@@ -742,7 +745,7 @@
   <p style="text-align:center; margin-top:30px; font-size:11px;">© 2026 Glowly — Tous droits réservés.</p>
 </footer>
 
-<!-- LIGHTBOX AVEC CARROUSEL POUR 3 IMAGES -->
+<!-- LIGHTBOX AVEC CARROUSEL -->
 <div id="lightboxOverlay" class="overlay" onclick="closeLightbox(event)">
   <button class="lightbox-close" onclick="closeLightbox()">✕</button>
   <div class="lightbox-container" onclick="event.stopPropagation()">
@@ -761,7 +764,7 @@
   </div>
 </div>
 
-<!-- AUTRES MODALS (panier, checkout, contact) -->
+<!-- AUTRES MODALS -->
 <div id="cartOverlay" class="overlay" onclick="closeCart(event)">
   <div id="cartPanel" class="cart-panel" onclick="event.stopPropagation()">
     <div style="padding:24px; border-bottom:1px solid var(--border-beige); display:flex; justify-content:space-between;"><h3>Panier</h3><button onclick="closeCart(null,true)" style="background:none; border:none; font-size:20px;">✕</button></div>
@@ -804,10 +807,12 @@
 
 <script>
   // ======================== CONFIGURATION ========================
-  // L'URL de ton script GAS
-  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxWv0XTvra6QTVfj4AaQMGHZYOxiPmC5TqK8T-V5UId6UBs5IHpGaOiC0rrPlMiSvgD/exec';
+  // ⚠️ REMPLACEZ CETTE URL PAR L'URL DE VOTRE SCRIPT GOOGLE APPS SCRIPT ⚠️
+  // Pour obtenir l'URL : Déployer > Nouveau déploiement > Type : Application Web > Exécuter en tant que : Moi > Qui a accès : N'importe qui
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw6P3Zv-bmyoWDlVQkXo0ydS6G9zAmKtEZhS6CGdgoUvU9Rb-um_xENQdExDVTp5Jy3/exec';
   
-  // Proxy CORS fiable pour les requêtes GET
+  // Pour le développement local, on utilise un proxy. En production avec GitHub Pages, on utilise un CORS proxy fiable
+  const USE_PROXY = true; // Mettre à false une fois le script déployé avec CORS correctement configuré
   const PROXY_URL = 'https://api.allorigins.win/raw?url=';
 
   let allProducts = [];
@@ -828,24 +833,64 @@
     setTimeout(() => t.classList.remove('show'), 2500);
   }
 
-  // ========== BACKEND (GET avec proxy, POST direct) ==========
+  // ========== REQUÊTES HTTP (avec gestion CORS) ==========
+  async function fetchFromAPI(action, params = {}, method = 'GET', body = null) {
+    let url = `${SCRIPT_URL}?action=${action}`;
+    
+    for (const [key, value] of Object.entries(params)) {
+      url += `&${encodeURIComponent(key)}=${encodeURIComponent(value)}`;
+    }
+    
+    const options = {
+      method: method,
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    };
+    
+    if (body && method === 'POST') {
+      options.body = JSON.stringify(body);
+    }
+    
+    try {
+      let fetchUrl = url;
+      if (USE_PROXY && method === 'GET') {
+        fetchUrl = PROXY_URL + encodeURIComponent(url);
+      }
+      
+      const response = await fetch(fetchUrl, options);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      return data;
+    } catch (err) {
+      console.error(`Erreur API (${action}):`, err);
+      throw err;
+    }
+  }
+
+  // ========== BACKEND ==========
   async function chargerProduits() {
     try {
-      // Utilisation du proxy pour contourner le CORS
-      const proxyUrl = PROXY_URL + encodeURIComponent(SCRIPT_URL + '?action=produits');
-      const response = await fetch(proxyUrl);
-      const data = await response.json();
+      const data = await fetchFromAPI('produits');
       if (data.ok && data.produits) {
         allProducts = data.produits;
+        showToast(`${allProducts.length} produits chargés`);
       } else {
-        throw new Error("Aucun produit");
+        throw new Error(data.error || "Aucun produit");
       }
     } catch (err) {
       console.error(err);
       showToast("Erreur chargement produits, affichage par défaut");
       allProducts = [
         { id: 1, nom: "Savon Curcuma", prix: 8500, img: "https://images.unsplash.com/photo-1600857062241-98e5dba7f214?w=400&q=80", cat: "Nettoyants", desc: "Purifie et éclaire" },
-        { id: 2, nom: "Toner Glycolique", prix: 12500, img: "https://images.unsplash.com/photo-1620916566390-22f5e7abca7e?w=400&q=80", cat: "Toners", desc: "Exfoliation douce" }
+        { id: 2, nom: "Toner Glycolique", prix: 12500, img: "https://images.unsplash.com/photo-1620916566390-22f5e7abca7e?w=400&q=80", cat: "Toners", desc: "Exfoliation douce" },
+        { id: 3, nom: "Sérum Vitamine C", prix: 18500, img: "https://images.unsplash.com/photo-1620916566390-22f5e7abca7e?w=400&q=80", cat: "Sérums", desc: "Anti-taches, éclat instantané" },
+        { id: 4, nom: "Crème Hydratante", prix: 15000, img: "https://images.unsplash.com/photo-1620916566390-22f5e7abca7e?w=400&q=80", cat: "Crèmes", desc: "Hydratation intense" }
       ];
     }
     renderCategories();
@@ -858,9 +903,7 @@
     if (!container) return;
     container.innerHTML = '<div class="loader">Chargement...</div>';
     try {
-      const proxyUrl = PROXY_URL + encodeURIComponent(SCRIPT_URL + '?action=bestsellers');
-      const response = await fetch(proxyUrl);
-      const data = await response.json();
+      const data = await fetchFromAPI('bestsellers');
       if (data.ok && data.bestsellers && data.bestsellers.length) {
         let html = '';
         data.bestsellers.forEach((prod, idx) => {
@@ -888,10 +931,7 @@
 
   async function verifierCodePromo(code, productNames) {
     try {
-      const url = `${SCRIPT_URL}?action=verifierPromo&code=${encodeURIComponent(code)}&produits=${encodeURIComponent(productNames.join(','))}`;
-      const proxyUrl = PROXY_URL + encodeURIComponent(url);
-      const response = await fetch(proxyUrl);
-      const data = await response.json();
+      const data = await fetchFromAPI('verifierPromo', { code: code, produits: productNames.join(',') });
       if (data.ok && data.reduction) {
         promoReduction = data.reduction;
         document.getElementById('promoMsg').innerText = `✅ Réduction ${promoReduction} FCFA`;
@@ -906,11 +946,15 @@
     }
   }
 
-  // ========== ENVOI CONTACT / COMMANDE (POST sans en-tête) ==========
+  // ========== ENVOI CONTACT / COMMANDE ==========
   async function envoyerContactBackend(nom, telephone, message) {
     try {
       const response = await fetch(SCRIPT_URL, {
         method: 'POST',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify({ action: "envoyerContact", nom, telephone, message })
       });
       const data = await response.json();
@@ -925,6 +969,10 @@
     try {
       const response = await fetch(SCRIPT_URL, {
         method: 'POST',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify(lignes)
       });
       const data = await response.json();
@@ -935,7 +983,7 @@
     }
   }
 
-  // ========== FONCTIONS UI (inchangées) ==========
+  // ========== FONCTIONS UI ==========
   function renderCategories() {
     const cats = [...new Set(allProducts.map(p => p.cat).filter(c => c))];
     const bar = document.getElementById('catBar');
@@ -1004,7 +1052,12 @@
     saveCart();
     showToast(`${escapeHtml(product.nom)} ajouté`);
   }
-  function addRoutine(name, price) { cart.push({ id: Date.now(), name, price, qty: 1 }); saveCart(); showToast(`${escapeHtml(name)} ajouté`); }
+  function addRoutine(name, price) { 
+    const newId = Date.now();
+    cart.push({ id: newId, name: name, price: price, qty: 1 }); 
+    saveCart(); 
+    showToast(`${escapeHtml(name)} ajouté`); 
+  }
 
   // Lightbox
   function openLightbox(product) {
@@ -1024,24 +1077,55 @@
   function closeLightbox(e) { if (e && e.target !== e.currentTarget) return; document.getElementById('lightboxOverlay').classList.remove('open'); }
   function addCurrentLightboxToCart() { if (currentLightboxProduct) addToCart(currentLightboxProduct); closeLightbox(); }
 
-  function openCart() { document.getElementById('cartOverlay').classList.add('open'); }
-  function closeCart(e, force) { if (force || (e && e.target === document.getElementById('cartOverlay'))) document.getElementById('cartOverlay').classList.remove('open'); }
-  function applyPromoCode() { const code = document.getElementById('promoCode').value.trim(); if (!code) return; verifierCodePromo(code, cart.map(i => i.name)); }
+  function openCart() { 
+    document.getElementById('cartOverlay').classList.add('open');
+    document.getElementById('cartPanel').classList.add('open');
+  }
+  function closeCart(e, force) { 
+    if (force || (e && e.target === document.getElementById('cartOverlay'))) {
+      document.getElementById('cartOverlay').classList.remove('open');
+      document.getElementById('cartPanel').classList.remove('open');
+    }
+  }
+  function applyPromoCode() { 
+    const code = document.getElementById('promoCode').value.trim(); 
+    if (!code) {
+      showToast("Entrez un code promo");
+      return;
+    }
+    verifierCodePromo(code, cart.map(i => i.name)); 
+  }
   function updateOrderSummary() {
     const subtotal = cart.reduce((s,i) => s + i.price * i.qty, 0);
     const total = subtotal - promoReduction;
     document.getElementById('orderSummary').innerHTML = cart.map(i => `${escapeHtml(i.name)} x${i.qty} : ${(i.price*i.qty).toLocaleString()} FCFA`).join('<br>') + `<br><strong>Sous-total : ${subtotal.toLocaleString()} FCFA</strong><br>Réduction : -${promoReduction.toLocaleString()} FCFA<br><strong>Total : ${total > 0 ? total.toLocaleString() : 0} FCFA</strong>`;
   }
-  function openCheckout() { if (!cart.length) { showToast("Panier vide"); return; } updateOrderSummary(); document.getElementById('checkoutModal').classList.add('open'); }
-  function closeCheckout(e) { if (e.target === document.getElementById('checkoutModal')) document.getElementById('checkoutModal').classList.remove('open'); }
-  function generateIdVente() { return "GLW-" + Date.now() + "-" + Math.floor(Math.random() * 10000); }
+  function openCheckout() { 
+    if (!cart.length) { 
+      showToast("Panier vide"); 
+      return; 
+    } 
+    updateOrderSummary(); 
+    document.getElementById('checkoutModal').classList.add('open'); 
+  }
+  function closeCheckout(e) { 
+    if (e.target === document.getElementById('checkoutModal')) 
+      document.getElementById('checkoutModal').classList.remove('open'); 
+  }
+  function generateIdVente() { 
+    return "GLW-" + Date.now() + "-" + Math.floor(Math.random() * 10000); 
+  }
   async function confirmOrder() {
     const name = document.getElementById('checkoutName').value.trim();
     const phone = document.getElementById('checkoutPhone').value.trim();
     const quartier = document.getElementById('checkoutQuartier').value.trim();
-    if (!name || !phone || !quartier) { showToast("Veuillez remplir tous les champs obligatoires (*)"); return; }
+    if (!name || !phone || !quartier) { 
+      showToast("Veuillez remplir tous les champs obligatoires (*)"); 
+      return; 
+    }
     const adresseComplete = `${quartier}, ${document.getElementById('checkoutAddress').value.trim()}, ${document.getElementById('checkoutRegion').value}`;
     const paiement = document.getElementById('checkoutPayment').value;
+    
     const lignes = cart.map(item => ({
       idVente: generateIdVente(),
       nomProduit: item.name,
@@ -1053,7 +1137,13 @@
       paiement: paiement,
       mentionPromo: promoReduction > 0 ? `Promo -${promoReduction} FCFA` : ""
     }));
+    
+    const btn = event.target;
+    btn.disabled = true;
+    btn.innerText = "Envoi en cours...";
+    
     const ok = await envoyerCommande(lignes);
+    
     if (ok) {
       document.getElementById('orderSuccess').style.display = 'block';
       cart = [];
@@ -1063,9 +1153,13 @@
         document.getElementById('checkoutModal').classList.remove('open');
         document.getElementById('orderSuccess').style.display = 'none';
         showToast("Commande confirmée !");
+        btn.disabled = false;
+        btn.innerText = "Confirmer la commande";
       }, 2000);
     } else {
-      showToast("Erreur lors de l'envoi, mais nous avons bien reçu votre commande (vérifiez vos notifications)");
+      showToast("Erreur lors de l'envoi, veuillez réessayer");
+      btn.disabled = false;
+      btn.innerText = "Confirmer la commande";
     }
   }
 
@@ -1087,6 +1181,11 @@
     const tel = document.getElementById('contactPhone').value.trim();
     const msg = document.getElementById('contactMessage').value.trim();
     if (!nom || !tel) { showToast("Merci de remplir nom et téléphone"); return; }
+    
+    const btn = document.getElementById('sendContactBtn');
+    btn.disabled = true;
+    btn.innerText = "Envoi...";
+    
     const success = await envoyerContactBackend(nom, tel, msg);
     if (success) {
       document.getElementById('contactAck').style.display = 'block';
@@ -1097,9 +1196,13 @@
         document.getElementById('contactPhone').value = '';
         document.getElementById('contactMessage').value = '';
         showToast("Message envoyé !");
+        btn.disabled = false;
+        btn.innerText = "Envoyer";
       }, 1200);
     } else {
-      showToast("Erreur d'envoi, mais votre message a probablement été reçu (vérifiez Telegram)");
+      showToast("Erreur d'envoi, veuillez réessayer");
+      btn.disabled = false;
+      btn.innerText = "Envoyer";
     }
   }
   async function sendFooterMessage() {
@@ -1109,7 +1212,7 @@
     if (!nom || !tel) { showToast("Merci nom et WhatsApp"); return; }
     const success = await envoyerContactBackend(nom, tel, msg);
     if (success) showToast(`Merci ${nom}, nous vous répondons.`);
-    else showToast("Erreur, mais nous avons bien reçu votre message");
+    else showToast("Erreur, veuillez réessayer");
     document.getElementById('footerName').value = '';
     document.getElementById('footerPhone').value = '';
     document.getElementById('footerMsg').value = '';
@@ -1127,7 +1230,7 @@
         const div = document.createElement('div');
         div.className = 'carousel-item';
         div.onclick = () => openLightbox(prod);
-        div.innerHTML = `<div class="carousel-item-img"><img src="${prod.img || 'https://placehold.co/400x400/FEF5ED/C28B90?text=Image'}" loading="lazy"></div><div class="carousel-item-name">${escapeHtml(prod.nom)}</div>`;
+        div.innerHTML = `<div class="carousel-item-img"><img src="${prod.img || 'https://placehold.co/400x400/FEF5ED/C28B90?text=Image'}" loading="lazy" onerror="this.src='https://placehold.co/400x400/FEF5ED/C28B90?text=Image'"></div><div class="carousel-item-name">${escapeHtml(prod.nom)}</div>`;
         carouselTrack.appendChild(div);
       });
     }
@@ -1148,9 +1251,51 @@
   }
 
   function getRecommendations() {
-    showToast("Fonctionnalité recommandation à compléter");
+    const skinType = document.getElementById('skinType').value;
+    const skinConcern = document.getElementById('skinConcern').value;
+    
+    // Algorithme simple de recommandation basé sur les données
+    let recommendations = [];
+    
+    if (skinConcern === 'taches') {
+      recommendations = allProducts.filter(p => 
+        p.nom.toLowerCase().includes('vitamine c') || 
+        p.nom.toLowerCase().includes('curcuma') ||
+        p.cat === 'Sérums'
+      );
+    } else if (skinConcern === 'secheresse') {
+      recommendations = allProducts.filter(p => 
+        p.nom.toLowerCase().includes('hydratant') || 
+        p.nom.toLowerCase().includes('crème')
+      );
+    } else if (skinConcern === 'acne') {
+      recommendations = allProducts.filter(p => 
+        p.nom.toLowerCase().includes('purifiant') || 
+        p.nom.toLowerCase().includes('nettoyant') ||
+        p.cat === 'Nettoyants'
+      );
+    } else {
+      recommendations = allProducts.slice(0, 3);
+    }
+    
+    const recDiv = document.getElementById('recommendations');
+    if (recommendations.length === 0) {
+      recDiv.innerHTML = '<div class="loader">Aucune recommandation pour le moment</div>';
+      return;
+    }
+    
+    recDiv.innerHTML = recommendations.slice(0, 4).map(prod => `
+      <div class="rec-card" onclick="openLightbox(${JSON.stringify(prod).replace(/'/g, "&#39;")})">
+        <div class="rec-img" style="background-image: url('${prod.img || 'https://placehold.co/400x400/FEF5ED/C28B90?text=Glowly'}');"></div>
+        <div class="rec-info">
+          <h4>${escapeHtml(prod.nom)}</h4>
+          <div class="rec-price">${Number(prod.prix).toLocaleString()} FCFA</div>
+        </div>
+      </div>
+    `).join('');
   }
 
+  // Initialisation
   window.addEventListener('load', () => {
     loadCart();
     chargerProduits();
@@ -1162,12 +1307,26 @@
   });
 
   // Exposer les fonctions globales
-  window.setCategory = setCategory; window.filterProducts = filterProducts; window.changeQty = changeQty; window.removeItem = removeItem;
-  window.addRoutine = addRoutine; window.openLightbox = openLightbox; window.closeLightbox = closeLightbox;
-  window.addCurrentLightboxToCart = addCurrentLightboxToCart; window.openCart = openCart; window.closeCart = closeCart;
-  window.openCheckout = openCheckout; window.closeCheckout = closeCheckout; window.applyPromoCode = applyPromoCode;
-  window.confirmOrder = confirmOrder; window.openContactModal = openContactModal; window.closeContactModal = closeContactModal;
-  window.sendContact = sendContact; window.sendFooterMessage = sendFooterMessage;
+  window.setCategory = setCategory;
+  window.filterProducts = filterProducts;
+  window.changeQty = changeQty;
+  window.removeItem = removeItem;
+  window.addRoutine = addRoutine;
+  window.openLightbox = openLightbox;
+  window.closeLightbox = closeLightbox;
+  window.addCurrentLightboxToCart = addCurrentLightboxToCart;
+  window.openCart = openCart;
+  window.closeCart = closeCart;
+  window.openCheckout = openCheckout;
+  window.closeCheckout = closeCheckout;
+  window.applyPromoCode = applyPromoCode;
+  window.confirmOrder = confirmOrder;
+  window.openContactModal = openContactModal;
+  window.closeContactModal = closeContactModal;
+  window.sendContact = sendContact;
+  window.sendFooterMessage = sendFooterMessage;
+  window.prevLightboxImage = prevLightboxImage;
+  window.nextLightboxImage = nextLightboxImage;
 </script>
 </body>
 </html>
