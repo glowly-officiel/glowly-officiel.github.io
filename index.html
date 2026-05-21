@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
   <title>GLOWLY — Beauté Authentique</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
   <style>
@@ -638,7 +638,7 @@
     `).join('');
   }
 
-  // ========== PANIER (avec gestion des quantités et stock) ==========
+  // ========== PANIER (avec gestion stricte des quantités) ==========
   function saveCart() {
     localStorage.setItem('glowly_cart', JSON.stringify(cart));
     updateCartUI();
@@ -663,9 +663,9 @@
     } else {
       let html = '';
       for (const item of cart) {
-        // Trouver le produit correspondant dans allProducts
         const product = allProducts.find(p => p.id == item.id || p.nom === item.name);
         const maxStock = product ? product.stock : 9999;
+        const safeId = item.id.toString().replace(/[^a-zA-Z0-9]/g, '_');
         html += `
           <div style="display:flex; justify-content:space-between; margin-bottom:16px; border-bottom:1px solid #eee; padding-bottom:8px;">
             <div style="flex:2;">
@@ -674,7 +674,7 @@
             </div>
             <div style="display:flex; align-items:center; gap:8px;">
               <button onclick="changeQty('${item.id}', -1)" style="background:#eee; border:none; width:28px; border-radius:20px; cursor:pointer;">-</button>
-              <input type="number" id="qty-${item.id.toString().replace(/[^a-zA-Z0-9]/g, '_')}" value="${item.qty}" min="1" max="${maxStock}" style="width:60px; text-align:center; border:1px solid #ddd; border-radius:8px; padding:4px;" onchange="updateQuantityFromInput('${item.id}', this.value)">
+              <input type="number" id="qty-${safeId}" value="${item.qty}" min="1" max="${maxStock}" style="width:60px; text-align:center; border:1px solid #ddd; border-radius:8px; padding:4px;" onchange="updateQuantityFromInput('${item.id}', this.value)">
               <button onclick="changeQty('${item.id}', 1)" style="background:#eee; border:none; width:28px; border-radius:20px; cursor:pointer;">+</button>
               <button onclick="removeItem('${item.id}')" style="background:none; border:none; color:#b00; cursor:pointer;">🗑️</button>
             </div>
@@ -698,7 +698,8 @@
     const maxStock = product ? product.stock : 9999;
     if (newQty > maxStock) {
       showToast(`❌ Stock insuffisant. Maximum disponible : ${maxStock}`);
-      document.getElementById(`qty-${id.toString().replace(/[^a-zA-Z0-9]/g, '_')}`).value = item.qty;
+      const safeId = id.toString().replace(/[^a-zA-Z0-9]/g, '_');
+      document.getElementById(`qty-${safeId}`).value = item.qty;
       return;
     }
     if (newQty < 1) newQty = 1;
