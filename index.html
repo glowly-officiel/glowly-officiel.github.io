@@ -431,7 +431,6 @@
 
 <script>
   // ==================== CONFIGURATION ====================
-  // ⚠️ REMPLACEZ CETTE URL PAR VOTRE URL APPS SCRIPT DÉPLOYÉE ⚠️
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxxwQ0dybmPG-fN2ShVU2EMc8UI4I01d6nCi3owFoERyBAiD1hFaRtCZysKCpYN6dUj/exec';
   
   let allProducts = [];
@@ -639,7 +638,7 @@
     `).join('');
   }
 
-  // ========== PANIER ==========
+  // ========== PANIER (avec gestion des quantités et stock) ==========
   function saveCart() {
     localStorage.setItem('glowly_cart', JSON.stringify(cart));
     updateCartUI();
@@ -662,20 +661,27 @@
       container.innerHTML = '<div style="text-align:center; padding:30px;">Panier vide</div>';
       footer.style.display = 'none';
     } else {
-      container.innerHTML = cart.map(item => `
-        <div style="display:flex; justify-content:space-between; margin-bottom:16px; border-bottom:1px solid #eee; padding-bottom:8px;">
-          <div>
-            <strong>${escapeHtml(item.name)}</strong><br>
-            ${Number(item.price).toLocaleString()} FCFA x ${item.qty}
+      let html = '';
+      for (const item of cart) {
+        // Trouver le produit correspondant dans allProducts pour connaître le stock max
+        const product = allProducts.find(p => p.id == item.id || p.nom === item.name);
+        const maxStock = product ? product.stock : 9999;
+        html += `
+          <div style="display:flex; justify-content:space-between; margin-bottom:16px; border-bottom:1px solid #eee; padding-bottom:8px;">
+            <div style="flex:2;">
+              <strong>${escapeHtml(item.name)}</strong><br>
+              ${Number(item.price).toLocaleString()} FCFA
+            </div>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <button onclick="changeQty(${item.id}, -1)" style="background:#eee; border:none; width:28px; border-radius:20px; cursor:pointer;">-</button>
+              <input type="number" id="qty-${item.id}" value="${item.qty}" min="1" max="${maxStock}" style="width:60px; text-align:center; border:1px solid #ddd; border-radius:8px; padding:4px;" onchange="updateQuantityFromInput(${item.id}, this.value)">
+              <button onclick="changeQty(${item.id}, 1)" style="background:#eee; border:none; width:28px; border-radius:20px; cursor:pointer;">+</button>
+              <button onclick="removeItem(${item.id})" style="background:none; border:none; color:#b00; cursor:pointer;">🗑️</button>
+            </div>
           </div>
-          <div>
-            <button onclick="changeQty(${item.id}, -1)" style="background:#eee; border:none; width:28px; border-radius:20px; cursor:pointer;">-</button>
-            <span style="margin:0 6px;">${item.qty}</span>
-            <button onclick="changeQty(${item.id}, 1)" style="background:#eee; border:none; width:28px; border-radius:20px; cursor:pointer;">+</button>
-            <button onclick="removeItem(${item.id})" style="background:none; border:none; color:#b00; cursor:pointer;">🗑️</button>
-          </div>
-        </div>
-      `).join('');
+        `;
+      }
+      container.innerHTML = html;
       footer.style.display = 'block';
       const subtotal = cart.reduce((s, i) => s + (i.price * i.qty), 0);
       const total = subtotal - promoReduction;
@@ -683,11 +689,35 @@
     }
   }
 
+  function updateQuantityFromInput(id, newQtyStr) {
+    let newQty = parseInt(newQtyStr, 10);
+    if (isNaN(newQty)) newQty = 1;
+    const item = cart.find(i => i.id == id);
+    if (!item) return;
+    const product = allProducts.find(p => p.id == item.id || p.nom === item.name);
+    const maxStock = product ? product.stock : 9999;
+    if (newQty > maxStock) {
+      showToast(`❌ Stock insuffisant. Maximum disponible : ${maxStock}`);
+      document.getElementById(`qty-${id}`).value = item.qty;
+      return;
+    }
+    if (newQty < 1) newQty = 1;
+    item.qty = newQty;
+    saveCart();
+  }
+
   function changeQty(id, delta) {
     const idx = cart.findIndex(i => i.id == id);
     if (idx !== -1) {
-      cart[idx].qty += delta;
-      if (cart[idx].qty <= 0) cart.splice(idx, 1);
+      let newQty = cart[idx].qty + delta;
+      const product = allProducts.find(p => p.id == cart[idx].id || p.nom === cart[idx].name);
+      const maxStock = product ? product.stock : 9999;
+      if (newQty > maxStock) {
+        showToast(`❌ Stock insuffisant. Maximum : ${maxStock}`);
+        return;
+      }
+      if (newQty < 1) newQty = 1;
+      cart[idx].qty = newQty;
       saveCart();
     }
   }
@@ -699,14 +729,23 @@
 
   function addToCart(product) {
     const existing = cart.find(i => i.id == product.id);
-    if (existing) existing.qty++;
-    else cart.push({ id: product.id, name: product.nom, price: product.prix, qty: 1 });
+    const maxStock = product.stock || 0;
+    if (existing) {
+      if (existing.qty + 1 > maxStock) {
+        showToast(`❌ Stock insuffisant. Maximum : ${maxStock}`);
+        return;
+      }
+      existing.qty++;
+    } else {
+      cart.push({ id: product.id, name: product.nom, price: product.prix, qty: 1 });
+    }
     saveCart();
     showToast(`${product.nom} ajouté au panier`);
   }
 
   function addRoutine(name, price) {
     const routineId = Date.now();
+    // Pour les routines, on n'a pas de stock, on autorise
     cart.push({ id: routineId, name: name, price: price, qty: 1 });
     saveCart();
     showToast(`${name} ajouté au panier`);
@@ -832,11 +871,9 @@
     const adresseComplete = `${quartier}, ${document.getElementById('checkoutAddress').value.trim()}, ${region}`;
     const paiement = document.getElementById('checkoutPayment').value;
     
-    // ⭐ Générer un SEUL idVente pour toute la commande
     const idVente = generateIdVente();
-    
     const lignes = cart.map(item => ({
-        idVente: idVente,  // même ID pour tous les produits
+        idVente: idVente,
         nomProduit: item.name,
         quantite: item.qty,
         prixTotalPaye: Math.round(item.price * item.qty),
@@ -846,7 +883,6 @@
         paiement: paiement,
         mentionPromo: promoReduction > 0 ? `Promo -${promoReduction} FCFA` : ""
     }));
-    
     const commandeJson = JSON.stringify(lignes);
     const url = `${SCRIPT_URL}?action=enregistrerCommande&data=${encodeURIComponent(commandeJson)}`;
     try {
@@ -869,7 +905,7 @@
         console.error("Erreur commande:", err);
         showToast("❌ Erreur de connexion");
     }
-}
+  }
 
   // ========== CONTACT (en GET) ==========
   function openContactModal() {
