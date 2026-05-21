@@ -1180,7 +1180,56 @@
 
   function openContactModal() { document.getElementById('contactModal').classList.add('open'); }
   function closeContactModal(e) { if (e.target === document.getElementById('contactModal')) document.getElementById('contactModal').classList.remove('open'); }
-  function sendContact() { const nom = document.getElementById('contactName').value.trim(); const tel = document.getElementById('contactPhone').value.trim(); if (!nom || !tel) { showToast("Merci de remplir nom et téléphone"); return; } document.getElementById('contactAck').style.display = 'block'; setTimeout(() => { document.getElementById('contactAck').style.display = 'none'; document.getElementById('contactModal').classList.remove('open'); showToast("Message envoyé !"); }, 1200); }
+  async function sendContact() { 
+    const nom = document.getElementById('contactName').value.trim(); 
+    const tel = document.getElementById('contactPhone').value.trim(); 
+    const msg = document.getElementById('contactMessage').value.trim();
+    
+    if (!nom || !tel) { 
+        showToast("Merci de remplir nom et téléphone"); 
+        return; 
+    }
+    
+    const btn = document.querySelector('#contactModal .btn-brown');
+    const originalText = btn.innerText;
+    btn.disabled = true;
+    btn.innerText = "Envoi en cours...";
+    
+    try {
+        const response = await fetch(SCRIPT_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                action: "envoyerContact", 
+                nom: nom, 
+                telephone: tel, 
+                message: msg || "Aucun message"
+            })
+        });
+        
+        const data = await response.json();
+        
+        if (data && data.ok) {
+            document.getElementById('contactAck').style.display = 'block';
+            setTimeout(() => { 
+                document.getElementById('contactAck').style.display = 'none'; 
+                document.getElementById('contactModal').classList.remove('open'); 
+                document.getElementById('contactName').value = '';
+                document.getElementById('contactPhone').value = '';
+                document.getElementById('contactMessage').value = '';
+                showToast("Message envoyé avec succès !"); 
+            }, 1200);
+        } else {
+            showToast("Erreur d'envoi: " + (data.error || "Veuillez réessayer"));
+        }
+    } catch (err) {
+        console.error("Erreur:", err);
+        showToast("Erreur de connexion, veuillez réessayer");
+    } finally {
+        btn.disabled = false;
+        btn.innerText = originalText;
+    }
+}
   function sendFooterMessage() { const nom = document.getElementById('footerName').value.trim(); const tel = document.getElementById('footerPhone').value.trim(); if (!nom || !tel) { showToast("Merci nom et WhatsApp"); return; } showToast(`Merci ${nom}, nous vous répondons.`); document.getElementById('footerName').value = ''; document.getElementById('footerPhone').value = ''; document.getElementById('footerMsg').value = ''; }
 
   window.addEventListener('load', () => {
