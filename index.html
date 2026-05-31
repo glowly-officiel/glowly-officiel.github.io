@@ -433,7 +433,7 @@
   
   let allProducts = [];
   let cart = [];
-  let promoReduction = 0;
+  let promoPercentage = 0;        // ✅ Pourcentage stocké (ex: 20)
   let currentLightboxProduct = null;
   let currentLightboxImages = [];
   let currentLightboxIndex = 0;
@@ -701,7 +701,8 @@
       container.innerHTML = html;
       footer.style.display = 'block';
       const subtotal = cart.reduce((s, i) => s + (i.price * i.qty), 0);
-      const total = subtotal - promoReduction;
+      const reduction = (subtotal * promoPercentage) / 100;
+      const total = subtotal - reduction;
       document.getElementById('cartTotal').innerText = (total > 0 ? total : 0).toLocaleString() + ' FCFA';
     }
   }
@@ -829,7 +830,7 @@
     }
   }
 
-  // ========== CODE PROMO ==========
+  // ========== CODE PROMO (CORRECTION POURCENTAGE) ==========
   async function applyPromoCode() {
     const code = document.getElementById('promoCode').value.trim();
     if (!code) {
@@ -842,15 +843,16 @@
       const response = await fetch(url);
       const data = await response.json();
       if (data.ok && data.reduction > 0) {
-        promoReduction = data.reduction;
-        document.getElementById('promoMsg').innerText = `✅ Réduction ${promoReduction} FCFA appliquée !`;
+        promoPercentage = data.reduction;   // ✅ stocke le pourcentage (ex: 20)
+        document.getElementById('promoMsg').innerHTML = `✅ Réduction ${promoPercentage}% appliquée !`;
         document.getElementById('promoMsg').style.color = '#2E7D32';
       } else {
-        promoReduction = 0;
-        document.getElementById('promoMsg').innerText = "❌ Code invalide";
+        promoPercentage = 0;
+        document.getElementById('promoMsg').innerHTML = "❌ Code invalide";
         document.getElementById('promoMsg').style.color = '#b00';
       }
       updateOrderSummary();
+      updateCartUI();   // met à jour le total dans le panier
     } catch (err) {
       console.error("Erreur promo:", err);
       showToast("Erreur vérification code promo");
@@ -860,12 +862,13 @@
   // ========== CHECKOUT ==========
   function updateOrderSummary() {
     const subtotal = cart.reduce((s, i) => s + (i.price * i.qty), 0);
-    const total = subtotal - promoReduction;
+    const reduction = (subtotal * promoPercentage) / 100;
+    const total = subtotal - reduction;
     document.getElementById('orderSummary').innerHTML = cart.map(i => 
       `${escapeHtml(i.name)} x${i.qty} : ${(i.price * i.qty).toLocaleString()} FCFA`
     ).join('<br>') + 
     `<br><strong>Sous-total : ${subtotal.toLocaleString()} FCFA</strong>
-    <br>Réduction : -${promoReduction.toLocaleString()} FCFA
+    <br>Réduction (${promoPercentage}%) : -${reduction.toLocaleString()} FCFA
     <br><strong>Total : ${(total > 0 ? total : 0).toLocaleString()} FCFA</strong>`;
   }
 
@@ -901,17 +904,23 @@
     const paiement = document.getElementById('checkoutPayment').value;
     
     const idVente = generateIdVente();
-    const lignes = cart.map(item => ({
+    // ✅ Appliquer le pourcentage de réduction sur chaque produit proportionnellement
+    const lignes = cart.map(item => {
+      const originalPrice = item.price * item.qty;
+      const reduction = (originalPrice * promoPercentage) / 100;
+      const prixTotalPaye = Math.round(originalPrice - reduction);
+      return {
         idVente: idVente,
         nomProduit: item.name,
         quantite: item.qty,
-        prixTotalPaye: Math.round(item.price * item.qty),
+        prixTotalPaye: prixTotalPaye,
         telephone: phone,
         nomClient: name,
         adresse: adresseComplete,
         paiement: paiement,
-        mentionPromo: promoReduction > 0 ? `Promo -${promoReduction} FCFA` : ""
-    }));
+        mentionPromo: promoPercentage > 0 ? `Promo -${promoPercentage}%` : ""
+      };
+    });
     const commandeJson = JSON.stringify(lignes);
     const url = `${SCRIPT_URL}?action=enregistrerCommande&data=${encodeURIComponent(commandeJson)}`;
     try {
@@ -920,7 +929,7 @@
         if (data.ok) {
             document.getElementById('orderSuccess').style.display = 'block';
             cart = [];
-            promoReduction = 0;
+            promoPercentage = 0;
             saveCart();
             chargerProduits(); // recharge les produits pour mettre à jour le stock affiché
             setTimeout(() => {
