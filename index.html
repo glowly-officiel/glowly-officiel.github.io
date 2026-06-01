@@ -789,9 +789,9 @@
       const productData = JSON.stringify(p).replace(/'/g, "&#39;");
       return `
         <div class="card">
-          <div class="card-img" onclick='openLightbox(${productData})'>
-            <img src="${p.img || 'https://placehold.co/400x400/FEF5ED/C28B90?text=Glowly'}" alt="${escapeHtml(p.nom)}" loading="lazy">
-            <div class="stock-badge ${badgeClass}">
+          <div class="card-img" style="cursor:pointer;">
+            <img src="${p.img || 'https://placehold.co/400x400/FEF5ED/C28B90?text=Glowly'}" alt="${escapeHtml(p.nom)}" loading="lazy" onclick='openLightbox(${productData})'>
+            <div class="stock-badge ${badgeClass}" onclick='openLightbox(${productData})'>
               <span class="stock-dot"></span>
               ${badgeText}
             </div>
