@@ -73,25 +73,31 @@
       .bs-description { font-size: 0.7rem; line-height: 1.3; margin-bottom: 8px; color: #F0DBCE; }
       .btn-brown { background: #D8A7AB; color: #2E211B; border: none; padding: 6px 12px; border-radius: 40px; font-size: 9px; font-weight: 600; cursor: pointer; align-self: flex-start; }
     }
+    
+    /* ========== NOUVEAU STYLE COACHING / DIAGNOSTIC ========== */
     .coaching-section { background: #FDF4EF; padding: 60px 24px; }
     .diagnostic-container { max-width: 800px; margin: 0 auto; background: white; border-radius: 32px; padding: 40px; box-shadow: 0 12px 30px rgba(0,0,0,0.05); border: 1px solid var(--border-beige); }
-    .diagnostic-question { margin-bottom: 24px; }
-    .diagnostic-question label { font-weight: 600; display: block; margin-bottom: 8px; color: var(--marron-bois); }
-    .diagnostic-question select, .diagnostic-question input { width: 100%; padding: 12px; border-radius: 40px; border: 1px solid var(--border-beige); font-family: inherit; background: var(--bg-beige); }
-    .diagnostic-btn { background: var(--marron-bois); color: white; border: none; padding: 12px 28px; border-radius: 40px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+    .diagnostic-step { margin-bottom: 28px; }
+    .diagnostic-step label { font-weight: 600; display: block; margin-bottom: 12px; color: var(--marron-bois); font-size: 1rem; }
+    .diagnostic-options { display: flex; flex-wrap: wrap; gap: 12px; }
+    .diagnostic-option { background: var(--bg-beige); border: 1px solid var(--border-beige); border-radius: 40px; padding: 8px 20px; cursor: pointer; transition: 0.2s; font-size: 0.9rem; }
+    .diagnostic-option:hover { background: var(--rose-gold); color: white; border-color: var(--rose-gold); }
+    .diagnostic-option.selected { background: var(--rose-gold-fonce); color: white; border-color: var(--rose-gold-fonce); }
+    .diagnostic-btn { background: var(--marron-bois); color: white; border: none; padding: 14px 32px; border-radius: 40px; font-weight: 600; cursor: pointer; transition: 0.2s; width: 100%; font-size: 1rem; margin-top: 20px; }
     .diagnostic-btn:hover { background: var(--rose-gold-fonce); }
-    .recommendation-results { margin-top: 40px; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
-    .rec-card { background: var(--bg-beige); border-radius: 20px; overflow: hidden; border: 1px solid var(--border-beige); transition: 0.2s; cursor: pointer; }
-    .rec-card:hover { transform: translateY(-4px); box-shadow: 0 12px 20px rgba(0,0,0,0.05); }
-    .rec-img { aspect-ratio: 1; background: #FEF5ED; background-size: cover; background-position: center; }
-    .rec-info { padding: 12px; text-align: center; }
-    .rec-info h4 { font-size: 0.9rem; margin-bottom: 4px; }
-    .rec-price { font-weight: 700; color: var(--rose-gold-fonce); font-size: 0.85rem; }
-    .histoire-section { background: var(--bg-beige); padding: 80px 24px; text-align: center; }
-    .histoire-container { max-width: 900px; margin: 0 auto; }
-    .histoire-container p { font-size: 1.1rem; line-height: 1.7; color: var(--text-brun); margin-bottom: 24px; }
-    .histoire-container p:first-of-type { font-size: 1.2rem; font-weight: 500; }
-    .histoire-signature { margin-top: 30px; font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; color: var(--rose-gold-fonce); font-style: italic; }
+    .diagnostic-result { margin-top: 40px; background: #FEF5ED; border-radius: 28px; padding: 30px; display: none; }
+    .routine-card { display: flex; flex-direction: column; gap: 16px; margin: 20px 0; }
+    .routine-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: white; border-radius: 20px; border: 1px solid var(--border-beige); }
+    .routine-item-info h4 { margin: 0; font-size: 1rem; }
+    .routine-item-info p { margin: 4px 0 0; font-size: 0.8rem; color: var(--text-muted); }
+    .routine-item-price { font-weight: 700; color: var(--rose-gold-fonce); font-size: 1.1rem; }
+    .compatibility { font-size: 0.7rem; background: #E8F5E9; color: #2E7D32; padding: 2px 8px; border-radius: 20px; display: inline-block; margin-top: 4px; }
+    .routine-total { text-align: right; padding-top: 16px; border-top: 1px solid var(--border-beige); margin-top: 8px; }
+    .routine-total strong { font-size: 1.2rem; color: var(--marron-bois); }
+    .promo-code { background: var(--rose-gold-fonce); color: white; padding: 10px 16px; border-radius: 40px; text-align: center; margin: 16px 0; font-weight: 600; }
+    .btn-add-routine { background: var(--marron-bois); color: white; border: none; padding: 14px 24px; border-radius: 40px; font-weight: 600; cursor: pointer; width: 100%; font-size: 1rem; transition: 0.2s; }
+    .btn-add-routine:hover { background: var(--rose-gold-fonce); transform: scale(1.02); }
+    
     .science-section { background: #FDF4EF; padding: 60px 24px; }
     .science-flex { display: flex; flex-wrap: wrap; justify-content: center; gap: 32px; max-width: 1000px; margin: 0 auto; }
     .science-item { text-align: center; background: rgba(255,245,240,0.6); padding: 32px 20px; border-radius: 32px; transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1); opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease, box-shadow 0.3s ease; box-shadow: 0 8px 20px rgba(0,0,0,0.02); }
@@ -143,7 +149,6 @@
       object-fit: cover;
     }
     
-    /* Badge stock */
     .stock-badge {
       position: absolute;
       top: 8px;
@@ -165,7 +170,6 @@
     .stock-badge.in-stock .stock-dot { background: #2E7D32; }
     .stock-badge.out-stock .stock-dot { background: #D32F2F; }
     
-    /* Bouton panier sur image */
     .card-cart-btn {
       position: absolute;
       bottom: 8px;
@@ -260,7 +264,7 @@
     #toast.show { opacity: 1; }
     .loader { text-align: center; padding: 40px; color: var(--rose-gold-fonce); }
     
-    /* ========== OVERLAY DE CHARGEMENT COMMANDE ========== */
+    /* ========== OVERLAY DE CHARGEMENT ========== */
     .loading-overlay {
       position: fixed;
       top: 0;
@@ -318,7 +322,7 @@
     <div class="nav-links">
       <a href="#">Accueil</a>
       <a href="#catalogue">Boutique</a>
-      <a href="#coaching">Coaching</a>
+      <a href="#coaching">Diagnostic</a>
       <a href="#histoire">Notre histoire</a>
     </div>
     <div class="header-actions">
@@ -332,7 +336,7 @@
   <div class="sub-nav-inner">
     <a href="#" class="active">Accueil</a>
     <a href="#catalogue">Boutique</a>
-    <a href="#coaching">Coaching</a>
+    <a href="#coaching">Diagnostic</a>
     <a href="#histoire">Notre histoire</a>
   </div>
 </div>
@@ -388,33 +392,74 @@
   <div id="productGrid" class="product-grid"><div class="loader">Chargement des produits...</div></div>
 </div>
 
+<!-- ========== NOUVEAU DIAGNOSTIC SKIN GRATUIT ========== -->
 <div id="coaching" style="scroll-margin-top: 80px;"></div>
 <section class="coaching-section">
-  <h2 class="section-title">Coaching skin care</h2>
-  <p class="section-subtitle">Répondez à quelques questions et recevez une sélection de produits adaptés à votre peau</p>
+  <h2 class="section-title">🌟 Diagnostic Skin Gratuit</h2>
+  <p class="section-subtitle">Répondez à 5 questions et recevez votre routine personnalisée</p>
   <div class="diagnostic-container">
-    <div class="diagnostic-question">
-      <label>Quel est votre type de peau ?</label>
-      <select id="skinType">
-        <option value="normale">Normale</option>
-        <option value="seche">Sèche</option>
-        <option value="grasse">Grasse</option>
-        <option value="mixte">Mixte</option>
-        <option value="sensible">Sensible</option>
-      </select>
+    
+    <!-- Étape 1 : Type de peau -->
+    <div class="diagnostic-step">
+      <label>📋 1. Quel est votre type de peau ?</label>
+      <div class="diagnostic-options" id="skinTypeOptions">
+        <span class="diagnostic-option" data-value="normale">Normale</span>
+        <span class="diagnostic-option" data-value="seche">Sèche</span>
+        <span class="diagnostic-option" data-value="grasse">Grasse</span>
+        <span class="diagnostic-option" data-value="mixte">Mixte</span>
+        <span class="diagnostic-option" data-value="sensible">Sensible</span>
+      </div>
     </div>
-    <div class="diagnostic-question">
-      <label>Quel est votre principal problème de peau ?</label>
-      <select id="skinConcern">
-        <option value="taches">Taches / Hyperpigmentation</option>
-        <option value="secheresse">Sécheresse / Desquamation</option>
-        <option value="acne">Acné / Points noirs</option>
-        <option value="rides">Rides / Perte d'élasticité</option>
-        <option value="ternite">Teint terne / Manque d'éclat</option>
-      </select>
+
+    <!-- Étape 2 : Problème principal -->
+    <div class="diagnostic-step">
+      <label>🎯 2. Quel est votre principal problème de peau ?</label>
+      <div class="diagnostic-options" id="concernOptions">
+        <span class="diagnostic-option" data-value="taches">Taches / Hyperpigmentation</span>
+        <span class="diagnostic-option" data-value="secheresse">Sécheresse / Desquamation</span>
+        <span class="diagnostic-option" data-value="acne">Acné / Points noirs</span>
+        <span class="diagnostic-option" data-value="rides">Rides / Perte d'élasticité</span>
+        <span class="diagnostic-option" data-value="ternite">Teint terne / Manque d'éclat</span>
+      </div>
     </div>
-    <button class="diagnostic-btn" onclick="getRecommendations()">Voir mes recommandations</button>
-    <div id="recommendations" class="recommendation-results"></div>
+
+    <!-- Étape 3 : Allergies -->
+    <div class="diagnostic-step">
+      <label>⚠️ 3. Avez-vous des allergies connues ?</label>
+      <div class="diagnostic-options" id="allergyOptions">
+        <span class="diagnostic-option" data-value="parfum">Parfum</span>
+        <span class="diagnostic-option" data-value="huiles">Huiles essentielles</span>
+        <span class="diagnostic-option" data-value="aucune">Aucune allergie</span>
+      </div>
+    </div>
+
+    <!-- Étape 4 : Budget -->
+    <div class="diagnostic-step">
+      <label>💰 4. Quel est votre budget pour une routine complète ?</label>
+      <div class="diagnostic-options" id="budgetOptions">
+        <span class="diagnostic-option" data-value="low">Moins de 20 000 FCFA</span>
+        <span class="diagnostic-option" data-value="medium">20 000 - 40 000 FCFA</span>
+        <span class="diagnostic-option" data-value="high">40 000 - 60 000 FCFA</span>
+        <span class="diagnostic-option" data-value="premium">Plus de 60 000 FCFA</span>
+      </div>
+    </div>
+
+    <!-- Étape 5 : WhatsApp (optionnel) -->
+    <div class="diagnostic-step">
+      <label>📱 5. Votre WhatsApp (optionnel) pour recevoir vos conseils</label>
+      <input type="tel" id="diagnosticWhatsapp" placeholder="77 123 45 67" style="width:100%; padding:12px; border-radius:40px; border:1px solid var(--border-beige);">
+    </div>
+
+    <button class="diagnostic-btn" onclick="genererRoutine()">✨ VOIR MA ROUTINE PERSONNALISÉE ✨</button>
+
+    <!-- Zone des résultats -->
+    <div id="diagnosticResult" class="diagnostic-result">
+      <h3 style="text-align:center; color:var(--marron-bois);">✨ VOTRE ROUTINE GLOWLY ✨</h3>
+      <div id="routineItems" class="routine-card"></div>
+      <div id="routineTotal" class="routine-total"></div>
+      <div id="promoCodeDisplay" class="promo-code"></div>
+      <button id="addRoutineBtn" class="btn-add-routine" onclick="ajouterRoutineAuPanier()">🛒 AJOUTER LA ROUTINE AU PANIER</button>
+    </div>
   </div>
 </section>
 
@@ -483,7 +528,7 @@
   <p style="text-align:center; margin-top:30px; font-size:11px;">© 2026 Glowly — Tous droits réservés.</p>
 </footer>
 
-<!-- OVERLAY DE CHARGEMENT POUR COMMANDE -->
+<!-- OVERLAY DE CHARGEMENT -->
 <div id="loadingOverlay" class="loading-overlay">
   <div class="loading-spinner"></div>
   <div class="loading-text">Traitement de votre commande...</div>
@@ -598,8 +643,168 @@
   let currentCategory = "";
   let currentSearch = "";
   let isProcessingOrder = false;
+  
+  // Variables pour le diagnostic
+  let diagnosticSelections = {
+    skinType: "",
+    mainConcern: "",
+    allergies: "",
+    budget: ""
+  };
+  let currentRoutine = [];
 
-  // ========== FONCTION POUR MASQUER/AFFICHER LE PAIEMENT ESPÈCES ==========
+  // ========== FONCTIONS DIAGNOSTIC ==========
+  function initDiagnosticOptions() {
+    // Type de peau
+    document.querySelectorAll('#skinTypeOptions .diagnostic-option').forEach(opt => {
+      opt.onclick = () => selectOption('skinTypeOptions', opt.dataset.value);
+    });
+    // Problème
+    document.querySelectorAll('#concernOptions .diagnostic-option').forEach(opt => {
+      opt.onclick = () => selectOption('concernOptions', opt.dataset.value);
+    });
+    // Allergies
+    document.querySelectorAll('#allergyOptions .diagnostic-option').forEach(opt => {
+      opt.onclick = () => selectOption('allergyOptions', opt.dataset.value);
+    });
+    // Budget
+    document.querySelectorAll('#budgetOptions .diagnostic-option').forEach(opt => {
+      opt.onclick = () => selectOption('budgetOptions', opt.dataset.value);
+    });
+  }
+
+  function selectOption(containerId, value) {
+    // Retirer la classe selected de tous les éléments du conteneur
+    document.querySelectorAll(`#${containerId} .diagnostic-option`).forEach(opt => {
+      opt.classList.remove('selected');
+    });
+    // Ajouter la classe selected à l'élément cliqué
+    event.target.classList.add('selected');
+    
+    // Stocker la valeur
+    if (containerId === 'skinTypeOptions') diagnosticSelections.skinType = value;
+    if (containerId === 'concernOptions') diagnosticSelections.mainConcern = value;
+    if (containerId === 'allergyOptions') diagnosticSelections.allergies = value;
+    if (containerId === 'budgetOptions') diagnosticSelections.budget = value;
+  }
+
+  function genererRoutine() {
+    // Vérifier que les questions obligatoires sont répondues
+    if (!diagnosticSelections.skinType || !diagnosticSelections.mainConcern || !diagnosticSelections.budget) {
+      showToast("⚠️ Veuillez répondre aux questions 1, 2 et 4");
+      return;
+    }
+    
+    // Filtrer les produits selon les réponses
+    let filtered = allProducts.filter(p => {
+      const name = p.nom.toLowerCase();
+      let score = 0;
+      
+      // Score selon le type de peau
+      if (diagnosticSelections.skinType === 'seche' && (name.includes('hydratant') || name.includes('manuka') || name.includes('miel'))) score += 15;
+      if (diagnosticSelections.skinType === 'grasse' && (name.includes('purifiant') || name.includes('savon') || name.includes('curcuma'))) score += 15;
+      if (diagnosticSelections.skinType === 'sensible' && (name.includes('doux') || name.includes('apaisant') || name.includes('toner'))) score += 15;
+      if (diagnosticSelections.skinType === 'mixte' && (name.includes('equilibrant') || name.includes('toner'))) score += 10;
+      
+      // Score selon le problème
+      if (diagnosticSelections.mainConcern === 'taches' && (name.includes('curcuma') || name.includes('vitamine c'))) score += 20;
+      if (diagnosticSelections.mainConcern === 'secheresse' && (name.includes('manuka') || name.includes('miel') || name.includes('hydratant'))) score += 20;
+      if (diagnosticSelections.mainConcern === 'acne' && (name.includes('purifiant') || name.includes('savon') || name.includes('toner'))) score += 20;
+      if (diagnosticSelections.mainConcern === 'rides' && (name.includes('collagène') || name.includes('sérum'))) score += 20;
+      if (diagnosticSelections.mainConcern === 'ternite' && (name.includes('glycolique') || name.includes('toner') || name.includes('curcuma'))) score += 20;
+      
+      // Allergies
+      if (diagnosticSelections.allergies === 'parfum' && (name.includes('parfum'))) score -= 50;
+      if (diagnosticSelections.allergies === 'huiles' && (name.includes('huile'))) score -= 50;
+      
+      return score > 0;
+    });
+    
+    // Trier par score décroissant
+    filtered.sort((a, b) => (b.score || 0) - (a.score || 0));
+    
+    // Construire la routine (max 3 produits)
+    currentRoutine = filtered.slice(0, 3);
+    
+    if (currentRoutine.length === 0) {
+      showToast("⚠️ Aucun produit ne correspond à votre profil. Contactez-nous !");
+      return;
+    }
+    
+    // Afficher les résultats
+    afficherRoutine();
+  }
+  
+  function afficherRoutine() {
+    const container = document.getElementById('routineItems');
+    const totalContainer = document.getElementById('routineTotal');
+    const promoContainer = document.getElementById('promoCodeDisplay');
+    
+    let html = '';
+    let total = 0;
+    
+    currentRoutine.forEach((prod, index) => {
+      const step = index === 0 ? '🔵 NETTOYANT' : (index === 1 ? '🟢 TRAITEMENT' : '🟡 HYDRATATION');
+      const prix = Number(prod.prix);
+      total += prix;
+      
+      html += `
+        <div class="routine-item">
+          <div class="routine-item-info">
+            <h4>${step} : ${escapeHtml(prod.nom)}</h4>
+            <p>${prod.desc || 'Soin adapté à votre profil'}</p>
+            <span class="compatibility">✓ Recommandé pour vous</span>
+          </div>
+          <div class="routine-item-price">${prix.toLocaleString()} FCFA</div>
+        </div>
+      `;
+    });
+    
+    container.innerHTML = html;
+    totalContainer.innerHTML = `<strong>💰 TOTAL : ${total.toLocaleString()} FCFA</strong>`;
+    
+    // Générer un code promo unique
+    const promoCode = "SKIN" + Math.floor(Math.random() * 10000) + "-" + Date.now().toString().slice(-4);
+    promoContainer.innerHTML = `🎁 CODE PROMO : ${promoCode} (15% de réduction sur cette routine)`;
+    
+    // Afficher le résultat
+    document.getElementById('diagnosticResult').style.display = 'block';
+    
+    // Scroll vers le résultat
+    document.getElementById('diagnosticResult').scrollIntoView({ behavior: 'smooth' });
+  }
+  
+  function ajouterRoutineAuPanier() {
+    if (currentRoutine.length === 0) {
+      showToast("⚠️ Générez d'abord votre routine");
+      return;
+    }
+    
+    // Ajouter chaque produit au panier
+    for (const product of currentRoutine) {
+      const existing = cart.find(i => i.id == product.id);
+      if (existing) {
+        existing.qty++;
+      } else {
+        cart.push({ id: product.id, name: product.nom, price: product.prix, qty: 1 });
+      }
+    }
+    
+    saveCart();
+    showToast(`✅ Routine ajoutée au panier ! (${currentRoutine.length} produits)`);
+    
+    // Optionnel : appliquer automatiquement le code promo
+    const promoCodeElem = document.getElementById('promoCodeDisplay');
+    if (promoCodeElem) {
+      const promoText = promoCodeElem.innerText;
+      const match = promoText.match(/SKIN[^\s]+/);
+      if (match) {
+        document.getElementById('promoCode').value = match[0];
+        applyPromoCode();
+      }
+    }
+  }
+
   function updatePaymentOptions() {
     const region = document.getElementById('checkoutRegion').value;
     const paymentSelect = document.getElementById('checkoutPayment');
@@ -621,43 +826,20 @@
     }
   }
 
-  // ========== FONCTION DE RAFRAÎCHISSEMENT COMPLET ==========
   function resetPageAfterOrder() {
-    // Réinitialiser les variables d'état
     isProcessingOrder = false;
-    
-    // Réinitialiser le panier (déjà fait dans confirmOrder)
-    // Recharger les produits pour mettre à jour les stocks
-    chargerProduits();
-    
-    // Réinitialiser l'affichage du panier
-    updateCartUI();
-    
-    // Réinitialiser le bouton de confirmation
+    const loadingOverlay = document.getElementById('loadingOverlay');
+    if (loadingOverlay) loadingOverlay.classList.remove('show');
     const confirmBtn = document.getElementById('confirmOrderBtn');
     if (confirmBtn) {
       confirmBtn.innerText = "Confirmer la commande";
       confirmBtn.disabled = false;
       confirmBtn.classList.remove('btn-loading');
     }
-    
-    // Cacher l'overlay de chargement s'il est encore visible
-    const loadingOverlay = document.getElementById('loadingOverlay');
-    if (loadingOverlay) {
-      loadingOverlay.classList.remove('show');
-    }
-    
-    // Vider le message de succès
     const orderSuccess = document.getElementById('orderSuccess');
-    if (orderSuccess) {
-      orderSuccess.style.display = 'none';
-    }
-    
-    // Fermer le modal checkout s'il est ouvert
+    if (orderSuccess) orderSuccess.style.display = 'none';
     const checkoutModal = document.getElementById('checkoutModal');
-    if (checkoutModal) {
-      checkoutModal.classList.remove('open');
-    }
+    if (checkoutModal) checkoutModal.classList.remove('open');
   }
 
   function showToast(msg) {
@@ -748,51 +930,6 @@
       console.error("Erreur best-sellers:", err);
       container.innerHTML = '<div class="loader">Erreur chargement best-sellers</div>';
     }
-  }
-
-  function getRecommendations() {
-    const skinType = document.getElementById('skinType').value;
-    const concern = document.getElementById('skinConcern').value;
-    let advice = "";
-    if (skinType === 'seche') advice = "Pour les peaux sèches, privilégiez les soins hydratants. ";
-    else if (skinType === 'grasse') advice = "Pour les peaux grasses, optez pour des textures légères. ";
-    else if (skinType === 'mixte') advice = "Pour les peaux mixtes, équilibrez avec des produits adaptés. ";
-    else if (skinType === 'sensible') advice = "Pour les peaux sensibles, choisissez des soins doux. ";
-    else advice = "Pour les peaux normales, maintenez l'équilibre. ";
-    if (concern === 'taches') advice += "Pour les taches, essayez la vitamine C ou le curcuma.";
-    else if (concern === 'secheresse') advice += "Pour la sécheresse, hydratez intensément.";
-    else if (concern === 'acne') advice += "Pour l'acné, nettoyez en douceur.";
-    else if (concern === 'rides') advice += "Pour les rides, utilisez du collagène.";
-    else advice += "Pour l'éclat, exfoliez régulièrement.";
-
-    let filtered = allProducts.filter(p => {
-      const name = p.nom.toLowerCase();
-      if (concern === 'taches') return name.includes('curcuma') || name.includes('vitamine');
-      if (concern === 'secheresse') return name.includes('miel') || name.includes('manuka');
-      if (concern === 'acne') return name.includes('nettoyant') || name.includes('toner');
-      if (concern === 'rides') return name.includes('collagène') || name.includes('sérum');
-      return true;
-    }).slice(0, 4);
-
-    const container = document.getElementById('recommendations');
-    if (filtered.length === 0) {
-      container.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:20px;"><p>${advice}</p><p>Contactez-nous pour plus de conseils.</p></div>`;
-      return;
-    }
-    let html = `<div style="grid-column:1/-1; margin-bottom:20px; text-align:center; background:#FDF4EF; padding:16px; border-radius:20px;"><p style="font-weight:500;">${advice}</p></div>`;
-    filtered.forEach(prod => {
-      const imgUrl = prod.img || 'https://placehold.co/400x400/FEF5ED/C28B90?text=Glowly';
-      html += `
-        <div class="rec-card" onclick='openLightbox(${JSON.stringify(prod).replace(/'/g, "&#39;")})'>
-          <div class="rec-img" style="background-image: url('${escapeHtml(imgUrl)}');"></div>
-          <div class="rec-info">
-            <h4>${escapeHtml(prod.nom)}</h4>
-            <div class="rec-price">${Number(prod.prix).toLocaleString()} FCFA</div>
-          </div>
-        </div>
-      `;
-    });
-    container.innerHTML = html;
   }
 
   function initCarousel() {
@@ -1182,17 +1319,10 @@
         cart = [];
         promoPercentage = 0;
         saveCart();
-        
-        // Afficher le message de succès
         showToast("✅ Commande confirmée ! Nous vous contacterons.");
-        
-        // Attendre 2 secondes puis rafraîchir complètement l'état
         setTimeout(() => {
-          // Réinitialiser complètement l'interface
           resetPageAfterOrder();
-          // Recharger les produits pour mettre à jour les stocks
           chargerProduits();
-          // Recharger les best-sellers
           chargerBestSellers();
         }, 2000);
       } else {
@@ -1302,6 +1432,7 @@
     observeScienceItems();
     document.getElementById('searchInput')?.addEventListener('input', filterProducts);
     updatePaymentOptions();
+    initDiagnosticOptions();
   });
 </script>
 </body>
