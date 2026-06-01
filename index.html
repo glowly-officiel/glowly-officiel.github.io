@@ -532,11 +532,21 @@
     <div class="field"><label>Téléphone *</label><input type="tel" id="checkoutPhone" placeholder="77 123 45 67"></div>
     <div class="field">
       <label>Région *</label>
-      <select id="checkoutRegion">
-        <option>Dakar</option>
-        <option>Thiès</option>
-        <option>Saint-Louis</option>
-        <option>Autre</option>
+      <select id="checkoutRegion" onchange="updatePaymentOptions()">
+        <option value="Dakar">Dakar</option>
+        <option value="Thiès">Thiès</option>
+        <option value="Saint-Louis">Saint-Louis</option>
+        <option value="Fatick">Fatick</option>
+        <option value="Kaffrine">Kaffrine</option>
+        <option value="Kaolack">Kaolack</option>
+        <option value="Kédougou">Kédougou</option>
+        <option value="Kolda">Kolda</option>
+        <option value="Louga">Louga</option>
+        <option value="Matam">Matam</option>
+        <option value="Sédhiou">Sédhiou</option>
+        <option value="Tambacounda">Tambacounda</option>
+        <option value="Ziguinchor">Ziguinchor</option>
+        <option value="Diourbel">Diourbel</option>
       </select>
     </div>
     <div class="field"><label>Quartier *</label><input type="text" id="checkoutQuartier" placeholder="Médina, Ouakam..."></div>
@@ -544,9 +554,9 @@
     <div class="field">
       <label>Paiement</label>
       <select id="checkoutPayment">
-        <option>🐧 Wave</option>
-        <option>🟠 Orange Money</option>
-        <option>💵 Espèces à la livraison</option>
+        <option value="🐧 Wave">🐧 Wave</option>
+        <option value="🟠 Orange Money">🟠 Orange Money</option>
+        <option value="💵 Espèces à la livraison" id="cashOption">💵 Espèces à la livraison</option>
       </select>
     </div>
     <div class="field">
@@ -588,6 +598,31 @@
   let currentCategory = "";
   let currentSearch = "";
   let isProcessingOrder = false;
+
+  // ========== FONCTION POUR MASQUER/AFFICHER LE PAIEMENT ESPÈCES ==========
+  function updatePaymentOptions() {
+    const region = document.getElementById('checkoutRegion').value;
+    const paymentSelect = document.getElementById('checkoutPayment');
+    const cashOption = paymentSelect.querySelector('option[value="💵 Espèces à la livraison"]');
+    
+    if (region === 'Thiès') {
+      // Thiès : afficher l'option espèces
+      if (cashOption) {
+        cashOption.style.display = '';
+        cashOption.disabled = false;
+      }
+    } else {
+      // Autres régions : masquer l'option espèces
+      if (cashOption) {
+        cashOption.style.display = 'none';
+        cashOption.disabled = true;
+      }
+      // Si l'option espèces était sélectionnée, basculer vers Wave
+      if (paymentSelect.value === '💵 Espèces à la livraison') {
+        paymentSelect.value = '🐧 Wave';
+      }
+    }
+  }
 
   function showToast(msg) {
     const t = document.getElementById('toast');
@@ -804,10 +839,9 @@
         </div>
       `;
     }).join('');
-}
+  }
 
   async function addToCartFromCard(product) {
-    // ⚠️ Ne pas utiliser event.stopPropagation() ici car event n'existe pas
     const maxStock = await getStockFromServer(product.id, product.nom);
     if (maxStock <= 0) {
       showToast("❌ Ce produit est actuellement en rupture de stock.");
@@ -826,7 +860,7 @@
     saveCart();
     showToast(`${product.nom} ajouté au panier`);
     return false;
-}
+  }
 
   function saveCart() {
     localStorage.setItem('glowly_cart', JSON.stringify(cart));
@@ -1231,6 +1265,7 @@
     chargerBestSellers();
     observeScienceItems();
     document.getElementById('searchInput')?.addEventListener('input', filterProducts);
+    updatePaymentOptions(); // Initialiser l'affichage du paiement selon la région par défaut
   });
 </script>
 </body>
