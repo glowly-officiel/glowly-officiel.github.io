@@ -795,7 +795,7 @@
               <span class="stock-dot"></span>
               ${badgeText}
             </div>
-            <button class="card-cart-btn" onclick="event.stopPropagation(); addToCartFromCard(${productData})">🛒</button>
+            <button class="card-cart-btn" onclick='addToCartFromCard(${productData}); return false;'>🛒</button>
           </div>
           <div class="card-body" onclick='openLightbox(${productData})'>
             <h3>${escapeHtml(p.nom)}</h3>
@@ -804,20 +804,20 @@
         </div>
       `;
     }).join('');
-  }
+}
 
   async function addToCartFromCard(product) {
-    event.stopPropagation();
+    // ⚠️ Ne pas utiliser event.stopPropagation() ici car event n'existe pas
     const maxStock = await getStockFromServer(product.id, product.nom);
     if (maxStock <= 0) {
       showToast("❌ Ce produit est actuellement en rupture de stock.");
-      return;
+      return false;
     }
     const existing = cart.find(i => i.id == product.id);
     if (existing) {
       if (existing.qty + 1 > maxStock) {
         showToast(`❌ Stock insuffisant. Maximum : ${maxStock}`);
-        return;
+        return false;
       }
       existing.qty++;
     } else {
@@ -825,7 +825,8 @@
     }
     saveCart();
     showToast(`${product.nom} ajouté au panier`);
-  }
+    return false;
+}
 
   function saveCart() {
     localStorage.setItem('glowly_cart', JSON.stringify(cart));
