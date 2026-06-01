@@ -606,21 +606,57 @@
     const cashOption = paymentSelect.querySelector('option[value="💵 Espèces à la livraison"]');
     
     if (region === 'Thiès') {
-      // Thiès : afficher l'option espèces
       if (cashOption) {
         cashOption.style.display = '';
         cashOption.disabled = false;
       }
     } else {
-      // Autres régions : masquer l'option espèces
       if (cashOption) {
         cashOption.style.display = 'none';
         cashOption.disabled = true;
       }
-      // Si l'option espèces était sélectionnée, basculer vers Wave
       if (paymentSelect.value === '💵 Espèces à la livraison') {
         paymentSelect.value = '🐧 Wave';
       }
+    }
+  }
+
+  // ========== FONCTION DE RAFRAÎCHISSEMENT COMPLET ==========
+  function resetPageAfterOrder() {
+    // Réinitialiser les variables d'état
+    isProcessingOrder = false;
+    
+    // Réinitialiser le panier (déjà fait dans confirmOrder)
+    // Recharger les produits pour mettre à jour les stocks
+    chargerProduits();
+    
+    // Réinitialiser l'affichage du panier
+    updateCartUI();
+    
+    // Réinitialiser le bouton de confirmation
+    const confirmBtn = document.getElementById('confirmOrderBtn');
+    if (confirmBtn) {
+      confirmBtn.innerText = "Confirmer la commande";
+      confirmBtn.disabled = false;
+      confirmBtn.classList.remove('btn-loading');
+    }
+    
+    // Cacher l'overlay de chargement s'il est encore visible
+    const loadingOverlay = document.getElementById('loadingOverlay');
+    if (loadingOverlay) {
+      loadingOverlay.classList.remove('show');
+    }
+    
+    // Vider le message de succès
+    const orderSuccess = document.getElementById('orderSuccess');
+    if (orderSuccess) {
+      orderSuccess.style.display = 'none';
+    }
+    
+    // Fermer le modal checkout s'il est ouvert
+    const checkoutModal = document.getElementById('checkoutModal');
+    if (checkoutModal) {
+      checkoutModal.classList.remove('open');
     }
   }
 
@@ -1110,7 +1146,6 @@
     const loadingOverlay = document.getElementById('loadingOverlay');
     loadingOverlay.classList.add('show');
     const confirmBtn = document.getElementById('confirmOrderBtn');
-    const originalText = confirmBtn.innerText;
     confirmBtn.innerText = "⏳ Envoi en cours...";
     confirmBtn.disabled = true;
     confirmBtn.classList.add('btn-loading');
@@ -1147,27 +1182,28 @@
         cart = [];
         promoPercentage = 0;
         saveCart();
-        chargerProduits();
+        
+        // Afficher le message de succès
+        showToast("✅ Commande confirmée ! Nous vous contacterons.");
+        
+        // Attendre 2 secondes puis rafraîchir complètement l'état
         setTimeout(() => {
-          document.getElementById('checkoutModal').classList.remove('open');
-          document.getElementById('orderSuccess').style.display = 'none';
-          showToast("✅ Commande confirmée ! Nous vous contacterons.");
+          // Réinitialiser complètement l'interface
+          resetPageAfterOrder();
+          // Recharger les produits pour mettre à jour les stocks
+          chargerProduits();
+          // Recharger les best-sellers
+          chargerBestSellers();
         }, 2000);
       } else {
         showToast("❌ Erreur : " + (data.error || "Réessayez"));
-        confirmBtn.innerText = originalText;
-        confirmBtn.disabled = false;
-        confirmBtn.classList.remove('btn-loading');
+        resetPageAfterOrder();
       }
     } catch (err) {
       loadingOverlay.classList.remove('show');
       console.error("Erreur commande:", err);
       showToast("❌ Erreur de connexion. Vérifiez votre connexion.");
-      confirmBtn.innerText = originalText;
-      confirmBtn.disabled = false;
-      confirmBtn.classList.remove('btn-loading');
-    } finally {
-      isProcessingOrder = false;
+      resetPageAfterOrder();
     }
   }
 
@@ -1265,7 +1301,7 @@
     chargerBestSellers();
     observeScienceItems();
     document.getElementById('searchInput')?.addEventListener('input', filterProducts);
-    updatePaymentOptions(); // Initialiser l'affichage du paiement selon la région par défaut
+    updatePaymentOptions();
   });
 </script>
 </body>
