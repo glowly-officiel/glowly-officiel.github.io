@@ -6,7 +6,7 @@
   <title>GLOWLY — Beauté Authentique</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
   <style>
-    /* ========== STYLES ========== */
+    /* ========== STYLES EXISTANTS ========== */
     * { margin:0; padding:0; box-sizing:border-box; }
     :root {
       --bg-beige: #FDF8F0; --surface: #FFFFFF; --border-beige: #EDE0D4;
@@ -102,29 +102,20 @@
     .science-item h4 { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; margin-bottom: 12px; color: var(--marron-bois); }
     .science-item p { font-size: 0.9rem; color: var(--text-muted); line-height: 1.5; }
     
-    /* ========== NOUVEAUX STYLES PRODUITS ========== */
+    /* ========== STYLES PRODUITS ========== */
     .product-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 12px;
     }
     @media (min-width: 480px) {
-      .product-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 15px;
-      }
+      .product-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
     }
     @media (min-width: 640px) {
-      .product-grid {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 18px;
-      }
+      .product-grid { grid-template-columns: repeat(3, 1fr); gap: 18px; }
     }
     @media (min-width: 1024px) {
-      .product-grid {
-        grid-template-columns: repeat(4, 1fr);
-        gap: 20px;
-      }
+      .product-grid { grid-template-columns: repeat(4, 1fr); gap: 20px; }
     }
     
     .card {
@@ -151,7 +142,7 @@
       object-fit: cover;
     }
     
-    /* Badge stock en haut à gauche */
+    /* Badge stock */
     .stock-badge {
       position: absolute;
       top: 8px;
@@ -167,28 +158,13 @@
       z-index: 5;
       box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     }
-    .stock-badge.in-stock {
-      background: #E8F5E9;
-      color: #2E7D32;
-    }
-    .stock-badge.out-stock {
-      background: #FFEBEE;
-      color: #D32F2F;
-    }
-    .stock-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      display: inline-block;
-    }
-    .stock-badge.in-stock .stock-dot {
-      background: #2E7D32;
-    }
-    .stock-badge.out-stock .stock-dot {
-      background: #D32F2F;
-    }
+    .stock-badge.in-stock { background: #E8F5E9; color: #2E7D32; }
+    .stock-badge.out-stock { background: #FFEBEE; color: #D32F2F; }
+    .stock-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+    .stock-badge.in-stock .stock-dot { background: #2E7D32; }
+    .stock-badge.out-stock .stock-dot { background: #D32F2F; }
     
-    /* Bouton ajouter au panier */
+    /* Bouton panier sur image */
     .card-cart-btn {
       position: absolute;
       bottom: 8px;
@@ -213,10 +189,6 @@
       transform: scale(1.05);
       opacity: 1;
     }
-    .card-cart-btn:active {
-      transform: scale(0.95);
-    }
-    
     .card-body {
       padding: 10px 8px 12px;
       text-align: center;
@@ -234,11 +206,7 @@
       color: #C28B90;
       font-size: 0.85rem;
     }
-    
-    /* Suppression de l'ancien badge-stock */
-    .badge-stock {
-      display: none;
-    }
+    .badge-stock { display: none; }
     
     .testimonial-grid { display: grid; gap: 24px; max-width: 800px; margin: 0 auto; }
     @media (min-width: 640px) { .testimonial-grid { grid-template-columns: repeat(2, 1fr); } }
@@ -289,6 +257,53 @@
     #toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #3E2920; color: #f5e2d6; padding: 12px 28px; border-radius: 60px; font-size: 13px; z-index: 2100; opacity: 0; transition: opacity 0.2s; pointer-events: none; }
     #toast.show { opacity: 1; }
     .loader { text-align: center; padding: 40px; color: var(--rose-gold-fonce); }
+    
+    /* ========== OVERLAY DE CHARGEMENT COMMANDE ========== */
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(4px);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      visibility: hidden;
+      opacity: 0;
+      transition: 0.2s;
+    }
+    .loading-overlay.show {
+      visibility: visible;
+      opacity: 1;
+    }
+    .loading-spinner {
+      width: 50px;
+      height: 50px;
+      border: 4px solid rgba(255,255,255,0.3);
+      border-top-color: var(--rose-gold);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin-bottom: 15px;
+    }
+    .loading-text {
+      color: white;
+      font-size: 14px;
+      background: rgba(0,0,0,0.7);
+      padding: 8px 20px;
+      border-radius: 40px;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    .btn-loading {
+      position: relative;
+      pointer-events: none;
+      opacity: 0.7;
+    }
   </style>
 </head>
 <body>
@@ -466,6 +481,12 @@
   <p style="text-align:center; margin-top:30px; font-size:11px;">© 2026 Glowly — Tous droits réservés.</p>
 </footer>
 
+<!-- OVERLAY DE CHARGEMENT POUR COMMANDE -->
+<div id="loadingOverlay" class="loading-overlay">
+  <div class="loading-spinner"></div>
+  <div class="loading-text">Traitement de votre commande...</div>
+</div>
+
 <div id="lightboxOverlay" class="overlay" onclick="closeLightbox(event)">
   <button class="lightbox-close" onclick="closeLightbox()">✕</button>
   <div class="lightbox-container" onclick="event.stopPropagation()">
@@ -534,7 +555,7 @@
       </div>
       <span id="promoMsg" style="font-size:12px;"></span>
     </div>
-    <button class="btn-brown" onclick="confirmOrder()" style="width:100%; margin-top:16px;">Confirmer la commande</button>
+    <button class="btn-brown" id="confirmOrderBtn" onclick="confirmOrder()" style="width:100%; margin-top:16px;">Confirmer la commande</button>
     <div id="orderSuccess" style="display:none; text-align:center; margin-top:16px; color:#2E7D32;">✅ Commande envoyée !</div>
   </div>
 </div>
@@ -564,6 +585,7 @@
   let currentLightboxIndex = 0;
   let currentCategory = "";
   let currentSearch = "";
+  let isProcessingOrder = false;
 
   function showToast(msg) {
     const t = document.getElementById('toast');
@@ -781,7 +803,6 @@
     }).join('');
   }
 
-  // Nouvelle fonction pour ajouter au panier depuis la carte (sans ouvrir la lightbox)
   async function addToCartFromCard(product) {
     event.stopPropagation();
     const maxStock = await getStockFromServer(product.id, product.nom);
@@ -1032,14 +1053,30 @@
   }
 
   async function confirmOrder() {
+    if (isProcessingOrder) {
+      showToast("⏳ Commande en cours, veuillez patienter...");
+      return;
+    }
+    
     const name = document.getElementById('checkoutName').value.trim();
     const phone = document.getElementById('checkoutPhone').value.trim();
     const region = document.getElementById('checkoutRegion').value;
     const quartier = document.getElementById('checkoutQuartier').value.trim();
+    
     if (!name || !phone || !quartier) {
-        showToast("Veuillez remplir tous les champs obligatoires (*)");
-        return;
+      showToast("Veuillez remplir tous les champs obligatoires (*)");
+      return;
     }
+    
+    isProcessingOrder = true;
+    const loadingOverlay = document.getElementById('loadingOverlay');
+    loadingOverlay.classList.add('show');
+    const confirmBtn = document.getElementById('confirmOrderBtn');
+    const originalText = confirmBtn.innerText;
+    confirmBtn.innerText = "⏳ Envoi en cours...";
+    confirmBtn.disabled = true;
+    confirmBtn.classList.add('btn-loading');
+    
     const adresseComplete = `${quartier}, ${document.getElementById('checkoutAddress').value.trim()}, ${region}`;
     const paiement = document.getElementById('checkoutPayment').value;
     const idVente = generateIdVente();
@@ -1061,26 +1098,38 @@
     });
     const commandeJson = JSON.stringify(lignes);
     const url = `${SCRIPT_URL}?action=enregistrerCommande&data=${encodeURIComponent(commandeJson)}`;
+    
     try {
-        const response = await fetch(url);
-        const data = await response.json();
-        if (data.ok) {
-            document.getElementById('orderSuccess').style.display = 'block';
-            cart = [];
-            promoPercentage = 0;
-            saveCart();
-            chargerProduits();
-            setTimeout(() => {
-                document.getElementById('checkoutModal').classList.remove('open');
-                document.getElementById('orderSuccess').style.display = 'none';
-                showToast("✅ Commande confirmée ! Nous vous contacterons.");
-            }, 2000);
-        } else {
-            showToast("❌ Erreur : " + (data.error || "Réessayez"));
-        }
+      const response = await fetch(url);
+      const data = await response.json();
+      loadingOverlay.classList.remove('show');
+      
+      if (data.ok) {
+        document.getElementById('orderSuccess').style.display = 'block';
+        cart = [];
+        promoPercentage = 0;
+        saveCart();
+        chargerProduits();
+        setTimeout(() => {
+          document.getElementById('checkoutModal').classList.remove('open');
+          document.getElementById('orderSuccess').style.display = 'none';
+          showToast("✅ Commande confirmée ! Nous vous contacterons.");
+        }, 2000);
+      } else {
+        showToast("❌ Erreur : " + (data.error || "Réessayez"));
+        confirmBtn.innerText = originalText;
+        confirmBtn.disabled = false;
+        confirmBtn.classList.remove('btn-loading');
+      }
     } catch (err) {
-        console.error("Erreur commande:", err);
-        showToast("❌ Erreur de connexion");
+      loadingOverlay.classList.remove('show');
+      console.error("Erreur commande:", err);
+      showToast("❌ Erreur de connexion. Vérifiez votre connexion.");
+      confirmBtn.innerText = originalText;
+      confirmBtn.disabled = false;
+      confirmBtn.classList.remove('btn-loading');
+    } finally {
+      isProcessingOrder = false;
     }
   }
 
