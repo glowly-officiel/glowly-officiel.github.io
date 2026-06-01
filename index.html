@@ -135,6 +135,7 @@
       aspect-ratio: 1;
       background: #FEF5ED;
       position: relative;
+      cursor: pointer;
     }
     .card-img img {
       width: 100%;
@@ -192,6 +193,7 @@
     .card-body {
       padding: 10px 8px 12px;
       text-align: center;
+      cursor: pointer;
     }
     .card-body h3 {
       font-size: 0.8rem;
@@ -784,17 +786,18 @@
       const inStock = stockDispo > 0;
       const badgeText = inStock ? 'En stock' : 'Rupture';
       const badgeClass = inStock ? 'in-stock' : 'out-stock';
+      const productData = JSON.stringify(p).replace(/'/g, "&#39;");
       return `
         <div class="card">
-          <div class="card-img" onclick='openLightbox(${JSON.stringify(p).replace(/'/g, "&#39;")})'>
+          <div class="card-img" onclick='openLightbox(${productData})'>
             <img src="${p.img || 'https://placehold.co/400x400/FEF5ED/C28B90?text=Glowly'}" alt="${escapeHtml(p.nom)}" loading="lazy">
             <div class="stock-badge ${badgeClass}">
               <span class="stock-dot"></span>
               ${badgeText}
             </div>
-            <button class="card-cart-btn" onclick="event.stopPropagation(); addToCartFromCard(${JSON.stringify(p).replace(/'/g, "&#39;")})">🛒</button>
+            <button class="card-cart-btn" onclick="event.stopPropagation(); addToCartFromCard(${productData})">🛒</button>
           </div>
-          <div class="card-body" onclick='openLightbox(${JSON.stringify(p).replace(/'/g, "&#39;")})'>
+          <div class="card-body" onclick='openLightbox(${productData})'>
             <h3>${escapeHtml(p.nom)}</h3>
             <div class="price">${Number(p.prix).toLocaleString()} FCFA</div>
           </div>
