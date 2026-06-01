@@ -101,19 +101,145 @@
     .science-item:hover .science-icon { transform: scale(1.1); }
     .science-item h4 { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; margin-bottom: 12px; color: var(--marron-bois); }
     .science-item p { font-size: 0.9rem; color: var(--text-muted); line-height: 1.5; }
-    .product-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
-    @media (min-width: 640px) { .product-grid { grid-template-columns: repeat(3, 1fr); } }
-    @media (min-width: 1024px) { .product-grid { grid-template-columns: repeat(4, 1fr); } }
-    .card { background: white; border-radius: 20px; overflow: hidden; cursor: pointer; transition: 0.2s; border: 1px solid #F2E2D8; }
-    .card:hover { transform: translateY(-5px); border-color: var(--rose-gold); }
-    .card-img { aspect-ratio: 1; background: #FEF5ED; }
-    .card-img img { width: 100%; height: 100%; object-fit: cover; }
-    .card-body { padding: 16px; text-align: center; }
-    .card-body h3 { font-size: 0.9rem; font-weight: 500; }
-    .price { font-weight: 700; color: #C28B90; }
-    .badge-stock { margin-top: 8px; font-size: 0.75rem; font-weight: 500; }
-    .badge-stock.in-stock { color: #2E7D32; }
-    .badge-stock.out-stock { color: #D32F2F; font-weight: 600; }
+    
+    /* ========== NOUVEAUX STYLES PRODUITS ========== */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+    @media (min-width: 480px) {
+      .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+      }
+    }
+    @media (min-width: 640px) {
+      .product-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+      }
+    }
+    @media (min-width: 1024px) {
+      .product-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+      }
+    }
+    
+    .card {
+      background: white;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid #F2E2D8;
+      transition: 0.2s;
+      position: relative;
+    }
+    .card:hover {
+      transform: translateY(-3px);
+      border-color: var(--rose-gold);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.05);
+    }
+    .card-img {
+      aspect-ratio: 1;
+      background: #FEF5ED;
+      position: relative;
+    }
+    .card-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    /* Badge stock en haut à gauche */
+    .stock-badge {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      font-size: 0.65rem;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 20px;
+      background: white;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      z-index: 5;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .stock-badge.in-stock {
+      background: #E8F5E9;
+      color: #2E7D32;
+    }
+    .stock-badge.out-stock {
+      background: #FFEBEE;
+      color: #D32F2F;
+    }
+    .stock-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .stock-badge.in-stock .stock-dot {
+      background: #2E7D32;
+    }
+    .stock-badge.out-stock .stock-dot {
+      background: #D32F2F;
+    }
+    
+    /* Bouton ajouter au panier */
+    .card-cart-btn {
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      background: var(--marron-bois);
+      color: white;
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 18px;
+      transition: 0.2s;
+      z-index: 5;
+      opacity: 0.9;
+    }
+    .card-cart-btn:hover {
+      background: var(--rose-gold-fonce);
+      transform: scale(1.05);
+      opacity: 1;
+    }
+    .card-cart-btn:active {
+      transform: scale(0.95);
+    }
+    
+    .card-body {
+      padding: 10px 8px 12px;
+      text-align: center;
+    }
+    .card-body h3 {
+      font-size: 0.8rem;
+      font-weight: 500;
+      margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .price {
+      font-weight: 700;
+      color: #C28B90;
+      font-size: 0.85rem;
+    }
+    
+    /* Suppression de l'ancien badge-stock */
+    .badge-stock {
+      display: none;
+    }
+    
     .testimonial-grid { display: grid; gap: 24px; max-width: 800px; margin: 0 auto; }
     @media (min-width: 640px) { .testimonial-grid { grid-template-columns: repeat(2, 1fr); } }
     .testimonial { background: white; padding: 28px; border-radius: 28px; border: 1px solid #F2E0D4; }
@@ -428,12 +554,11 @@
 
 <script>
   // ==================== CONFIGURATION ====================
-  // ⚠️ REMPLACEZ CETTE URL PAR VOTRE URL APPS SCRIPT DÉPLOYÉE
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxgnkJqKTUb7xXAY5t8tBBxxLTYSdhKkLxdCiD6e3MDbUwI9L5WBuuArp_H8YVIxk8O/exec';
   
   let allProducts = [];
   let cart = [];
-  let promoPercentage = 0;        // ✅ Pourcentage stocké (ex: 20)
+  let promoPercentage = 0;
   let currentLightboxProduct = null;
   let currentLightboxImages = [];
   let currentLightboxIndex = 0;
@@ -456,21 +581,19 @@
     });
   }
 
-  // ========== VÉRIFICATION STOCK EN TEMPS RÉEL ==========
   async function getStockFromServer(productId, productName) {
     try {
       const url = `${SCRIPT_URL}?action=getStock&id=${encodeURIComponent(productId)}&nom=${encodeURIComponent(productName)}`;
       const response = await fetch(url);
       const data = await response.json();
       if (data.ok) return data.stock;
-      else return -1;
+      return -1;
     } catch (err) {
       console.error("Erreur récupération stock", err);
       return -1;
     }
   }
 
-  // ========== CHARGEMENT DES PRODUITS ==========
   async function chargerProduits() {
     try {
       console.log("Chargement des produits depuis:", SCRIPT_URL);
@@ -532,7 +655,6 @@
     }
   }
 
-  // ========== DIAGNOSTIC ==========
   function getRecommendations() {
     const skinType = document.getElementById('skinType').value;
     const concern = document.getElementById('skinConcern').value;
@@ -578,7 +700,6 @@
     container.innerHTML = html;
   }
 
-  // ========== CARROUSEL ==========
   function initCarousel() {
     const track = document.getElementById('carouselTrack');
     if (!track) return;
@@ -604,7 +725,6 @@
     }
   }
 
-  // ========== CATÉGORIES ET PRODUITS ==========
   function renderCategories() {
     const cats = [...new Set(allProducts.map(p => p.cat).filter(c => c && c.trim() !== ""))];
     const bar = document.getElementById('catBar');
@@ -640,24 +760,49 @@
     grid.innerHTML = filtered.map(p => {
       const stockDispo = p.stock || 0;
       const inStock = stockDispo > 0;
-      const badgeText = inStock ? '✓ En stock' : '⚠️ Rupture';
+      const badgeText = inStock ? 'En stock' : 'Rupture';
       const badgeClass = inStock ? 'in-stock' : 'out-stock';
       return `
-        <div class="card" onclick='openLightbox(${JSON.stringify(p).replace(/'/g, "&#39;")})'>
-          <div class="card-img">
+        <div class="card">
+          <div class="card-img" onclick='openLightbox(${JSON.stringify(p).replace(/'/g, "&#39;")})'>
             <img src="${p.img || 'https://placehold.co/400x400/FEF5ED/C28B90?text=Glowly'}" alt="${escapeHtml(p.nom)}" loading="lazy">
+            <div class="stock-badge ${badgeClass}">
+              <span class="stock-dot"></span>
+              ${badgeText}
+            </div>
+            <button class="card-cart-btn" onclick="event.stopPropagation(); addToCartFromCard(${JSON.stringify(p).replace(/'/g, "&#39;")})">🛒</button>
           </div>
-          <div class="card-body">
+          <div class="card-body" onclick='openLightbox(${JSON.stringify(p).replace(/'/g, "&#39;")})'>
             <h3>${escapeHtml(p.nom)}</h3>
             <div class="price">${Number(p.prix).toLocaleString()} FCFA</div>
-            <div class="badge-stock ${badgeClass}">${badgeText}</div>
           </div>
         </div>
       `;
     }).join('');
   }
 
-  // ========== PANIER AVEC VÉRIFICATION STOCK ==========
+  // Nouvelle fonction pour ajouter au panier depuis la carte (sans ouvrir la lightbox)
+  async function addToCartFromCard(product) {
+    event.stopPropagation();
+    const maxStock = await getStockFromServer(product.id, product.nom);
+    if (maxStock <= 0) {
+      showToast("❌ Ce produit est actuellement en rupture de stock.");
+      return;
+    }
+    const existing = cart.find(i => i.id == product.id);
+    if (existing) {
+      if (existing.qty + 1 > maxStock) {
+        showToast(`❌ Stock insuffisant. Maximum : ${maxStock}`);
+        return;
+      }
+      existing.qty++;
+    } else {
+      cart.push({ id: product.id, name: product.nom, price: product.prix, qty: 1 });
+    }
+    saveCart();
+    showToast(`${product.nom} ajouté au panier`);
+  }
+
   function saveCart() {
     localStorage.setItem('glowly_cart', JSON.stringify(cart));
     updateCartUI();
@@ -712,7 +857,6 @@
     if (isNaN(newQty)) newQty = 1;
     const item = cart.find(i => i.id == id);
     if (!item) return;
-    
     const maxStock = await getStockFromServer(item.id, item.name);
     if (maxStock < 0) {
       showToast("❌ Impossible de vérifier le stock, réessayez.");
@@ -781,7 +925,6 @@
     showToast(`${name} ajouté au panier`);
   }
 
-  // ========== LIGHTBOX ==========
   function openLightbox(product) {
     currentLightboxProduct = product;
     currentLightboxImages = [product.img || '', product.img2 || '', product.img3 || ''].filter(url => url && url.trim() !== '');
@@ -819,7 +962,6 @@
     closeLightbox();
   }
 
-  // ========== MODAL PANIER ==========
   function openCart() {
     document.getElementById('cartOverlay').classList.add('open');
   }
@@ -830,7 +972,6 @@
     }
   }
 
-  // ========== CODE PROMO (CORRECTION POURCENTAGE) ==========
   async function applyPromoCode() {
     const code = document.getElementById('promoCode').value.trim();
     if (!code) {
@@ -843,7 +984,7 @@
       const response = await fetch(url);
       const data = await response.json();
       if (data.ok && data.reduction > 0) {
-        promoPercentage = data.reduction;   // ✅ stocke le pourcentage (ex: 20)
+        promoPercentage = data.reduction;
         document.getElementById('promoMsg').innerHTML = `✅ Réduction ${promoPercentage}% appliquée !`;
         document.getElementById('promoMsg').style.color = '#2E7D32';
       } else {
@@ -852,14 +993,13 @@
         document.getElementById('promoMsg').style.color = '#b00';
       }
       updateOrderSummary();
-      updateCartUI();   // met à jour le total dans le panier
+      updateCartUI();
     } catch (err) {
       console.error("Erreur promo:", err);
       showToast("Erreur vérification code promo");
     }
   }
 
-  // ========== CHECKOUT ==========
   function updateOrderSummary() {
     const subtotal = cart.reduce((s, i) => s + (i.price * i.qty), 0);
     const reduction = (subtotal * promoPercentage) / 100;
@@ -902,9 +1042,7 @@
     }
     const adresseComplete = `${quartier}, ${document.getElementById('checkoutAddress').value.trim()}, ${region}`;
     const paiement = document.getElementById('checkoutPayment').value;
-    
     const idVente = generateIdVente();
-    // ✅ Appliquer le pourcentage de réduction sur chaque produit proportionnellement
     const lignes = cart.map(item => {
       const originalPrice = item.price * item.qty;
       const reduction = (originalPrice * promoPercentage) / 100;
@@ -931,7 +1069,7 @@
             cart = [];
             promoPercentage = 0;
             saveCart();
-            chargerProduits(); // recharge les produits pour mettre à jour le stock affiché
+            chargerProduits();
             setTimeout(() => {
                 document.getElementById('checkoutModal').classList.remove('open');
                 document.getElementById('orderSuccess').style.display = 'none';
@@ -946,7 +1084,6 @@
     }
   }
 
-  // ========== CONTACT ==========
   function openContactModal() {
     document.getElementById('contactModal').classList.add('open');
   }
@@ -1020,7 +1157,6 @@
     }
   }
 
-  // ========== OBSERVERS ==========
   function observeScienceItems() {
     const items = document.querySelectorAll('.science-item');
     if (!items.length) return;
@@ -1035,10 +1171,8 @@
     items.forEach(item => observer.observe(item));
   }
 
-  // ========== INITIALISATION ==========
   window.addEventListener('load', () => {
     console.log("🚀 Initialisation Glowly...");
-    console.log("URL Apps Script:", SCRIPT_URL);
     loadCart();
     chargerProduits();
     chargerBestSellers();
